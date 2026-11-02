@@ -24,4 +24,4 @@ en första version: platt stil, mjuk kontur, 6–8 färger, 256 × 256, 30 KB to
 är extra, giltig XML, inga gradienter, filter, text eller skript. De ska göras fantasifullare senare.
 
 Kända svagheter att åtgärda: `ko` ser ut som en katt, `hund` och `mus` liknar varandra, `banan` är bara en halvmåne,
-`bro`, `mat` och `sjö` är abstrakta, `tak` är svårt att känna igen. Bilderna är ritade på transparent bakgrund.
+`bro`, `mat` och `sjö` är abstrakta, `tak` är svårt att känna igen. Zippen hade en vit bakgrundsruta (`<rect fill="white">`) i alla filer; den är borttagen så att bilderna nu har transparent bakgrund.
