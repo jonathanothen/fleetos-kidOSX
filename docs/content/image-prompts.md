@@ -21,7 +21,7 @@ Använd **Firefly → Text to vector graphic** (ger SVG) i kvadratformat 1:1. Sa
 | img_boll.svg | boll | a round ball with stripes |
 | img_mat.svg | mat | a plate with a fork and knife |
 | img_aegg.svg | ägg | a single egg |
-| img_aepple.svg | äpple | (saknas: äpple) |
+| img_aepple.svg | äpple | a red apple with a leaf |
 | img_paeron.svg | päron | a green pear |
 | img_banan.svg | banan | a banana |
 | img_fisk.svg | fisk | a fish, side view |
