@@ -1,4 +1,4 @@
-"""Minne: turn two cards; a picture and its word belong together. Run: python3 -m kidsgames.minne [--window]"""
+"""Memory (the folder is still called minne): turn two cards; a picture and its word belong together. Run: python3 -m kidsgames.minne [--window]"""
 import random
 
 import pygame
@@ -103,7 +103,10 @@ class Round(Scene):
                 else:
                     pygame.draw.rect(surf, COLORS["soft"], r, border_radius=int(r.h * 0.12))
                     w = card["word"]["text"]
-                    g.text(w, min(r.h * 0.34, r.w * 0.9 / max(3, len(w)) * 1.7), (40, 30, 10), center=r.center)
+                    size = r.h * (0.5 if self.level == 0 else 0.34)      # big letters on the first level (always lower case: that is what the keys show)
+                    while size > 10 and g.fonts.get(size).size(w)[0] > r.w * 0.86:      # long words (and capitals) must fit the card
+                        size *= 0.92
+                    g.text(w, size, (40, 30, 10), center=r.center)
                 if i in self.done:
                     pygame.draw.rect(surf, COLORS["good"], r, 7, border_radius=int(r.h * 0.12))
             else:
@@ -113,7 +116,7 @@ class Round(Scene):
 
 
 def run(windowed):
-    game = Game("Minne", windowed)
+    game = Game("Memory", windowed)
     game.go(select())
     game.run()
 

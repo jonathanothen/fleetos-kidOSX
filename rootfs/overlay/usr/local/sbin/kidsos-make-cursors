@@ -11,12 +11,12 @@ os.environ.setdefault("PYGAME_HIDE_SUPPORT_PROMPT", "1")
 import pygame
 
 SIZES = [32, 48, 64, 96, 128]
-HOTSPOT = {"open": (43, 18), "closed": (43, 48), "ibeam": (64, 64)}         # in the 128 x 128 drawing
+HOTSPOT = {"open": (32, 16), "closed": (51, 27), "ibeam": (64, 64)}         # in a 128 x 128 frame: index fingertip / index knuckle
 # cursor name -> drawing. Names not listed fall back to the Adwaita theme (Inherits).
 NAMES = {
     "open": ["left_ptr", "default", "arrow", "top_left_arrow", "left_arrow", "hand1", "hand2", "pointer", "pointing_hand",
-             "grab", "openhand", "all-scroll", "move", "fleur", "context-menu", "help", "question_arrow"],
-    "closed": ["grabbing", "closedhand", "dnd-none", "dnd-move", "dnd-copy", "dnd-link", "copy", "alias", "pointer-closed"],
+             "grab", "openhand", "kidsos-open", "all-scroll", "move", "fleur", "context-menu", "help", "question_arrow"],
+    "closed": ["grabbing", "closedhand", "dnd-none", "dnd-move", "dnd-copy", "dnd-link", "copy", "alias", "pointer-closed", "kidsos-closed"],
     "ibeam": ["xterm", "text", "ibeam"],
 }
 
@@ -35,9 +35,10 @@ def image_chunk(surf, size, hot):
 def write_cursor(path, svg):
     pygame.display.init(); pygame.display.set_mode((1, 1))
     base = pygame.image.load(svg).convert_alpha()
-    base = pygame.transform.smoothscale(base, (128, 128)) if base.get_size() != (128, 128) else base
-    hot = HOTSPOT[os.path.basename(svg)[:-4]]
-    chunks = [image_chunk(pygame.transform.smoothscale(base, (s, s)) if s != 128 else base, s, hot) for s in SIZES]
+    hot = HOTSPOT[os.path.splitext(os.path.basename(svg))[0]]
+    # the drawing is scaled once per size from the original (a 48 px PNG is fine up to ~64 px; use an SVG for bigger)
+    chunks = [image_chunk(pygame.transform.smoothscale(base, (s, s)) if base.get_size() != (s, s) else base, s, hot)
+              for s in SIZES]
     toc_start = 16
     offset = toc_start + 12 * len(chunks)
     out = struct.pack("<4s3I", b"Xcur", 16, 0x10000, len(chunks))
@@ -54,7 +55,8 @@ def main(svg_dir, theme_dir):
     os.makedirs(cdir, exist_ok=True)
     for drawing, names in NAMES.items():
         first = os.path.join(cdir, names[0])
-        write_cursor(first, os.path.join(svg_dir, drawing + ".svg"))
+        art = os.path.join(svg_dir, drawing + ".png")                # a PNG wins over an SVG of the same name
+        write_cursor(first, art if os.path.exists(art) else os.path.join(svg_dir, drawing + ".svg"))
         for alias in names[1:]:
             p = os.path.join(cdir, alias)
             if os.path.lexists(p):

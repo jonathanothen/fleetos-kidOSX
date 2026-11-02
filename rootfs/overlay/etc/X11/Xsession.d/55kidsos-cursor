@@ -1,4 +1,4 @@
 # Big white hand pointer for programs that read the Xcursor variables (SDL games, Firefox, Qt).
 XCURSOR_THEME=KidsOS-Cursor
-XCURSOR_SIZE=64
+XCURSOR_SIZE=48
 export XCURSOR_THEME XCURSOR_SIZE

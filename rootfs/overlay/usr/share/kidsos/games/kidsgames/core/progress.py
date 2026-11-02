@@ -34,7 +34,7 @@ class Progress:
                 return skills[: i + 1], s
         return list(skills), skills[-1]          # everything mastered: keep practising, all of it
 
-    # ---- levels of the simple games (Minne, Klockan, Lyssna, Para ihop, Mönster) ----
+    # ---- levels of the simple games (Memory, Klockan, Lyssna, Para ihop, Mönster) ----
     def _game(self, game):
         return self.data.setdefault("games", {}).setdefault(game, {"rounds": 0})
 

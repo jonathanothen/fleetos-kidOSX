@@ -14,7 +14,7 @@ koden som spelar dem. **Tills klippen är gjorda hoppas de över tyst**, så ing
 | Klockan, tid uttalad | `say_clock_*` (12 st) | "Klockan är" + "halv" + *fyra* | Klockan, efter rätt svar |
 | Mattelek, meningar | `say_pick_*`, `say_count_*`, `say_how_many_*`, `say_write_answer` | "Hur många är kvar?" | Mattelek (fas 2, se nedan) |
 | Para ihop, Lyssna | `say_tap_word`, `say_drag_word`, `say_tap_picture`, `say_listen`, `say_point_right` | "Dra ordet till bilden" | Para ihop, Lyssna och peka |
-| Minne | `say_find_pairs`, `say_turn_card`, `say_pair_found`, `say_not_pair` | "Du hittade ett par!" | Minne |
+| Memory | `say_find_pairs`, `say_turn_card`, `say_pair_found`, `say_not_pair` | "Du hittade ett par!" | Memory |
 | Mönster, Rita | `say_what_next`, `say_continue_pattern`, `say_draw_something`, `say_saved`, `say_new_picture_q` | "Vad kommer sen?" | Mönster, Rita |
 | Beröm och uppmuntran | `say_correct_5`–`8`, `say_retry_3`–`4`, `say_hint_look`, `say_encourage_*` | "Vad duktig du är!" | alla spel (slumpas bland de som finns) |
 | Startskärmen | `say_home_hello`, `tile_*` (11 st) | "Räkna", "Para ihop" | startskärmen (fas 3) |
@@ -56,7 +56,7 @@ Förra omgången hittade lyssningen fel som ingen kontroll kan hitta. Kolla sär
 
 ## 4. Fas för fas
 
-1. **Fas 1, nu:** klockan, Minne, Mönster, Rita, Para ihop, beröm. Allt är redan inkopplat, det räcker att göra klippen.
+1. **Fas 1, nu:** klockan, Memory, Mönster, Rita, Para ihop, beröm. Allt är redan inkopplat, det räcker att göra klippen.
 2. **Fas 2:** byt ut de ensamma orden i Mattelek ("fler", "färre") mot hela meningar och lägg till "Räkna de streckade".
    *Görs först när klippen finns*, annars blir spelet tystare än idag. Ändring: `generators.py` (`more`) och en rad i
    `mattelek/main.py`.

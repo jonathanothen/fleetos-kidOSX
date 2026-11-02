@@ -9,6 +9,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ASSETS = os.environ.get("KIDSGAMES_ASSETS", os.path.join(HERE, "..", "..", "assets"))
 FONT_PATHS = ("/usr/share/fonts/opentype/comic-neue/ComicNeue-Bold.otf",
               "C:/Windows/Fonts/comicbd.ttf")
+# A plain sans font whose letters look like the ones printed on the keys (double-storey a, g, y): used where the child
+# has to find a letter on the keyboard. Comic Neue is friendlier for everything else but draws a single-storey a.
+PLAIN_FONT_PATHS = ("/usr/share/fonts/truetype/noto/NotoSans-Bold.ttf", "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+                    "C:/Windows/Fonts/arialbd.ttf")
 QUIT_HOLD_SECONDS = 3.0
 
 BG = (27, 31, 59)
@@ -75,13 +79,14 @@ class Voice:
 class Fonts:
     def __init__(self):
         self.path = next((p for p in FONT_PATHS if os.path.exists(p)), None)
+        self.plain_path = next((p for p in PLAIN_FONT_PATHS if os.path.exists(p)), self.path)
         self.cache = {}
 
-    def get(self, size):
+    def get(self, size, plain=False):
         size = max(8, int(size))
-        if size not in self.cache:
-            self.cache[size] = pygame.font.Font(self.path, size)
-        return self.cache[size]
+        if (size, plain) not in self.cache:
+            self.cache[(size, plain)] = pygame.font.Font(self.plain_path if plain else self.path, size)
+        return self.cache[(size, plain)]
 
 
 class Game:
@@ -105,8 +110,8 @@ class Game:
         self.scene = scene
         scene.enter(self)
 
-    def text(self, s, size, color=WHITE, center=None, topleft=None, midleft=None):
-        img = self.fonts.get(size).render(s, True, color)
+    def text(self, s, size, color=WHITE, center=None, topleft=None, midleft=None, plain=False):
+        img = self.fonts.get(size, plain).render(s, True, color)
         r = img.get_rect()
         if center:
             r.center = center

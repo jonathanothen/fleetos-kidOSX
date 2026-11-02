@@ -48,7 +48,7 @@ def draw_keyboard(g, area, target=None, pulse=False, flash=None):
                 color = (200, 90, 90)
             pygame.draw.rect(g.screen, tuple(max(0, c - 40) for c in color), rect.move(0, 4), border_radius=int(kw * 0.2))
             pygame.draw.rect(g.screen, color, rect, border_radius=int(kw * 0.2))
-            g.text(ch.upper(), kw * 0.5, (30, 30, 50) if (lit and pulse) else WHITE, center=rect.center)
+            g.text(ch, kw * 0.58, (30, 30, 50) if (lit and pulse) else WHITE, center=rect.center, plain=True)   # lower case, like the keys
             rects[ch] = rect
     return rects
 
@@ -103,8 +103,8 @@ class Round(Scene):
                           for ch in C.letter_round(stats["A"], self.rng)]
         elif self.level == 1:
             name = "".join(c for c in C.name_letters(C.child_name()) if c in keys) or "kid"
-            self.items = [{"text": name, "ghost": True, "say": ["say_type_name"], "again": ["say_type_name"],
-                           "show": name.capitalize()} for _ in range(3)]
+            self.items = [{"text": name, "ghost": True, "say": ["say_type_name"], "again": ["say_type_name"]}
+                          for _ in range(3)]                              # lower case, like the keys
         else:
             self.items = [{"text": w["text"], "pic": w["pic"], "ghost": w["mode"] == "copy",
                            "say": ["say_type_copy" if w["mode"] == "copy" else "say_type_word", w["voice"]],
@@ -200,7 +200,7 @@ class Round(Scene):
             ch = it["text"]
             if pic:
                 surf.blit(pic, (int(g.w * 0.62), top))
-            g.text(ch.upper() + "  " + ch, g.h * 0.34, COLORS["soft"], center=(int(g.w * (0.33 if pic else 0.5)), int(g.h * 0.27)))
+            g.text(ch, g.h * 0.5, COLORS["soft"], plain=True, center=(int(g.w * (0.33 if pic else 0.5)), int(g.h * 0.27)))
         else:
             if pic:
                 surf.blit(pic, pic.get_rect(midtop=(g.w // 2, top)))
@@ -223,9 +223,9 @@ class Round(Scene):
             cx = int(x0 + adv * (i + 0.5))
             done = i < self.pos
             if done or self.state == "right":
-                g.text(ch, size, WHITE, center=(cx, cy))
+                g.text(ch, size, WHITE, center=(cx, cy), plain=True)
             elif show_ghost:
-                g.text(ch, size, GHOST, center=(cx, cy))
+                g.text(ch, size, GHOST, center=(cx, cy), plain=True)
             line_col = COLORS["soft"] if (i == self.pos and self.state == "ask") else GHOST
             pygame.draw.line(surf, line_col, (int(cx - adv * 0.4), int(cy + size * 0.6)),
                              (int(cx + adv * 0.4), int(cy + size * 0.6)), 6)

@@ -1,7 +1,13 @@
 #!/usr/bin/python3
 """While a mouse button is held down the pointer hand closes into a fist (and opens again on release).
 X11 does not change the pointer by itself on a click, so this watches the button state a few times a second and swaps the
-pointer image by name for every program (XFixesChangeCursorByName). Needs the KidsOS-Cursor theme."""
+pointer image in every program (XFixesChangeCursorByName). Needs the KidsOS-Cursor theme.
+
+How the swap works, because it is easy to get wrong: ChangeCursorByName does not repaint the pointer, it REPLACES the
+pointer object of every window that has the given name with the object we hand over. After a swap the windows therefore
+point at OUR object, whose name is "kidsos-closed", and the old name (left_ptr) is gone. So the way back has to look for
+"kidsos-closed" and the next way forward for "kidsos-open" (plus the ordinary names of programs that set a new pointer).
+A fresh source pointer is loaded for every swap, because the handle we hold is itself replaced when its own name is swapped."""
 import ctypes
 import sys
 import time
@@ -17,6 +23,8 @@ def main():
     x11.XOpenDisplay.restype = ctypes.c_void_p
     x11.XDefaultRootWindow.restype = ctypes.c_ulong
     x11.XDefaultRootWindow.argtypes = [ctypes.c_void_p]
+    x11.XFreeCursor.argtypes = [ctypes.c_void_p, ctypes.c_ulong]
+    x11.XFlush.argtypes = [ctypes.c_void_p]
     xcursor.XcursorLibraryLoadCursor.restype = ctypes.c_ulong
     xcursor.XcursorLibraryLoadCursor.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
     xfixes.XFixesChangeCursorByName.argtypes = [ctypes.c_void_p, ctypes.c_ulong, ctypes.c_char_p]
@@ -25,13 +33,13 @@ def main():
     if not dpy:
         sys.exit("no display")
     root = x11.XDefaultRootWindow(dpy)
-    opened = xcursor.XcursorLibraryLoadCursor(dpy, b"left_ptr")
-    closed = xcursor.XcursorLibraryLoadCursor(dpy, b"grabbing")
 
-    def swap(cursor):
-        for name in NAMES:
-            xfixes.XFixesChangeCursorByName(dpy, cursor, name.encode())
-        x11.XFlush(ctypes.c_void_p(dpy))
+    def swap(closed):
+        src = xcursor.XcursorLibraryLoadCursor(dpy, b"kidsos-closed" if closed else b"kidsos-open")
+        for name in (NAMES + ["kidsos-open"]) if closed else ["kidsos-closed"]:
+            xfixes.XFixesChangeCursorByName(dpy, src, name.encode())
+        x11.XFreeCursor(dpy, src)
+        x11.XFlush(dpy)
 
     r, c = ctypes.c_ulong(), ctypes.c_ulong()
     ints = [ctypes.c_int() for _ in range(4)]
@@ -42,7 +50,7 @@ def main():
         now = bool(mask.value & BUTTONS)
         if now != down:
             down = now
-            swap(closed if down else opened)
+            swap(down)
         time.sleep(0.03 if down else 0.05)
 
 

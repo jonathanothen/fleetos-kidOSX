@@ -282,10 +282,10 @@ say_drag_word,phrase,Dra ordet till bilden,instruction or feedback,Para ihop
 say_tap_picture,phrase,Tryck på bilden så hör du ordet,instruction or feedback,Para ihop
 say_listen,phrase,Lyssna noga,instruction or feedback,Lyssna och peka
 say_point_right,phrase,Peka på rätt bild,instruction or feedback,Lyssna och peka
-say_find_pairs,phrase,Hitta två som hör ihop,instruction or feedback,Minne
-say_turn_card,phrase,Vänd ett kort,instruction or feedback,Minne
-say_pair_found,phrase,Du hittade ett par!,instruction or feedback,Minne
-say_not_pair,phrase,Inte ett par. Försök igen,instruction or feedback,Minne
+say_find_pairs,phrase,Hitta två som hör ihop,instruction or feedback,Memory
+say_turn_card,phrase,Vänd ett kort,instruction or feedback,Memory
+say_pair_found,phrase,Du hittade ett par!,instruction or feedback,Memory
+say_not_pair,phrase,Inte ett par. Försök igen,instruction or feedback,Memory
 say_what_next,phrase,Vad kommer sen?,instruction or feedback,Mönster
 say_continue_pattern,phrase,Fortsätt mönstret,instruction or feedback,Mönster
 say_draw_something,phrase,Rita något fint!,instruction or feedback,Rita
@@ -305,7 +305,7 @@ tile_koda,phrase,Koda,instruction or feedback,Start screen: name of the tile, re
 tile_rakna,phrase,Räkna,instruction or feedback,Start screen tile
 tile_skriva,phrase,Skriva,instruction or feedback,Start screen tile
 tile_parihop,phrase,Para ihop,instruction or feedback,Start screen tile
-tile_minne,phrase,Minne,instruction or feedback,Start screen tile
+tile_minne,phrase,Memory,instruction or feedback,Start screen tile: an English loan word; listen to the pronunciation (Swedes say it about like "memori")
 tile_klockan,phrase,Klockan,instruction or feedback,Start screen tile
 tile_lyssna,phrase,Lyssna och peka,instruction or feedback,Start screen tile
 tile_monster,phrase,Mönster,instruction or feedback,Start screen tile

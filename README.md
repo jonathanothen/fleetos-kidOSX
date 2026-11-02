@@ -12,7 +12,7 @@ user sees says KidsOS.
   Large text (Comic Neue), large buttons.
 - **Two colour themes:** `sol` (yellow/orange, default) and `hav` (blue). Switch with **Färger** in the start menu
   or `fleet-theme set <sol|hav>`.
-- **Programs:** our own games **Mattelek**, **Skrivlabbet**, **Para ihop**, **Minne**, **Klockan**, **Lyssna och peka**
+- **Programs:** our own games **Mattelek**, **Skrivlabbet**, **Para ihop**, **Memory**, **Klockan**, **Lyssna och peka**
   and **Mönster** (all Swedish, with voice), Snap! (block programming, offline), Thonny (Python, for the older kids),
   Parole (music and video), Thunar (files), Firefox limited to a list of child-safe sites.
 - **Kernel, installer, no built-in account:** unchanged from FleetOS (see the sections below).
@@ -97,7 +97,7 @@ after the screen has gone dark.** Then power on and press Ctrl+D (or wait 30 s) 
 | Räkna | Mattelek (own, pygame) | Full screen, voice (Swedish), levels 0-2: counting, number line/ten frames, plus and minus to 20. `kids-math --window` to test in a window. Hold Esc for 3 s to leave. |
 | Para ihop | Para ihop (own, pygame) | Match a word to its picture: tap a word to hear it, drag it onto the picture. `kids-match --window`. |
 | Rita | Rita (own, pygame) | Drawing: 12 colours, 3 brush sizes, eraser, paint bucket, stamps from our pictures, undo, new picture, save to `~/Bilder/Rita` (the last picture is restored automatically). |
-| Minne | Minne (own, pygame) | Memory with picture and word cards; every card is read aloud. 6 to 16 cards as the child plays more rounds. |
+| Memory | Memory (own, pygame; folder `minne`) | Picture and word cards; every card is read aloud. 6 to 16 cards as the child plays more rounds. The first level shows the words in extra large letters. All letters are lower case, like the keys on the keyboard. |
 | Klockan | Klockan (own, pygame) | Read an analog clock: whole hours, half hours, quarters, five-minute steps. Needs no new voice clips; a spoken "Vad är klockan?" is still to be ordered. |
 | Lyssna och peka | Lyssna och peka (own, pygame) | Hear a word, tap the right picture (2 to 4 pictures). |
 | Mönster | Mönster (own, pygame) | Which shape or colour comes next (AB, AAB, ABC, ABAC). |

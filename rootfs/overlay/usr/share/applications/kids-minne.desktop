@@ -1,7 +1,7 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=Minne
+Name=Memory
 Name[en]=Memory
 Exec=/usr/local/bin/kids-minne
 Icon=kidsos-minne

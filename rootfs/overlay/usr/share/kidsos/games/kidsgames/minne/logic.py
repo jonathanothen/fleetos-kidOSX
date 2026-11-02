@@ -1,4 +1,4 @@
-"""Minne (memory): turn cards, match a picture with its word. Pure Python."""
+"""Memory (the game folder is called minne): turn cards, match a picture with its word. Pure Python."""
 from kidsgames.skrivlabbet.content import WORDS
 
 PAIRS = [3, 4, 6, 8]            # per difficulty stage: 6, 8, 12 and 16 cards
