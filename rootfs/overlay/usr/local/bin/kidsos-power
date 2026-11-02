@@ -1,0 +1,57 @@
+#!/usr/bin/python3
+# Big power dialog for children: Stäng av / Logga ut / Byt användare / Avbryt.
+import subprocess
+import gi
+gi.require_version("Gtk", "3.0")
+from gi.repository import Gtk, Gdk
+
+CSS = b"""
+window { background: #1B1F3B; }
+label.title { color: white; font-family: 'Comic Neue'; font-weight: bold; font-size: 34px; }
+button { border-radius: 26px; border: none; box-shadow: none; background-image: none; min-height: 110px; min-width: 260px; }
+button label { color: white; font-family: 'Comic Neue'; font-weight: bold; font-size: 30px; }
+button.off { background-color: #E5484D; } button.out { background-color: #F07A1A; }
+button.user { background-color: #1E88E5; } button.cancel { background-color: #4B5280; }
+button:hover { opacity: 0.9; } button:active { opacity: 0.75; }
+"""
+ACTIONS = [("Stäng av", "off", ["xfce4-session-logout", "--halt"]),
+           ("Logga ut", "out", ["xfce4-session-logout", "--logout"]),
+           ("Byt användare", "user", ["dm-tool", "switch-to-greeter"]),
+           ("Tillbaka", "cancel", None)]
+
+
+def run(cmd):
+    if cmd:
+        subprocess.Popen(cmd)
+    Gtk.main_quit()
+
+
+def main():
+    prov = Gtk.CssProvider()
+    prov.load_from_data(CSS)
+    Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), prov, Gtk.STYLE_PROVIDER_PRIORITY_USER)
+    w = Gtk.Window(title="KidsOS")
+    w.set_decorated(False)
+    w.set_position(Gtk.WindowPosition.CENTER)
+    w.set_keep_above(True)
+    w.set_modal(True)
+    box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
+    for s in ("top", "bottom", "start", "end"):
+        getattr(box, "set_margin_" + s)(36)
+    title = Gtk.Label(label="Vad vill du göra?")
+    title.get_style_context().add_class("title")
+    box.pack_start(title, False, False, 8)
+    for label, cls, cmd in ACTIONS:
+        b = Gtk.Button(label=label)
+        b.set_can_focus(False)
+        b.get_style_context().add_class(cls)
+        b.connect("clicked", lambda _b, c=cmd: run(c))
+        box.pack_start(b, False, False, 0)
+    w.add(box)
+    w.connect("key-press-event", lambda _w, e: run(None) if e.keyval == Gdk.KEY_Escape else None)
+    w.connect("destroy", Gtk.main_quit)
+    w.show_all()
+    Gtk.main()
+
+
+main()

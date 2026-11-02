@@ -5,7 +5,7 @@ import random
 
 import pygame
 
-from kidsgames.core.app import COLORS, WHITE, Game, Scene, draw_object, main_guard
+from kidsgames.core.app import COLORS, WHITE, Game, LevelSelect, Reward, Scene, draw_object, main_guard
 from kidsgames.core.progress import Progress
 from kidsgames.parihop import logic
 from kidsgames.skrivlabbet.main import picture
@@ -22,12 +22,22 @@ def draw_speaker(surf, cx, cy, s, color):
                         -0.9, 0.9, max(2, int(s * 0.12)))
 
 
+PER, TOP = 2, 2
+LABELS = ["2 ord", "3 ord", "4 ord"]
+
+
+def select():
+    return LevelSelect("parihop", LABELS, PER, Round)
+
+
 class Round(Scene):
+    def __init__(self, level=0):
+        self.level = level
+
     def enter(self, game):
         super().enter(game)
         self.progress = Progress()
-        self.stats = self.progress.data.setdefault("parihop", {"rounds": 0})
-        self.tasks = logic.make_round(self.stats["rounds"], random.Random())
+        self.tasks = logic.make_round(self.level * 2, random.Random())
         self.rng = random.Random()
         self.results, self.index = [], -1
         self.next_task()
@@ -35,16 +45,16 @@ class Round(Scene):
     def next_task(self):
         self.index += 1
         if self.index >= len(self.tasks):
-            self.stats["rounds"] += 1
-            self.progress.add_sticker("parihop")
-            self.progress.save()
-            self.game.go(Reward(self.results))
+            self.progress.finish_round("parihop", self.level, PER, TOP)
+            self.game.go(Reward(self.results, select))
             return
         self.task = self.tasks[self.index]
         self.state, self.timer, self.wrong, self.selected = "ask", 0.0, 0, None
         self.drag = None                          # {"i": card index, "pos": (x, y), "start": (x, y), "moved": bool}
         self.bad = {}                             # card index -> seconds of red flash
         self.hint = False
+        if self.index == 0:
+            self.game.voice.say(["say_tap_word"])
         self.layout()
         self.game.redraw = True
 
@@ -74,7 +84,7 @@ class Round(Scene):
         if i == self.task["right"]:
             self.results.append(self.wrong == 0)
             self.state, self.timer, self.selected = "right", 0.0, i
-            self.game.voice.say([self.task["answer"]["voice"], "say_correct_%d" % self.rng.randint(1, 4)])
+            self.game.voice.say([self.task["answer"]["voice"], self.game.voice.variant("say_correct", self.rng, 8)])
         else:
             self.wrong += 1
             self.bad[i] = 0.5
@@ -86,7 +96,7 @@ class Round(Scene):
                 self.state, self.timer = "reveal", 0.0
                 self.game.voice.say([self.task["answer"]["voice"]])
             else:
-                self.game.voice.say(["say_retry_%d" % self.rng.randint(1, 2)])
+                self.game.voice.say([self.game.voice.variant("say_retry", self.rng, 4)])
 
     @property
     def animated(self):
@@ -169,35 +179,9 @@ class Round(Scene):
             draw_object(surf, "star", g.w - int(g.h * 0.14), int(g.h * 0.2), int(g.h * 0.09))
 
 
-class Reward(Scene):
-    animated = True
-
-    def __init__(self, results):
-        self.results = results
-
-    def enter(self, game):
-        super().enter(game)
-        self.t = 0.0
-        game.voice.say(["say_well_done_round", "say_sticker"])
-
-    def update(self, dt):
-        self.t += dt
-
-    def event(self, e):
-        if self.t > 2.0 and e.type in (pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN):
-            self.game.go(Round())
-
-    def draw(self, surf):
-        g = self.game
-        draw_object(surf, "star", g.w // 2, int(g.h * 0.42), int(g.h * (0.22 + 0.01 * (self.t % 1.0))))
-        g.text("Bra jobbat!", g.h * 0.12, COLORS["soft"], center=(g.w // 2, int(g.h * 0.8)))
-        g.text("%d av %d direkt" % (sum(self.results), len(self.results)), g.h * 0.06, WHITE,
-               center=(g.w // 2, int(g.h * 0.9)))
-
-
 def run(windowed):
     game = Game("Para ihop", windowed)
-    game.go(Round())
+    game.go(select())
     game.run()
 
 

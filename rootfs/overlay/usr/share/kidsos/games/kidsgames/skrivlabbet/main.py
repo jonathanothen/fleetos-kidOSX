@@ -147,7 +147,7 @@ class Round(Scene):
             if self.pos >= len(self.item["text"]):
                 self.results.append(self.total_wrong == 0)
                 self.state, self.timer = "right", 0.0
-                ids = ["say_correct_%d" % self.rng.randint(1, 4)]
+                ids = [self.game.voice.variant("say_correct", self.rng, 8)]
                 if self.item.get("word_voice"):
                     ids = [self.item["word_voice"]] + ids
                 elif nm and (self.item.get("single") or self.level == 1):

@@ -256,3 +256,64 @@ wrd_ljus,word,ljus,word read aloud in Skrivlabbet level C,Say the word once; cle
 wrd_vante,word,vante,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
 wrd_cykel,word,cykel,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
 wrd_hjaerta,word,hjärta,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+say_what_time,phrase,Vad är klockan?,instruction or feedback,Klockan
+say_clock_is,phrase,Klockan är,instruction or feedback,Klockan: said before the time, then an hour number clip
+say_clock_fem_over,phrase,fem över,instruction or feedback,Klockan: 5 past
+say_clock_tio_over,phrase,tio över,instruction or feedback,Klockan: 10 past
+say_clock_kvart_over,phrase,kvart över,instruction or feedback,Klockan: quarter past
+say_clock_tjugo_over,phrase,tjugo över,instruction or feedback,Klockan: 20 past
+say_clock_fem_i_halv,phrase,fem i halv,instruction or feedback,Klockan: 25 past (five to half)
+say_clock_halv,phrase,halv,instruction or feedback,Klockan: half past (halv fyra = 3:30)
+say_clock_fem_over_halv,phrase,fem över halv,instruction or feedback,Klockan: 35 past
+say_clock_tjugo_i,phrase,tjugo i,instruction or feedback,Klockan: 20 to
+say_clock_kvart_i,phrase,kvart i,instruction or feedback,Klockan: quarter to
+say_clock_tio_i,phrase,tio i,instruction or feedback,Klockan: 10 to
+say_clock_fem_i,phrase,fem i,instruction or feedback,Klockan: 5 to
+say_pick_more,phrase,Peka på den som har fler,instruction or feedback,Mattelek: replaces the single word fler
+say_pick_fewer,phrase,Peka på den som har färre,instruction or feedback,Mattelek: replaces the single word färre
+say_count_all,phrase,Räkna alla,instruction or feedback,Mattelek
+say_how_many_together,phrase,Hur många är det tillsammans?,instruction or feedback,Mattelek: addition
+say_how_many_left,phrase,Hur många är kvar?,instruction or feedback,Mattelek: subtraction
+say_how_many_missing,phrase,Hur många saknas?,instruction or feedback,Mattelek: dashed objects
+say_count_dashed,phrase,Räkna de streckade,instruction or feedback,Mattelek: the dashed objects are the answer
+say_write_answer,phrase,Skriv svaret,instruction or feedback,Mattelek
+say_tap_word,phrase,Tryck på ordet så hör du det,instruction or feedback,Para ihop
+say_drag_word,phrase,Dra ordet till bilden,instruction or feedback,Para ihop
+say_tap_picture,phrase,Tryck på bilden så hör du ordet,instruction or feedback,Para ihop
+say_listen,phrase,Lyssna noga,instruction or feedback,Lyssna och peka
+say_point_right,phrase,Peka på rätt bild,instruction or feedback,Lyssna och peka
+say_find_pairs,phrase,Hitta två som hör ihop,instruction or feedback,Minne
+say_turn_card,phrase,Vänd ett kort,instruction or feedback,Minne
+say_pair_found,phrase,Du hittade ett par!,instruction or feedback,Minne
+say_not_pair,phrase,Inte ett par. Försök igen,instruction or feedback,Minne
+say_what_next,phrase,Vad kommer sen?,instruction or feedback,Mönster
+say_continue_pattern,phrase,Fortsätt mönstret,instruction or feedback,Mönster
+say_draw_something,phrase,Rita något fint!,instruction or feedback,Rita
+say_saved,phrase,Din bild är sparad,instruction or feedback,Rita
+say_new_picture_q,phrase,Vill du börja på en ny bild?,instruction or feedback,Rita
+say_correct_5,phrase,Så bra!,instruction or feedback,Praise
+say_correct_6,phrase,Vad duktig du är!,instruction or feedback,Praise
+say_correct_7,phrase,Helt rätt!,instruction or feedback,Praise
+say_correct_8,phrase,Fantastiskt!,instruction or feedback,Praise
+say_retry_3,phrase,Det var nästan. Titta en gång till,instruction or feedback,Gentle retry
+say_retry_4,phrase,"Ingen fara, försök igen",instruction or feedback,Gentle retry
+say_hint_look,phrase,Titta noga,instruction or feedback,Hint
+say_encourage_1,phrase,Du klarar det!,instruction or feedback,Encouragement
+say_encourage_2,phrase,Bra försök!,instruction or feedback,Encouragement
+say_home_hello,phrase,Vad vill du göra?,instruction or feedback,Start screen
+tile_koda,phrase,Koda,instruction or feedback,Start screen: name of the tile, read when tapped
+tile_rakna,phrase,Räkna,instruction or feedback,Start screen tile
+tile_skriva,phrase,Skriva,instruction or feedback,Start screen tile
+tile_parihop,phrase,Para ihop,instruction or feedback,Start screen tile
+tile_minne,phrase,Minne,instruction or feedback,Start screen tile
+tile_klockan,phrase,Klockan,instruction or feedback,Start screen tile
+tile_lyssna,phrase,Lyssna och peka,instruction or feedback,Start screen tile
+tile_monster,phrase,Mönster,instruction or feedback,Start screen tile
+tile_rita,phrase,Rita,instruction or feedback,Start screen tile
+tile_media,phrase,Musik och film,instruction or feedback,Start screen tile
+tile_files,phrase,Mina filer,instruction or feedback,Start screen tile
+say_new_level,phrase,Nu blir det lite svårare!,instruction or feedback,Progress: next level reached
+say_level_up,phrase,"Grattis, du kom till en ny nivå!",instruction or feedback,Progress
+say_rest_eyes,phrase,Dags att vila ögonen en stund,instruction or feedback,Break reminder after about 20 minutes
+say_choose_level,phrase,Välj en nivå,instruction or feedback,Level screen of the games
+say_you_are_here,phrase,Här är du,instruction or feedback,Level screen of the games

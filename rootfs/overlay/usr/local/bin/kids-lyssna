@@ -1,0 +1,3 @@
+#!/bin/sh
+# Lyssna och peka: our own full-screen game (python3-pygame). Pass --window to test in a window.
+cd /usr/share/kidsos/games && exec python3 -m kidsgames.lyssna "$@"

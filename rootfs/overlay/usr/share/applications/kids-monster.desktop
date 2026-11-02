@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Mönster
+Name[en]=Patterns
+Exec=/usr/local/bin/kids-monster
+Icon=kidsos-monster
+Terminal=false
+Categories=Game;Education;
+StartupNotify=false
+X-KidsOS=true

@@ -39,6 +39,16 @@ class Voice:
                 self.cache[cid] = None
         return self.cache[cid]
 
+    def has(self, cid):
+        """True if the clip exists. Planned clips that are not made yet are skipped silently."""
+        return os.path.exists(os.path.join(self.dir, cid + ".mp3"))
+
+    def variant(self, prefix, rng, top):
+        """A random clip out of prefix_1 .. prefix_top that exists (more praise variants appear as they are made)."""
+        ids = ["%s_%d" % (prefix, i) for i in range(1, top + 1)]
+        ids = [i for i in ids if self.has(i)] or ids[:1]
+        return rng.choice(ids)
+
     def say(self, ids, interrupt=True):
         if not self.ok:
             return
@@ -118,6 +128,9 @@ class Game:
                     if self.windowed:             # test window: the close button works
                         self.running = False
                     continue                      # fullscreen: a child cannot close the game by accident
+                if e.type == pygame.MOUSEBUTTONDOWN and e.button == 1 and self.home_rect().collidepoint(e.pos):
+                    self.running = False          # the small Hem button: back to the start screen
+                    continue
                 if e.type == pygame.KEYDOWN and e.key == pygame.K_ESCAPE:
                     if self.esc_held == 0:
                         self.esc_held = 0.001
@@ -136,14 +149,27 @@ class Game:
                 self.redraw = False
                 self.screen.fill(BG)
                 self.scene.draw(self.screen)
+                self.draw_home_button()
                 if self.esc_held > 0.3:
                     self.draw_quit_ring()
                 pygame.display.flip()
+        getattr(self.scene, "leave", lambda: None)()                 # e.g. Rita saves the picture
         pygame.quit()
+
+    def home_rect(self):
+        s = int(self.h * 0.085)
+        return pygame.Rect(self.w - s - int(self.h * 0.02), int(self.h * 0.015), s, s)
+
+    def draw_home_button(self):
+        r = self.home_rect()
+        pygame.draw.rect(self.screen, COLORS["panel"], r, border_radius=int(r.h * 0.3))
+        cx, cy, u = r.centerx, r.centery, r.h * 0.26                      # a little house
+        pygame.draw.polygon(self.screen, (200, 206, 240), [(cx - u * 1.3, cy - u * 0.1), (cx, cy - u * 1.3), (cx + u * 1.3, cy - u * 0.1)])
+        pygame.draw.rect(self.screen, (200, 206, 240), (cx - u * 0.9, cy - u * 0.1, u * 1.8, u * 1.2))
 
     def draw_quit_ring(self):
         frac = min(1.0, self.esc_held / QUIT_HOLD_SECONDS)
-        cx, cy, r = self.w - 70, 70, 40
+        cx, cy, r = self.w - 70, self.h - 70, 40
         pygame.draw.circle(self.screen, COLORS["panel"], (cx, cy), r + 6)
         pygame.draw.arc(self.screen, COLORS["soft"], (cx - r, cy - r, 2 * r, 2 * r),
                         math.pi / 2, math.pi / 2 + 2 * math.pi * frac, 8)
@@ -208,3 +234,95 @@ def main_guard(run):
     """Run a game; in a window with --window (for development), fullscreen otherwise."""
     windowed = "--window" in sys.argv
     run(windowed)
+
+
+def draw_dots(game, results, total):
+    """Row of dots at the top: green = right at the first try, yellow = done, dark = still to do."""
+    for i in range(total):
+        col = COLORS["good"] if i < len(results) and results[i] else (
+            COLORS["soft"] if i < len(results) else COLORS["panel"])
+        pygame.draw.circle(game.screen, col, (int(game.w * 0.05 + i * game.w * 0.03), int(game.h * 0.05)),
+                           int(game.h * 0.016))
+
+
+class Reward(Scene):
+    """End of a round: a pulsing star. `again` is a function that returns the scene to show next."""
+    animated = True
+
+    def __init__(self, results, again):
+        self.results, self.again = results, again
+
+    def enter(self, game):
+        super().enter(game)
+        self.t = 0.0
+        game.voice.say(["say_well_done_round", "say_sticker"])
+
+    def update(self, dt):
+        self.t += dt
+
+    def event(self, e):
+        if self.t > 2.0 and e.type in (pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN):
+            self.game.go(self.again())
+
+    def draw(self, surf):
+        g = self.game
+        draw_object(surf, "star", g.w // 2, int(g.h * 0.42), int(g.h * (0.22 + 0.01 * (self.t % 1.0))))
+        g.text("Bra jobbat!", g.h * 0.12, COLORS["soft"], center=(g.w // 2, int(g.h * 0.8)))
+        g.text("%d av %d direkt" % (sum(self.results), len(self.results)), g.h * 0.06, WHITE,
+               center=(g.w // 2, int(g.h * 0.9)))
+
+class LevelSelect(Scene):
+    """Shows every level of a game: the one the child has reached, stars for rounds played, locked ones greyed out.
+    Any reached level can be chosen, so a child can go back and practise an easier level again."""
+
+    def __init__(self, game_key, labels, per, start):
+        self.key, self.labels, self.per, self.start = game_key, labels, per, start
+
+    def enter(self, game):
+        super().enter(game)
+        from kidsgames.core.progress import Progress
+        self.progress = Progress()
+        n = len(self.labels)
+        self.reached = self.progress.unlocked(self.key, self.per, n - 1)
+        w, h = game.w, game.h
+        cw = min(int(w * 0.22), int((w * 0.92 - (n - 1) * w * 0.025) / n))
+        x0 = w / 2 - (n * cw + (n - 1) * w * 0.025) / 2
+        self.cards = [pygame.Rect(int(x0 + i * (cw + w * 0.025)), int(h * 0.27), cw, int(h * 0.52)) for i in range(n)]
+        game.voice.say(["say_choose_level"])
+
+    def event(self, e):
+        if e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
+            for i, r in enumerate(self.cards):
+                if r.collidepoint(e.pos) and i <= self.reached:
+                    self.game.go(self.start(i))
+        elif e.type == pygame.KEYDOWN and pygame.K_1 <= e.key < pygame.K_1 + len(self.cards):
+            i = e.key - pygame.K_1
+            if i <= self.reached:
+                self.game.go(self.start(i))
+
+    def draw(self, surf):
+        g = self.game
+        g.text("Välj nivå", g.h * 0.1, COLORS["soft"], center=(g.w // 2, int(g.h * 0.13)))
+        cols = ["blue", "green", "orange", "pink", "violet"]
+        for i, r in enumerate(self.cards):
+            locked = i > self.reached
+            col = (70, 76, 120) if locked else COLORS[cols[i % len(cols)]]
+            pygame.draw.rect(surf, tuple(max(0, c - 50) for c in col), r.move(0, 7), border_radius=int(r.w * 0.12))
+            pygame.draw.rect(surf, col, r, border_radius=int(r.w * 0.12))
+            if i == self.reached:
+                pygame.draw.rect(surf, COLORS["soft"], r.inflate(14, 14), 8, border_radius=int(r.w * 0.14))
+                g.text("Här är du!", r.w * 0.13, COLORS["soft"], center=(r.centerx, r.bottom + r.w * 0.17))
+            g.text(str(i + 1), r.h * 0.4, (150, 156, 190) if locked else WHITE, center=(r.centerx, r.y + r.h * 0.34))
+            g.text(self.labels[i], r.w * 0.12, (150, 156, 190) if locked else WHITE, center=(r.centerx, r.y + r.h * 0.62))
+            if locked:                                   # padlock
+                bx, by, s = r.centerx, r.y + r.h * 0.86, r.w * 0.09
+                pygame.draw.rect(surf, (150, 156, 190), (bx - s, by - s * 0.2, s * 2, s * 1.5), border_radius=5)
+                pygame.draw.arc(surf, (150, 156, 190), (bx - s * 0.7, by - s * 1.4, s * 1.4, s * 1.6), 0, 3.1416, 5)
+            else:                                        # stars: rounds played on this level (up to three)
+                done = min(3, self.progress.done(self.key, i))
+                for k in range(3):
+                    cx = int(r.centerx + (k - 1) * r.w * 0.26)
+                    if k < done:
+                        draw_object(surf, "star", cx, int(r.y + r.h * 0.87), int(r.w * 0.09))
+                    else:
+                        draw_object(surf, "star", cx, int(r.y + r.h * 0.87), int(r.w * 0.09), ghost=True)

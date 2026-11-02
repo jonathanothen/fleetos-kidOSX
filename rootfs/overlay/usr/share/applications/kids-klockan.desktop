@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Klockan
+Name[en]=Clock
+Exec=/usr/local/bin/kids-klockan
+Icon=kidsos-klockan
+Terminal=false
+Categories=Game;Education;
+StartupNotify=false
+X-KidsOS=true

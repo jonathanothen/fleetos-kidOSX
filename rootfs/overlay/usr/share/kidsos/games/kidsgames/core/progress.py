@@ -34,6 +34,33 @@ class Progress:
                 return skills[: i + 1], s
         return list(skills), skills[-1]          # everything mastered: keep practising, all of it
 
+    # ---- levels of the simple games (Minne, Klockan, Lyssna, Para ihop, Mönster) ----
+    def _game(self, game):
+        return self.data.setdefault("games", {}).setdefault(game, {"rounds": 0})
+
+    def unlocked(self, game, per, top):
+        """Highest level (0..top) the child has reached. A level opens when the one before it has been played `per` times.
+        Saves from the older version (only a round counter) are converted."""
+        g = self._game(game)
+        if "unlocked" not in g:
+            g["unlocked"] = min(top, g.get("rounds", 0) // per)
+        return min(top, g["unlocked"])
+
+    def done(self, game, level):
+        """How many rounds have been played at this level."""
+        return self._game(game).get("done", {}).get(str(level), 0)
+
+    def finish_round(self, game, level, per, top):
+        """Count a finished round at `level`, give a sticker and open the next level when this was the highest one reached."""
+        g = self._game(game)
+        reached = self.unlocked(game, per, top)
+        g["rounds"] = g.get("rounds", 0) + 1
+        d = g.setdefault("done", {})
+        d[str(level)] = d.get(str(level), 0) + 1
+        if level == reached and d[str(level)] >= per and level < top:
+            g["unlocked"] = level + 1
+        self.add_sticker(game)
+        self.save()
     def add_sticker(self, name):
         self.data["stickers"].append(name)
 

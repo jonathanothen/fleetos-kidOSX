@@ -4,27 +4,31 @@
   <DefaultAppDirs/>
   <DefaultDirectoryDirs/>
   <Include>
-      <Filename>kids-draw.desktop</Filename>
-      <Filename>kids-code.desktop</Filename>
-      <Filename>kids-games.desktop</Filename>
+      <Filename>kids-rita.desktop</Filename>
+      <Filename>kids-rita.desktop</Filename>
+    <Filename>kids-code.desktop</Filename>
       <Filename>kids-mattelek.desktop</Filename>
       <Filename>kids-skrivlabbet.desktop</Filename>
-    <Filename>kids-parihop.desktop</Filename>
       <Filename>kids-parihop.desktop</Filename>
-      <Filename>kids-web.desktop</Filename>
+      <Filename>kids-minne.desktop</Filename>
+      <Filename>kids-klockan.desktop</Filename>
+      <Filename>kids-lyssna.desktop</Filename>
+      <Filename>kids-monster.desktop</Filename>
       <Filename>kids-media.desktop</Filename>
       <Filename>kids-files.desktop</Filename>
       <Filename>kids-python.desktop</Filename>
       <Filename>kids-colors.desktop</Filename>
   </Include>
   <Layout>
-    <Filename>kids-draw.desktop</Filename>
+    <Filename>kids-rita.desktop</Filename>
     <Filename>kids-code.desktop</Filename>
-    <Filename>kids-games.desktop</Filename>
     <Filename>kids-mattelek.desktop</Filename>
     <Filename>kids-skrivlabbet.desktop</Filename>
     <Filename>kids-parihop.desktop</Filename>
-    <Filename>kids-web.desktop</Filename>
+    <Filename>kids-minne.desktop</Filename>
+    <Filename>kids-klockan.desktop</Filename>
+    <Filename>kids-lyssna.desktop</Filename>
+    <Filename>kids-monster.desktop</Filename>
     <Filename>kids-media.desktop</Filename>
     <Filename>kids-files.desktop</Filename>
     <Filename>kids-python.desktop</Filename>

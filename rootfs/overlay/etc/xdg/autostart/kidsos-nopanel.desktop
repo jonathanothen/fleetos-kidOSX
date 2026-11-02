@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=KidsOS: no panel for children
+# Children get the start screen only (battery and power button are in it). A parent (sudo group) keeps the panel.
+Exec=sh -c 'id -nG | tr " " "\n" | grep -qx sudo || { sleep 4; xfce4-panel --quit; }'
+OnlyShowIn=XFCE;
+X-GNOME-Autostart-Delay=3

@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Application
 Name=Stäng av
-Comment=Stäng av eller logga ut
-Exec=xfce4-session-logout
+Comment=Stäng av, logga ut eller byt användare
+Exec=/usr/local/bin/kidsos-power
 Icon=system-shutdown-symbolic
 Terminal=false
 NoDisplay=true

@@ -5,15 +5,16 @@ of FleetOS: same kernel, same USB installer, same build chain, but a different d
 Internal script and service names still start with `fleet-` (installer, first-boot, audio, themes); only what the
 user sees says KidsOS.
 
-- **Desktop:** like Windows 7 for small children. Six big, colourful icons straight on the desktop (Rita, Koda,
-  Spel och lek, Webben, Musik och film, Mina filer; one click opens them), a big taskbar along the bottom with a
-  Start button, open windows, Wi-Fi, volume, battery, a big clock and a shut-down menu. Large text (Comic Neue),
-  large buttons and scroll bars, sunny wallpaper.
+- **Start screen, one app:** children get no panel. A full-screen start screen shows big coloured tiles on a plain
+  background (phone style), with the clock, volume buttons, battery, a power button (shut down / log out / switch user)
+  and a sticker counter; every tile shows its level ("Nivå N"). Our own games run full screen with a small Hem button
+  in the corner. Parents (members of the `sudo` group) keep a normal panel with windows, Wi-Fi, volume and a program menu.
+  Large text (Comic Neue), large buttons.
 - **Two colour themes:** `sol` (yellow/orange, default) and `hav` (blue). Switch with **Färger** in the start menu
   or `fleet-theme set <sol|hav>`.
-- **Programs:** Tux Paint (drawing), Snap! (block programming, offline), GCompris (many learning games),
-  our own **Mattelek** (maths) and **Skrivlabbet** (typing) games, Thonny (Python, for the older kids), Parole (music and video), Thunar (files), Firefox
-  limited to a list of child-safe sites.
+- **Programs:** our own games **Mattelek**, **Skrivlabbet**, **Para ihop**, **Minne**, **Klockan**, **Lyssna och peka**
+  and **Mönster** (all Swedish, with voice), Snap! (block programming, offline), Thonny (Python, for the older kids),
+  Parole (music and video), Thunar (files), Firefox limited to a list of child-safe sites.
 - **Kernel, installer, no built-in account:** unchanged from FleetOS (see the sections below).
 
 ## Two accounts: parent and child
@@ -89,14 +90,17 @@ after the screen has gone dark.** Then power on and press Ctrl+D (or wait 30 s) 
 
 | Icon | Program | Notes |
 |---|---|---|
-| Rita | Tux Paint | Debian `tuxpaint` + stamps. Runs fullscreen at its own size. |
 | Koda | Snap! | Block programming like Scratch (Swedish UI), offline in Firefox: `file:///usr/share/kidsos/snap/snap.html#lang:sv`. Scratch 3 has no armhf package and needs a node build; Snap! is plain HTML/JS and lighter. Projects are saved in the browser or exported as files. |
-| Spel och lek | GCompris | `gcompris-qt` (Qt 6 Quick). The launcher sets `QT_QUICK_BACKEND=software`. |
 | Webben | Firefox ESR | Start page with three big buttons, allow-list filter. |
 | Musik och film | Parole | Local files (GStreamer with libav). No YouTube player in this variant. |
 | Mina filer | Thunar | |
 | Räkna | Mattelek (own, pygame) | Full screen, voice (Swedish), levels 0-2: counting, number line/ten frames, plus and minus to 20. `kids-math --window` to test in a window. Hold Esc for 3 s to leave. |
 | Para ihop | Para ihop (own, pygame) | Match a word to its picture: tap a word to hear it, drag it onto the picture. `kids-match --window`. |
+| Rita | Rita (own, pygame) | Drawing: 12 colours, 3 brush sizes, eraser, paint bucket, stamps from our pictures, undo, new picture, save to `~/Bilder/Rita` (the last picture is restored automatically). |
+| Minne | Minne (own, pygame) | Memory with picture and word cards; every card is read aloud. 6 to 16 cards as the child plays more rounds. |
+| Klockan | Klockan (own, pygame) | Read an analog clock: whole hours, half hours, quarters, five-minute steps. Needs no new voice clips; a spoken "Vad är klockan?" is still to be ordered. |
+| Lyssna och peka | Lyssna och peka (own, pygame) | Hear a word, tap the right picture (2 to 4 pictures). |
+| Mönster | Mönster (own, pygame) | Which shape or colour comes next (AB, AAB, ABC, ABAC). |
 | Skriva | Skrivlabbet (own, pygame) | Letters, the child's own name (from the account), words with pictures. `kids-write --window`. |
 | (menu) Python | Thonny | For children who can read. |
 | (menu) Färger | `fleet-theme gui` | |
@@ -139,7 +143,7 @@ removed again):
   complete (it caught a missing newline in a palette file).
 - All shell scripts pass `bash -n`; the generated Firefox policy file is valid JSON.
 - Paths of the launched programs against the Debian trixie package file lists
-  (`/usr/bin/tuxpaint`, `/usr/games/gcompris-qt`, `/usr/bin/thonny`,
+  (`/usr/bin/thonny`,
   `/usr/bin/parole`).
 
 **Not verified (needs a build and a real install):**
@@ -148,7 +152,7 @@ removed again):
   `nopasswdlogin` PAM line, `customize.sh` checks).
 - The two-account wizard, autologin of the child, and logging out to the parent (login screen, parent's full menu
   after `fleet-look` restarts the panel).
-- Tux Paint, GCompris (Qt 6 Quick on this software-rendered GPU may be slow), Snap! speed in Firefox, Thonny and
+- Our own games on the real hardware with real touchpad input, Snap! speed in Firefox, Thonny and
   Parole playback on this hardware; nothing was installed on the test Chromebook.
 - That the Firefox website filter also stops sub-resources; SVT and UR may load video from other domains, in which case add
   those domains to `web-allow.list`. The default start-page sites and their video hosts were not tested.

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Applies the KidsOS look the first time a user logs in. Change colours later with: fleet-theme
 # Bump LOOK_VER to re-apply on existing installs after the look changes.
-LOOK_VER=2
+LOOK_VER=4
 M="$HOME/.config/kidsos-look-v$LOOK_VER"
 [ -e "$M" ] && exit 0
 sleep 2
@@ -24,14 +24,16 @@ xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/XF86AudioRaiseVolum
 xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/XF86AudioLowerVolume -n -t string -s "fleet-volume down"
 xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/XF86AudioMute        -n -t string -s "fleet-volume mute"
 
-# A parent (member of the sudo group) also gets the complete program menu next to the Hem button
-if id -nG | tr ' ' '\n' | grep -qx sudo && ! xfconf-query -c xfce4-panel -p /plugins/plugin-10 >/dev/null 2>&1; then
-  xfconf-query -c xfce4-panel -p /plugins/plugin-10 -n -t string -s applicationsmenu
-  xfconf-query -c xfce4-panel -p /plugins/plugin-10/button-title -n -t string -s "Program"
-  xfconf-query -c xfce4-panel -p /plugins/plugin-10/show-button-title -n -t bool -s true
-  xfconf-query -c xfce4-panel -p /plugins/plugin-10/show-generic-names -n -t bool -s true
-  ids=$(xfconf-query -c xfce4-panel -p /panels/panel-1/plugin-ids | grep -E "^[0-9]+$" | sed "1a 10" )
-  args=(); for i in $ids; do args+=(-t int -s "$i"); done
+# A parent (member of the sudo group) sees the whole panel: program menu, open windows, Wi-Fi, volume, clock.
+# Children only get Hem, battery and the power button (the panel default).
+if id -nG | tr ' ' '\n' | grep -qx sudo; then
+  if ! xfconf-query -c xfce4-panel -p /plugins/plugin-10 >/dev/null 2>&1; then
+    xfconf-query -c xfce4-panel -p /plugins/plugin-10 -n -t string -s applicationsmenu
+    xfconf-query -c xfce4-panel -p /plugins/plugin-10/button-title -n -t string -s "Program"
+    xfconf-query -c xfce4-panel -p /plugins/plugin-10/show-button-title -n -t bool -s true
+    xfconf-query -c xfce4-panel -p /plugins/plugin-10/show-generic-names -n -t bool -s true
+  fi
+  args=(); for i in 1 10 2 3 4 5 6 7 8 9; do args+=(-t int -s "$i"); done
   xfconf-query -c xfce4-panel -p /panels/panel-1/plugin-ids "${args[@]}"
   (sleep 1; xfce4-panel -r >/dev/null 2>&1 &)
 fi
@@ -40,5 +42,15 @@ fi
 cur=sol
 [ -f "$HOME/.config/fleet-theme" ] && cur=$(cat "$HOME/.config/fleet-theme")
 /usr/local/bin/fleet-theme set "$cur"
+
+# Children: the desktop behind everything is the same dark blue as the start screen, so the system feels like one app
+if ! id -nG | tr ' ' '\n' | grep -qx sudo; then
+  sleep 3
+  for p in $(xfconf-query -c xfce4-desktop -l | grep '/workspace0/image-style$' | sed 's#/image-style$##'); do
+    xfconf-query -c xfce4-desktop -p "$p/image-style" -s 0
+    xfconf-query -c xfce4-desktop -p "$p/color-style" -n -t int -s 0
+    xfconf-query -c xfce4-desktop -p "$p/rgba1" -n -t double -s 0.106 -t double -s 0.122 -t double -s 0.231 -t double -s 1
+  done
+fi
 
 mkdir -p "$(dirname "$M")" && touch "$M"

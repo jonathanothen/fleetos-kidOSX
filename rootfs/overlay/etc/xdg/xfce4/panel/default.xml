@@ -19,15 +19,11 @@
       </property>
       <property name="icon-size" type="uint" value="32"/>
       <property name="size" type="uint" value="56"/>
+      <!-- Children: only Hem, battery and the power button. fleet-look gives a parent the full panel (windows, Wi-Fi, volume, clock). -->
       <property name="plugin-ids" type="array">
         <value type="int" value="1"/>
-        <value type="int" value="2"/>
-        <value type="int" value="3"/>
         <value type="int" value="4"/>
-        <value type="int" value="5"/>
-        <value type="int" value="6"/>
         <value type="int" value="7"/>
-        <value type="int" value="8"/>
         <value type="int" value="9"/>
       </property>
     </property>

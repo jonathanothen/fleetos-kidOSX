@@ -36,9 +36,18 @@ def grid_positions(n, area, per_row=5):
     return pos, r
 
 
+def recommended(progress):
+    """The first level whose skills are not all mastered yet (that is where the child should play next)."""
+    for i, lv in enumerate(CFG["levels"]):
+        if not all(progress.mastered(s) for s in lv["skills"]):
+            return i
+    return len(CFG["levels"]) - 1
+
+
 class Menu(Scene):
     def enter(self, game):
         super().enter(game)
+        self.rec = recommended(Progress(window=CFG["mastery"]["window"], needed=CFG["mastery"]["needed"]))
         game.voice.say(["say_hello", "say_choose_game"])
         w, h = game.w, game.h
         self.tiles = []
@@ -61,6 +70,9 @@ class Menu(Scene):
         g.text("Mattelek", g.h * 0.12, COLORS["soft"], center=(g.w // 2, g.h * 0.14))
         for i, (r, lv, c) in enumerate(self.tiles):
             button(g, r, "", COLORS[c])
+            if i == self.rec:
+                pygame.draw.rect(surf, COLORS["soft"], r.inflate(14, 14), 8, border_radius=int(r.h * 0.25))
+                g.text("Här är du!", r.h * 0.085, COLORS["soft"], center=(r.centerx, r.bottom + r.h * 0.1))
             g.text(str(i + 1), r.h * 0.45, WHITE, center=(r.centerx, r.y + r.h * 0.38))
             g.text(lv["title"], r.h * 0.12, WHITE, center=(r.centerx, r.y + r.h * 0.78))
 
@@ -112,12 +124,12 @@ class Round(Scene):
             self.results.append(self.wrong == 0)
             self.progress.record(t["skill"], self.wrong == 0)
             self.state, self.timer = "right", 0.0
-            self.game.voice.say(["say_correct_%d" % self.rng.randint(1, 4)])
+            self.game.voice.say([self.game.voice.variant("say_correct", self.rng, 8)])
         else:
             self.wrong += 1
             self.entry, self.picked = "", None
             if self.wrong == 1:
-                self.game.voice.say(["say_retry_%d" % self.rng.randint(1, 2)])
+                self.game.voice.say([self.game.voice.variant("say_retry", self.rng, 4)])
             elif self.wrong == 2:
                 self.hint = True
                 ids = ["say_hint_objects"] + [generators._num(i) for i in range(1, min(t["answer"], 12) + 1)] \
