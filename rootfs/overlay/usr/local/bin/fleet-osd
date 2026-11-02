@@ -1,0 +1,23 @@
+#!/usr/bin/python3
+# Small pop-up with a bar. Usage: fleet-osd <icon-name> <text> <percent>
+# Replaces the previous pop-up (the notification id is kept in the runtime dir) so presses do not stack up.
+import os, sys
+from gi.repository import Gio, GLib
+icon, text, pct = sys.argv[1], sys.argv[2], int(sys.argv[3])
+state = os.path.join(os.environ.get("XDG_RUNTIME_DIR", "/tmp"), "kidsos-osd-id")
+try:
+    old = int(open(state).read())
+except Exception:
+    old = 0
+bus = Gio.bus_get_sync(Gio.BusType.SESSION, None)
+r = bus.call_sync("org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications",
+                  "Notify",
+                  GLib.Variant("(susssasa{sv}i)", ("KidsOS", old, icon, text, "", [],
+                               {"value": GLib.Variant("i", pct),
+                                "transient": GLib.Variant("b", True)},
+                               1500)),
+                  None, Gio.DBusCallFlags.NONE, 2000, None)
+try:
+    open(state, "w").write(str(r.unpack()[0]))
+except Exception:
+    pass

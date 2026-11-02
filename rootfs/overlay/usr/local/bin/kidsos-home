@@ -1,0 +1,165 @@
+#!/usr/bin/python3
+# KidsOS start screen: a few big coloured tiles on a plain background (phone style) instead of desktop icons.
+# Single instance: starting it again just brings the window to the front (the "Hem" button in the panel does that).
+import os, subprocess, time
+import gi
+gi.require_version("Gtk", "3.0")
+from gi.repository import Gtk, Gdk, GdkPixbuf, Gio, GLib
+
+APPS = "/usr/share/applications/"
+# (desktop file, colour)  -- 4 x 2 grid
+TILES = [
+    ("kids-draw.desktop",    "#E8478B"),
+    ("kids-code.desktop",    "#7B4FD1"),
+    ("kids-games.desktop",   "#1AA05A"),
+    ("kids-web.desktop",     "#1E88E5"),
+    ("kids-mattelek.desktop", "#E5484D"),
+    ("kids-type.desktop",    "#0E9AA7"),
+    ("kids-media.desktop",   "#F07A1A"),
+    ("kids-files.desktop",   "#E0A800"),
+]
+COLS = 4
+CSS = """
+window { background: #1B1F3B; }
+.tile { border-radius: 28px; border: none; box-shadow: none; padding: 0; background-image: none; }
+.tile:hover { opacity: 0.92; }
+.tile:active { opacity: 0.8; }
+.tile label { color: white; font-family: 'Comic Neue'; font-weight: bold; font-size: 30px; text-shadow: none; }
+.top label { color: white; font-family: 'Comic Neue'; font-weight: bold; }
+.hello { font-size: 34px; }
+.clock { font-size: 52px; }
+.date { font-size: 20px; opacity: 0.8; }
+.vol { background-image: none; border: none; border-radius: 22px; background-color: rgba(255,255,255,0.18);
+       min-width: 64px; min-height: 64px; box-shadow: none; }
+.vol label { font-size: 40px; color: white; font-weight: bold; }
+.volbar { font-size: 22px; opacity: 0.9; }
+"""
+SV_DAYS = ["måndag", "tisdag", "onsdag", "torsdag", "fredag", "lördag", "söndag"]
+SV_MON = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september",
+          "oktober", "november", "december"]
+
+
+def sh(*a):
+    try:
+        return subprocess.run(a, capture_output=True, text=True, timeout=3).stdout.strip()
+    except Exception:
+        return ""
+
+
+def get_volume():
+    out = sh("wpctl", "get-volume", "@DEFAULT_AUDIO_SINK@")   # "Volume: 0.40 [MUTED]"
+    try:
+        v = int(round(float(out.split()[1]) * 100))
+    except Exception:
+        return None, False
+    return v, "MUTED" in out
+
+
+def set_volume(delta):
+    sh("wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "0")
+    sh("wpctl", "set-volume", "-l", "1.0", "@DEFAULT_AUDIO_SINK@", f"{abs(delta)}%{'+' if delta > 0 else '-'}")
+
+
+class Home(Gtk.Application):
+    def __init__(self):
+        super().__init__(application_id="se.kidsos.Home")
+        self.win = None
+        self.busy = 0
+
+    def do_activate(self):
+        if self.win:
+            self.win.present()
+            return
+        prov = Gtk.CssProvider()
+        prov.load_from_data(CSS.encode())
+        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), prov,
+                                                 Gtk.STYLE_PROVIDER_PRIORITY_USER)
+        w = self.win = Gtk.ApplicationWindow(application=self, title="KidsOS Hem")
+        w.set_decorated(False)
+        w.maximize()
+        w.set_skip_taskbar_hint(True)
+        root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=18)
+        for s in ("top", "bottom", "start", "end"):
+            getattr(root, "set_margin_" + s)(28)
+        w.add(root)
+
+        # top row: greeting + clock on the left, volume on the right
+        top = Gtk.Box(spacing=18)
+        top.get_style_context().add_class("top")
+        left = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.clock = Gtk.Label(xalign=0)
+        self.clock.get_style_context().add_class("clock")
+        self.date = Gtk.Label(xalign=0)
+        self.date.get_style_context().add_class("date")
+        left.pack_start(self.clock, False, False, 0)
+        left.pack_start(self.date, False, False, 0)
+        top.pack_start(left, True, True, 0)
+        for txt, d in (("−", -10), ("+", 10)):
+            b = Gtk.Button(label=txt)
+            b.set_can_focus(False)           # no focus frame: a small child taps, nobody tabs
+            b.get_style_context().add_class("vol")
+            b.connect("clicked", lambda _b, d=d: (set_volume(d), self.tick()))
+            top.pack_end(b, False, False, 0) if d > 0 else None
+            if d < 0:
+                self.minus = b
+        self.volbar = Gtk.Label()
+        self.volbar.get_style_context().add_class("volbar")
+        top.pack_end(self.volbar, False, False, 8)
+        top.pack_end(self.minus, False, False, 0)
+        # order on screen: [ − ] 🔊 40 [ + ]  (pack_end reverses)
+        root.pack_start(top, False, False, 0)
+
+        grid = Gtk.Grid(row_spacing=18, column_spacing=18, row_homogeneous=True, column_homogeneous=True)
+        root.pack_start(grid, True, True, 0)
+        for i, (df, col) in enumerate(TILES):
+            info = Gio.DesktopAppInfo.new_from_filename(APPS + df)
+            if info is None:
+                continue
+            b = Gtk.Button()
+            b.set_can_focus(False)
+            b.get_style_context().add_class("tile")
+            p = Gtk.CssProvider()
+            p.load_from_data(f"* {{ background-color: {col}; }}".encode())
+            b.get_style_context().add_provider(p, Gtk.STYLE_PROVIDER_PRIORITY_USER)
+            box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6, valign=Gtk.Align.CENTER)
+            img = self.icon_image(info.get_icon().to_string() if info.get_icon() else "", 112)
+            box.pack_start(img, False, False, 0)
+            box.pack_start(Gtk.Label(label=info.get_name()), False, False, 0)
+            b.add(box)
+            b.connect("clicked", self.launch, info)
+            grid.attach(b, i % COLS, i // COLS, 1, 1)
+        w.show_all()
+        self.tick()
+        GLib.timeout_add(1000, self.tick)
+
+    @staticmethod
+    def icon_image(name, size):
+        # Read our own SVG straight from the file: does not depend on the icon-theme cache being fresh
+        path = "/usr/share/icons/hicolor/scalable/apps/%s.svg" % name
+        try:
+            return Gtk.Image.new_from_pixbuf(GdkPixbuf.Pixbuf.new_from_file_at_size(path, size, size))
+        except Exception:
+            img = Gtk.Image.new_from_icon_name(name, Gtk.IconSize.DIALOG)
+            img.set_pixel_size(size)
+            return img
+
+    def tick(self):
+        t = time.localtime()
+        self.clock.set_text(time.strftime("%H:%M", t))
+        self.date.set_text(f"{SV_DAYS[t.tm_wday]} {t.tm_mday} {SV_MON[t.tm_mon - 1]}")
+        v, muted = get_volume()
+        self.volbar.set_text("" if v is None else ("Ljud av" if muted else f"Ljud {v}"))
+        return True
+
+    def launch(self, _b, info):
+        if time.time() - self.busy < 2:      # a small child clicks many times: start once
+            return
+        self.busy = time.time()
+        try:
+            info.launch([], None)
+        except Exception as e:
+            print("launch failed:", e)
+
+
+if __name__ == "__main__":
+    Home().run()

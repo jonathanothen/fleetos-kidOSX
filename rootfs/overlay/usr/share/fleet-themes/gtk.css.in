@@ -177,7 +177,7 @@ frame > border, .frame { border-radius: 10px; border-color: @fleet_line; }
    active states below add colour back. */
 .xfce4-panel *, #XfcePanelWindow * { background-color: transparent; background-image: none; box-shadow: none; text-shadow: none; }
 .xfce4-panel button, .xfce4-panel .tasklist button {
-  background-color: transparent; border: none; border-radius: 14px; box-shadow: none; padding: 2px 12px; min-height: 36px; font-size: 115%;
+  background-color: transparent; border: none; border-radius: 14px; box-shadow: none; padding: 2px 6px; min-height: 36px; font-size: 115%;
 }
 .xfce4-panel button:hover   { background-color: alpha(@@OVER@@, 0.08); }
 .xfce4-panel button:checked, .xfce4-panel button:active { background-color: alpha(@fleet_accent, 0.22); color: @fleet_text; }

@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=KidsOS Hem
+Exec=/usr/local/bin/kidsos-home
+X-GNOME-Autostart-Delay=2

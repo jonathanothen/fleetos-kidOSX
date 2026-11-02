@@ -2,8 +2,8 @@
 
 <channel name="xfce4-desktop" version="1.0">
   <property name="desktop-icons" type="empty">
-    <!-- Big launcher icons straight on the desktop (the files in ~/Desktop), one click to open -->
-    <property name="style" type="int" value="2"/>
+    <!-- No icons on the desktop: the start screen (kidsos-home) with big tiles replaces them -->
+    <property name="style" type="int" value="0"/>
     <property name="icon-size" type="uint" value="112"/>
     <property name="use-custom-font-size" type="bool" value="true"/>
     <property name="font-size" type="double" value="15"/>

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Stäng av
+Comment=Stäng av eller logga ut
+Exec=xfce4-session-logout
+Icon=system-shutdown-symbolic
+Terminal=false
+NoDisplay=true

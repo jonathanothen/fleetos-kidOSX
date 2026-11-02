@@ -41,9 +41,19 @@ find /usr/share/themes -mindepth 1 -maxdepth 1 ! -name 'KidsOS*' -exec rm -rf {}
 ls /usr/share/themes | tr '\n' ' '; echo
 [ "$(ls -d /usr/share/themes/KidsOS* | wc -l)" -eq 2 ] || { echo "ERROR: expected 2 KidsOS themes"; exit 1; }
 
+# Refresh the icon cache so the KidsOS icons (added by the overlay) are found by name
+# The old coloured Wi-Fi PNGs would win over our flat SVG icons
+rm -f /usr/share/icons/hicolor/*/apps/nm-signal-*.png /usr/share/icons/hicolor/*/apps/nm-no-connection*.png
+gtk-update-icon-cache -f /usr/share/icons/hicolor || true
+
 # --- Child-safe desktop ---
-# Desktop launchers must be executable or the desktop refuses to start them
-chmod +x /etc/skel/Desktop/*.desktop
+# The start screen (big tiles) replaces desktop icons; it is a GTK3 python program
+chmod +x /usr/local/bin/kidsos-home /usr/local/bin/fleet-volume /usr/local/bin/fleet-osd /usr/local/bin/kids-math
+# Our own games: pygame must import, and the game content must be there
+python3 -c "import pygame" || { echo "ERROR: python3-pygame missing"; exit 1; }
+[ -d /usr/share/kidsos/games/assets/voices/sv ] || { echo "ERROR: game voices missing"; exit 1; }
+ls /usr/lib/*/gdk-pixbuf-2.0/2.10.0/loaders/ | grep -q svg || { echo "ERROR: SVG pixbuf loader missing (librsvg2-common): every icon would be blank"; exit 1; }
+python3 -c "import gi; gi.require_version(\"Gtk\",\"3.0\"); from gi.repository import Gtk" || { echo "ERROR: python3-gi / GTK3 bindings missing"; exit 1; }
 # The programs the launchers start must exist at these paths (a typo here would give the child dead icons)
 for b in /usr/bin/tuxpaint /usr/bin/firefox-esr /usr/games/gcompris-qt /usr/bin/parole /usr/bin/thunar \
          /usr/games/tuxmath /usr/games/tuxtype /usr/bin/thonny; do

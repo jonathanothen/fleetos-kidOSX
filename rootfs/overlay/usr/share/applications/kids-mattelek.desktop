@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Räkna
+Name[en]=Maths game
+Exec=/usr/local/bin/kids-math
+Icon=kidsos-math
+Terminal=false
+Categories=Game;Education;
+StartupNotify=false
+X-KidsOS=true

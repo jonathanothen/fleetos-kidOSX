@@ -47,6 +47,10 @@ xfce4-terminal
 xfce4-power-manager
 xfce4-power-manager-plugins
 yad
+python3-gi
+python3-pygame
+librsvg2-common
+gir1.2-gtk-3.0
 upower
 rtkit
 alsa-utils

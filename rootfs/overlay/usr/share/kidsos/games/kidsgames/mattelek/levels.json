@@ -1,0 +1,8 @@
+{
+  "levels": [
+    {"id": 0, "title": "Räkna", "age": "4-5", "skills": ["count", "dice", "match", "more"]},
+    {"id": 1, "title": "Tal och tiorutor", "age": "5-6", "skills": ["numline", "tenframe", "add_res", "sub_res", "add_gap"]}
+  ],
+  "round_size": 10,
+  "mastery": {"window": 10, "needed": 8}
+}

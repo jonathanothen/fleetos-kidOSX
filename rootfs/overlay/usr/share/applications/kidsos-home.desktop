@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Hem
+Comment=KidsOS startskärm
+Exec=/usr/local/bin/kidsos-home
+Icon=kidsos-logo
+Terminal=false
+Categories=Utility;

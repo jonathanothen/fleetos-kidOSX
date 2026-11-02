@@ -36,10 +36,13 @@ for card in $(sed -n 's/^ *\([0-9]\+\) \[.*/\1/p' /proc/asound/cards); do
   set Lineout mute
 
   # 2. Straight routing: left DAC -> left amp, right DAC -> right amp (speaker and headphones)
-  set "Left Speaker Mixer Left DAC1"       on
-  set "Right Speaker Mixer Right DAC1"     on
-  set "Left Headphone Mixer Left DAC1"     on
-  set "Right Headphone Mixer Right DAC1"   on
+  # Control names differ by codec: MAX98095 (XE303C12) says "DAC1", MAX98090 (XE503C12) says "DAC"
+  for dac in DAC1 DAC; do
+    set "Left Speaker Mixer Left $dac"       on
+    set "Right Speaker Mixer Right $dac"     on
+    set "Left Headphone Mixer Left $dac"     on
+    set "Right Headphone Mixer Right $dac"   on
+  done
 
   # 3. Amplifiers: unmuted at fixed levels (a plain number is the raw step, not a percentage)
   set Speaker   unmute "$SPEAKER_STEP"

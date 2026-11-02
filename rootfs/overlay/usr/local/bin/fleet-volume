@@ -1,0 +1,18 @@
+#!/bin/bash
+# Volume keys: fleet-volume up|down|mute. Software volume 0-100 % (PipeWire); the amplifier itself is locked by fleet-audio-init.
+# Shows a small pop-up with a bar (fleet-osd).
+S=@DEFAULT_AUDIO_SINK@
+case "$1" in
+  up)   wpctl set-mute $S 0; wpctl set-volume -l 1.0 $S 5%+ ;;
+  down) wpctl set-mute $S 0; wpctl set-volume -l 1.0 $S 5%- ;;
+  mute) wpctl set-mute $S toggle ;;
+  *) echo "usage: fleet-volume up|down|mute"; exit 1 ;;
+esac
+out=$(wpctl get-volume $S)                       # "Volume: 0.45" or "Volume: 0.45 [MUTED]"
+vol=$(LC_ALL=C awk '{printf "%d", $2 * 100 + 0.5}' <<<"$out")
+if [[ $out == *MUTED* ]]; then icon=audio-volume-muted; text="Ljud av"; vol=0
+elif [ "$vol" -lt 34 ]; then icon=audio-volume-low; text="Ljud $vol"
+elif [ "$vol" -lt 67 ]; then icon=audio-volume-medium; text="Ljud $vol"
+else icon=audio-volume-high; text="Ljud $vol"; fi
+D=$(dirname "$(readlink -f "$0")")
+"$D/fleet-osd" "$icon" "$text" "$vol" 2>/dev/null || true

@@ -33,16 +33,12 @@
     </property>
   </property>
   <property name="plugins" type="empty">
-    <!-- Start menu: only the child's apps (/usr/share/kidsos/kid.menu). Parent accounts get the full menu at first login. -->
-    <property name="plugin-1" type="string" value="applicationsmenu">
-      <property name="custom-menu" type="bool" value="true"/>
-      <property name="custom-menu-file" type="string" value="/usr/share/kidsos/kid.menu"/>
-      <property name="button-icon" type="string" value="kidsos-logo"/>
-      <property name="button-title" type="string" value="Start"/>
-      <property name="show-button-title" type="bool" value="true"/>
-      <property name="small" type="bool" value="false"/>
-      <property name="show-generic-names" type="bool" value="false"/>
-      <property name="show-menu-icons" type="bool" value="true"/>
+    <!-- Hem: brings the start screen (big tiles) to the front. Parents also get the full program menu (fleet-look). -->
+    <property name="plugin-1" type="string" value="launcher">
+      <property name="items" type="array">
+        <value type="string" value="/usr/share/applications/kidsos-home.desktop"/>
+      </property>
+      <property name="disable-tooltips" type="bool" value="true"/>
     </property>
     <property name="plugin-2" type="string" value="separator">
       <property name="style" type="uint" value="0"/>
@@ -60,7 +56,7 @@
       <property name="square-icons" type="bool" value="true"/>
     </property>
     <property name="plugin-6" type="string" value="pulseaudio">
-      <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
+      <property name="enable-keyboard-shortcuts" type="bool" value="false"/>
       <property name="volume-max" type="uint" value="100"/>
       <property name="show-notifications" type="bool" value="false"/>
     </property>
@@ -68,13 +64,16 @@
       <property name="show-panel-label" type="int" value="1"/>
     </property>
     <property name="plugin-8" type="string" value="clock">
+      <property name="digital-layout" type="uint" value="3"/>
       <property name="digital-format" type="string" value="%H:%M"/>
       <property name="digital-time-font" type="string" value="Comic Neue Bold 16"/>
       <property name="tooltip-format" type="string" value="%A %e %B"/>
     </property>
-    <property name="plugin-9" type="string" value="actions">
-      <property name="appearance" type="uint" value="1"/>
-      <property name="ask-confirmation" type="bool" value="true"/>
+    <property name="plugin-9" type="string" value="launcher">
+      <property name="items" type="array">
+        <value type="string" value="/usr/share/applications/kidsos-poweroff.desktop"/>
+      </property>
+      <property name="disable-tooltips" type="bool" value="true"/>
     </property>
   </property>
 </channel>

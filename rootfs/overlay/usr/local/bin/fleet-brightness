@@ -7,3 +7,10 @@ case "$1" in
   *) echo "usage: $0 up|down"; exit 2 ;;
 esac
 brightnessctl -q -n1 set "$arg" 2>/dev/null || sudo -n brightnessctl -q -n1 set "$arg"
+# pop-up with the new level (0-7 -> percent)
+cur=$(brightnessctl get 2>/dev/null); max=$(brightnessctl max 2>/dev/null)
+if [ -n "$cur" ] && [ "${max:-0}" -gt 0 ]; then
+  pct=$(( cur * 100 / max ))
+  D=$(dirname "$(readlink -f "$0")")
+  "$D/fleet-osd" display-brightness-symbolic "Ljus $pct" "$pct" 2>/dev/null || true
+fi
