@@ -24,7 +24,8 @@ foreach ($r in $rows) {
   $speed = 1.0; $prev = ''
   switch ($r.type) {
     'letter_sound' { $key = $r.id.Substring(4); $w = $r.text; if ($say.ContainsKey($w)) { $w = $say[$w] }
-                      $text = "$($sound[$key]). <break time=""0.6s""/> $($w.Substring(0,1).ToUpper() + $w.Substring(1))."; $speed = 0.85; $prev = 'Vi pratar svenska. Ordet är: ' }
+                      $L = $key.ToUpper(); if ($key -eq 'aa') { $L = 'Å' } elseif ($key -eq 'ae') { $L = 'Ä' } elseif ($key -eq 'oe') { $L = 'Ö' } elseif ($key -in 'c','z') { $L = 'S' }   # c and z sound like s; the voice cannot say a "z"
+                      $text = "$($sound[$key]). <break time=""0.6s""/> $L som i $w."; $speed = 0.85 }
     'word'         { $prev = 'Vi pratar svenska. Ordet är: ' }
     'letter_name'  { $prev = 'Bokstaven heter ' }
     'phrase'       { $speed = 0.8 }   # whole sentences came out too fast at 1.0; single words were fine
