@@ -42,9 +42,10 @@ class Menu(Scene):
         game.voice.say(["say_hello", "say_choose_game"])
         w, h = game.w, game.h
         self.tiles = []
-        tw, th = int(w * 0.36), int(h * 0.5)
+        n = len(CFG["levels"])
+        tw, th = min(int(w * 0.36), int((w * 0.92 - (n - 1) * w * 0.03) / n)), int(h * 0.5)
         for i, lv in enumerate(CFG["levels"]):
-            x = int(w / 2 + (i - 0.5 * (len(CFG["levels"]) - 1)) * (tw + w * 0.04) - tw / 2)
+            x = int(w / 2 + (i - 0.5 * (n - 1)) * (tw + w * 0.03) - tw / 2)
             self.tiles.append((pygame.Rect(x, int(h * 0.3), tw, th), lv, TILE_COLORS[i % 4]))
 
     def event(self, e):
@@ -198,6 +199,9 @@ class Round(Scene):
         groups = v["groups"]
         k = len(groups)
         self.group_rects = []
+        # one object size for every group in the task: otherwise two big stars look like "more" than ten small ones
+        cells = [pygame.Rect(area.x + i * area.w // k, area.y, area.w // k, area.h).inflate(-g.w * 0.03, 0) for i in range(k)]
+        common_r = min(grid_positions(max(1, grp["n"]), c.inflate(-20, -50))[1] for grp, c in zip(groups, cells))
         for i, grp in enumerate(groups):
             cell = pygame.Rect(area.x + i * area.w // k, area.y, area.w // k, area.h).inflate(-g.w * 0.03, 0)
             self.group_rects.append(cell)
@@ -208,11 +212,13 @@ class Round(Scene):
             if clickable:
                 pygame.draw.rect(surf, border, cell, 6, border_radius=24)
                 g.text(str(i + 1), g.h * 0.05, (150, 160, 210), topleft=(cell.x + 14, cell.y + 6))
-            if grp["shown"] or self.hint:
-                pos, r = grid_positions(grp["n"], cell.inflate(-20, -50))
+            if True:
+                pos, _r = grid_positions(grp["n"], cell.inflate(-20, -50))
+                r = common_r
                 for j, (x, y) in enumerate(pos):
                     crossed = self.task["visual"].get("cross", 0) and j >= grp["n"] - v["cross"]
-                    draw_object(surf, v["obj"], x, y, r, crossed=bool(crossed))
+                    ghost = j >= grp["n"] - grp.get("ghost_n", 0)
+                    draw_object(surf, v["obj"], x, y, r, crossed=bool(crossed), ghost=ghost)
                     if self.hint and self.task["kind"] in ("count",):
                         g.text(str(j + 1), r * 0.9, WHITE, center=(x, y + r * 1.25))
             else:

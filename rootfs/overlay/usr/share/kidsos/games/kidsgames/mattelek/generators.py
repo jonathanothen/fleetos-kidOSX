@@ -90,10 +90,15 @@ def sub_res(rng, top=10):
                      [_num(a), "say_op_minus", _num(b), "say_op_equals"], cross=b)
 
 
-def add_gap(rng, top=10):
-    """The blank can be the result, the second or the first number, or the sum comes first: 7 = 4 + _."""
-    a = rng.randint(1, top - 1)
-    b = rng.randint(1, top - a)
+def add_gap(rng, top=10, total=None):
+    """The blank can be the result, the second or the first number, or the sum comes first: 7 = 4 + _.
+    total=10 gives the number friends of ten (4 + _ = 10)."""
+    if total:
+        a = rng.randint(1, total - 1)
+        b = total - a
+    else:
+        a = rng.randint(1, top - 1)
+        b = rng.randint(1, top - a)
     c = a + b
     form = rng.choice(("b", "a", "rev_b", "rev_a"))
     if form == "b":
@@ -107,9 +112,52 @@ def add_gap(rng, top=10):
     return _equation("add_gap", toks, ans, groups, rng, ["say_fill_missing"])
 
 
+def sub_gap(rng, top=20):
+    """a - _ = c, _ - b = c, and the same with the result first (c = a - _)."""
+    a = rng.randint(2, top)
+    b = rng.randint(1, a - 1)
+    c = a - b
+    form = rng.choice(("b", "a", "rev_b", "rev_a"))
+    if form == "b":
+        toks, ans = ["%d" % a, "-", "_", "=", "%d" % c], b
+    elif form == "a":
+        toks, ans = ["_", "-", "%d" % b, "=", "%d" % c], a
+    elif form == "rev_b":
+        toks, ans = ["%d" % c, "=", "%d" % a, "-", "_"], b
+    else:
+        toks, ans = ["%d" % c, "=", "_", "-", "%d" % b], a
+    # Take away an unknown amount: a objects, b of them dashed (to count). Unknown start: c left + b crossed out.
+    if form in ("b", "rev_b"):
+        groups = [{"n": a, "shown": True, "ghost_n": b}]
+        cross = 0
+    else:
+        groups = [{"n": a, "shown": True, "ghost_n": 0}]
+        cross = b
+    return _equation("sub_gap", toks, ans, groups, rng, ["say_fill_missing"], cross=cross)
+
+
+def doubles(rng):
+    a = rng.randint(1, 10)
+    return _equation("doubles", ["%d" % a, "+", "%d" % a, "=", "_"], 2 * a, [(a, True), (a, True)], rng,
+                     [_num(a), "say_op_plus", _num(a), "say_op_equals"])
+
+
+def plus10(rng):
+    a = rng.randint(1, 10)
+    toks = ["%d" % a, "+", "10", "=", "_"] if rng.random() < 0.5 else ["10", "+", "%d" % a, "=", "_"]
+    first, second = (a, 10) if toks[0] != "10" else (10, a)
+    return _equation("plus10", toks, a + 10, [(first, True), (second, True)], rng,
+                     [_num(first), "say_op_plus", _num(second), "say_op_equals"])
+
+
+def _group(n, known):
+    """An unknown number is drawn as n dashed outlines the child counts (never just a question mark)."""
+    return {"n": n, "shown": True, "ghost_n": 0 if known else n}
+
+
 def _equation(skill, tokens, answer, groups, rng, say, cross=0):
     return {"kind": "equation", "skill": skill, "tokens": tokens, "answer": answer, "say": say,
-            "visual": {"groups": [{"n": n, "shown": shown} for n, shown in groups], "obj": _obj(rng),
+            "visual": {"groups": [g if isinstance(g, dict) else _group(*g) for g in groups], "obj": _obj(rng),
                        "cross": cross},
             "sig": skill + "".join(tokens)}
 
@@ -124,6 +172,14 @@ SKILLS = {
     "add_res": add_res,
     "sub_res": sub_res,
     "add_gap": add_gap,
+    # level 2: up to 20
+    "friends10": lambda rng: dict(add_gap(rng, total=10), skill="friends10"),
+    "doubles": doubles,
+    "add20": lambda rng: dict(add_res(rng, top=20), skill="add20"),
+    "sub20": lambda rng: dict(sub_res(rng, top=20), skill="sub20"),
+    "plus10": plus10,
+    "add_gap20": lambda rng: dict(add_gap(rng, top=20), skill="add_gap20"),
+    "sub_gap20": lambda rng: dict(sub_gap(rng, 20), skill="sub_gap20"),
 }
 
 

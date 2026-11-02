@@ -86,8 +86,6 @@ fonts-comic-neue
 tuxpaint
 tuxpaint-stamps-default
 gcompris-qt
-tuxmath
-tuxtype
 thonny
 parole
 gstreamer1.0-libav

@@ -158,8 +158,17 @@ def button(game, rect, label, color, size=None, pressed=False, text_color=WHITE)
     game.text(label, size or r.h * 0.55, text_color, center=r.center)
 
 
-def draw_object(surf, kind, cx, cy, r, crossed=False):
-    """Simple flat objects drawn with shapes (no image files needed)."""
+def draw_object(surf, kind, cx, cy, r, crossed=False, ghost=False):
+    """Simple flat objects drawn with shapes (no image files needed). ghost = dashed outline only (to be counted)."""
+    if ghost:
+        col = (150, 160, 215)
+        if kind == "star":
+            pts = [(cx + (r if i % 2 == 0 else r * 0.45) * math.cos(-math.pi / 2 + i * math.pi / 5),
+                    cy + (r if i % 2 == 0 else r * 0.45) * math.sin(-math.pi / 2 + i * math.pi / 5)) for i in range(10)]
+            pygame.draw.polygon(surf, col, pts, 4)
+        else:
+            pygame.draw.circle(surf, col, (cx, cy), r, 4)
+        return
     if kind == "ball":
         pygame.draw.circle(surf, (30, 136, 229), (cx, cy), r)
         pygame.draw.circle(surf, (120, 190, 250), (cx - r // 3, cy - r // 3), r // 3)

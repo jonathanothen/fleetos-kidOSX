@@ -12,7 +12,7 @@ user sees says KidsOS.
 - **Two colour themes:** `sol` (yellow/orange, default) and `hav` (blue). Switch with **Färger** in the start menu
   or `fleet-theme set <sol|hav>`.
 - **Programs:** Tux Paint (drawing), Snap! (block programming, offline), GCompris (many learning games),
-  TuxMath, Tux Typing, Thonny (Python, for the older kids), Parole (music and video), Thunar (files), Firefox
+  our own **Mattelek** (maths) and **Skrivlabbet** (typing) games, Thonny (Python, for the older kids), Parole (music and video), Thunar (files), Firefox
   limited to a list of child-safe sites.
 - **Kernel, installer, no built-in account:** unchanged from FleetOS (see the sections below).
 
@@ -95,7 +95,9 @@ after the screen has gone dark.** Then power on and press Ctrl+D (or wait 30 s) 
 | Webben | Firefox ESR | Start page with three big buttons, allow-list filter. |
 | Musik och film | Parole | Local files (GStreamer with libav). No YouTube player in this variant. |
 | Mina filer | Thunar | |
-| (menu) Räkna, Skriva | TuxMath, Tux Typing | |
+| Räkna | Mattelek (own, pygame) | Full screen, voice (Swedish), levels 0-2: counting, number line/ten frames, plus and minus to 20. `kids-math --window` to test in a window. Hold Esc for 3 s to leave. |
+| Para ihop | Para ihop (own, pygame) | Match a word to its picture: tap a word to hear it, drag it onto the picture. `kids-match --window`. |
+| Skriva | Skrivlabbet (own, pygame) | Letters, the child's own name (from the account), words with pictures. `kids-write --window`. |
 | (menu) Python | Thonny | For children who can read. |
 | (menu) Färger | `fleet-theme gui` | |
 
@@ -137,7 +139,7 @@ removed again):
   complete (it caught a missing newline in a palette file).
 - All shell scripts pass `bash -n`; the generated Firefox policy file is valid JSON.
 - Paths of the launched programs against the Debian trixie package file lists
-  (`/usr/bin/tuxpaint`, `/usr/games/gcompris-qt`, `/usr/games/tuxmath`, `/usr/games/tuxtype`, `/usr/bin/thonny`,
+  (`/usr/bin/tuxpaint`, `/usr/games/gcompris-qt`, `/usr/bin/thonny`,
   `/usr/bin/parole`).
 
 **Not verified (needs a build and a real install):**

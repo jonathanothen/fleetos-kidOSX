@@ -7,16 +7,16 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk, GdkPixbuf, Gio, GLib
 
 APPS = "/usr/share/applications/"
-# (desktop file, colour)  -- 4 x 2 grid
+# (desktop file, colour)  -- 4 columns
 TILES = [
-    ("kids-draw.desktop",    "#E8478B"),
-    ("kids-code.desktop",    "#7B4FD1"),
-    ("kids-games.desktop",   "#1AA05A"),
-    ("kids-web.desktop",     "#1E88E5"),
+    ("kids-draw.desktop",     "#E8478B"),
+    ("kids-code.desktop",     "#7B4FD1"),
     ("kids-mattelek.desktop", "#E5484D"),
-    ("kids-type.desktop",    "#0E9AA7"),
-    ("kids-media.desktop",   "#F07A1A"),
-    ("kids-files.desktop",   "#E0A800"),
+    ("kids-skrivlabbet.desktop", "#0E9AA7"),
+    ("kids-parihop.desktop",     "#5C6BC0"),
+    ("kids-games.desktop",    "#1AA05A"),
+    ("kids-media.desktop",    "#F07A1A"),
+    ("kids-files.desktop",    "#E0A800"),
 ]
 COLS = 4
 CSS = """

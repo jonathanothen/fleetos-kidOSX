@@ -1,0 +1,542 @@
+{
+    "letter_order":  [
+                         "a",
+                         "o",
+                         "s",
+                         "m",
+                         "i",
+                         "e",
+                         "l",
+                         "t",
+                         "n",
+                         "r",
+                         "u",
+                         "å",
+                         "ä",
+                         "ö",
+                         "k",
+                         "p",
+                         "b",
+                         "d",
+                         "f",
+                         "g",
+                         "h",
+                         "j",
+                         "v",
+                         "y",
+                         "c",
+                         "z",
+                         "x"
+                     ],
+    "letters":  {
+                    "a":  {
+                              "sound":  "snd_a",
+                              "word":  "apa",
+                              "pic":  null
+                          },
+                    "b":  {
+                              "sound":  "snd_b",
+                              "word":  "boll",
+                              "pic":  "img_boll"
+                          },
+                    "c":  {
+                              "sound":  "snd_c",
+                              "word":  "cykel",
+                              "pic":  "img_cykel"
+                          },
+                    "d":  {
+                              "sound":  "snd_d",
+                              "word":  "dag",
+                              "pic":  null
+                          },
+                    "e":  {
+                              "sound":  "snd_e",
+                              "word":  "elefant",
+                              "pic":  null
+                          },
+                    "f":  {
+                              "sound":  "snd_f",
+                              "word":  "fisk",
+                              "pic":  "img_fisk"
+                          },
+                    "g":  {
+                              "sound":  "snd_g",
+                              "word":  "get",
+                              "pic":  null
+                          },
+                    "h":  {
+                              "sound":  "snd_h",
+                              "word":  "hus",
+                              "pic":  "img_hus"
+                          },
+                    "i":  {
+                              "sound":  "snd_i",
+                              "word":  "is",
+                              "pic":  null
+                          },
+                    "j":  {
+                              "sound":  "snd_j",
+                              "word":  "jul",
+                              "pic":  null
+                          },
+                    "k":  {
+                              "sound":  "snd_k",
+                              "word":  "katt",
+                              "pic":  "img_katt"
+                          },
+                    "l":  {
+                              "sound":  "snd_l",
+                              "word":  "lampa",
+                              "pic":  "img_lampa"
+                          },
+                    "m":  {
+                              "sound":  "snd_m",
+                              "word":  "mus",
+                              "pic":  "img_mus"
+                          },
+                    "n":  {
+                              "sound":  "snd_n",
+                              "word":  "näsa",
+                              "pic":  "img_naesa"
+                          },
+                    "o":  {
+                              "sound":  "snd_o",
+                              "word":  "orm",
+                              "pic":  null
+                          },
+                    "p":  {
+                              "sound":  "snd_p",
+                              "word":  "pappa",
+                              "pic":  "img_pappa"
+                          },
+                    "r":  {
+                              "sound":  "snd_r",
+                              "word":  "ros",
+                              "pic":  null
+                          },
+                    "s":  {
+                              "sound":  "snd_s",
+                              "word":  "sol",
+                              "pic":  "img_sol"
+                          },
+                    "t":  {
+                              "sound":  "snd_t",
+                              "word":  "tåg",
+                              "pic":  "img_taag"
+                          },
+                    "u":  {
+                              "sound":  "snd_u",
+                              "word":  "ugn",
+                              "pic":  null
+                          },
+                    "v":  {
+                              "sound":  "snd_v",
+                              "word":  "val",
+                              "pic":  null
+                          },
+                    "x":  {
+                              "sound":  "snd_x",
+                              "word":  "xylofon",
+                              "pic":  null
+                          },
+                    "y":  {
+                              "sound":  "snd_y",
+                              "word":  "yxa",
+                              "pic":  null
+                          },
+                    "z":  {
+                              "sound":  "snd_z",
+                              "word":  "zebra",
+                              "pic":  null
+                          },
+                    "å":  {
+                              "sound":  "snd_aa",
+                              "word":  "ål",
+                              "pic":  null
+                          },
+                    "ä":  {
+                              "sound":  "snd_ae",
+                              "word":  "äpple",
+                              "pic":  "img_aepple"
+                          },
+                    "ö":  {
+                              "sound":  "snd_oe",
+                              "word":  "öga",
+                              "pic":  "img_oega"
+                          }
+                },
+    "words":  [
+                  {
+                      "text":  "sol",
+                      "pic":  "img_sol",
+                      "voice":  "wrd_sol",
+                      "level":  "C1"
+                  },
+                  {
+                      "text":  "hus",
+                      "pic":  "img_hus",
+                      "voice":  "wrd_hus",
+                      "level":  "C1"
+                  },
+                  {
+                      "text":  "bil",
+                      "pic":  "img_bil",
+                      "voice":  "wrd_bil",
+                      "level":  "C1"
+                  },
+                  {
+                      "text":  "katt",
+                      "pic":  "img_katt",
+                      "voice":  "wrd_katt",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "hund",
+                      "pic":  "img_hund",
+                      "voice":  "wrd_hund",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "mus",
+                      "pic":  "img_mus",
+                      "voice":  "wrd_mus",
+                      "level":  "C1"
+                  },
+                  {
+                      "text":  "ko",
+                      "pic":  "img_ko",
+                      "voice":  "wrd_ko",
+                      "level":  "C1"
+                  },
+                  {
+                      "text":  "bok",
+                      "pic":  "img_bok",
+                      "voice":  "wrd_bok",
+                      "level":  "C1"
+                  },
+                  {
+                      "text":  "boll",
+                      "pic":  "img_boll",
+                      "voice":  "wrd_boll",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "mat",
+                      "pic":  "img_mat",
+                      "voice":  "wrd_mat",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "ägg",
+                      "pic":  "img_aegg",
+                      "voice":  "wrd_aegg",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "äpple",
+                      "pic":  "img_aepple",
+                      "voice":  "wrd_aepple",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "päron",
+                      "pic":  "img_paeron",
+                      "voice":  "wrd_paeron",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "banan",
+                      "pic":  "img_banan",
+                      "voice":  "wrd_banan",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "fisk",
+                      "pic":  "img_fisk",
+                      "voice":  "wrd_fisk",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "fågel",
+                      "pic":  "img_faagel",
+                      "voice":  "wrd_faagel",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "tåg",
+                      "pic":  "img_taag",
+                      "voice":  "wrd_taag",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "båt",
+                      "pic":  "img_baat",
+                      "voice":  "wrd_baat",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "bro",
+                      "pic":  "img_bro",
+                      "voice":  "wrd_bro",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "sko",
+                      "pic":  "img_sko",
+                      "voice":  "wrd_sko",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "strumpa",
+                      "pic":  "img_strumpa",
+                      "voice":  "wrd_strumpa",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "mössa",
+                      "pic":  "img_moessa",
+                      "voice":  "wrd_moessa",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "hatt",
+                      "pic":  "img_hatt",
+                      "voice":  "wrd_hatt",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "nyckel",
+                      "pic":  "img_nyckel",
+                      "voice":  "wrd_nyckel",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "bord",
+                      "pic":  "img_bord",
+                      "voice":  "wrd_bord",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "stol",
+                      "pic":  "img_stol",
+                      "voice":  "wrd_stol",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "säng",
+                      "pic":  "img_saeng",
+                      "voice":  "wrd_saeng",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "lampa",
+                      "pic":  "img_lampa",
+                      "voice":  "wrd_lampa",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "dörr",
+                      "pic":  "img_doerr",
+                      "voice":  "wrd_doerr",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "fönster",
+                      "pic":  "img_foenster",
+                      "voice":  "wrd_foenster",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "träd",
+                      "pic":  "img_traed",
+                      "voice":  "wrd_traed",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "blomma",
+                      "pic":  "img_blomma",
+                      "voice":  "wrd_blomma",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "gräs",
+                      "pic":  "img_graes",
+                      "voice":  "wrd_graes",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "sten",
+                      "pic":  "img_sten",
+                      "voice":  "wrd_sten",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "sand",
+                      "pic":  "img_sand",
+                      "voice":  "wrd_sand",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "hav",
+                      "pic":  "img_hav",
+                      "voice":  "wrd_hav",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "sjö",
+                      "pic":  "img_sjoe",
+                      "voice":  "wrd_sjoe",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "regn",
+                      "pic":  "img_regn",
+                      "voice":  "wrd_regn",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "snö",
+                      "pic":  "img_snoe",
+                      "voice":  "wrd_snoe",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "måne",
+                      "pic":  "img_maane",
+                      "voice":  "wrd_maane",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "stjärna",
+                      "pic":  "img_stjaerna",
+                      "voice":  "wrd_stjaerna",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "moln",
+                      "pic":  "img_moln",
+                      "voice":  "wrd_moln",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "ben",
+                      "pic":  "img_ben",
+                      "voice":  "wrd_ben",
+                      "level":  "C1"
+                  },
+                  {
+                      "text":  "hand",
+                      "pic":  "img_hand",
+                      "voice":  "wrd_hand",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "öga",
+                      "pic":  "img_oega",
+                      "voice":  "wrd_oega",
+                      "level":  "C1"
+                  },
+                  {
+                      "text":  "öra",
+                      "pic":  "img_oera",
+                      "voice":  "wrd_oera",
+                      "level":  "C1"
+                  },
+                  {
+                      "text":  "näsa",
+                      "pic":  "img_naesa",
+                      "voice":  "wrd_naesa",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "mun",
+                      "pic":  "img_mun",
+                      "voice":  "wrd_mun",
+                      "level":  "C1"
+                  },
+                  {
+                      "text":  "mamma",
+                      "pic":  "img_mamma",
+                      "voice":  "wrd_mamma",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "pappa",
+                      "pic":  "img_pappa",
+                      "voice":  "wrd_pappa",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "bebis",
+                      "pic":  "img_bebis",
+                      "voice":  "wrd_bebis",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "ö",
+                      "pic":  "img_oe",
+                      "voice":  "wrd_oe",
+                      "level":  "C1"
+                  },
+                  {
+                      "text":  "ur",
+                      "pic":  "img_ur",
+                      "voice":  "wrd_ur",
+                      "level":  "C1"
+                  },
+                  {
+                      "text":  "tak",
+                      "pic":  "img_tak",
+                      "voice":  "wrd_tak",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "hjul",
+                      "pic":  "img_hjul",
+                      "voice":  "wrd_hjul",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "ballong",
+                      "pic":  "img_ballong",
+                      "voice":  "wrd_ballong",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "glass",
+                      "pic":  "img_glass",
+                      "voice":  "wrd_glass",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "tårta",
+                      "pic":  "img_taarta",
+                      "voice":  "wrd_taarta",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "ljus",
+                      "pic":  "img_ljus",
+                      "voice":  "wrd_ljus",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "vante",
+                      "pic":  "img_vante",
+                      "voice":  "wrd_vante",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "cykel",
+                      "pic":  "img_cykel",
+                      "voice":  "wrd_cykel",
+                      "level":  "C2"
+                  },
+                  {
+                      "text":  "hjärta",
+                      "pic":  "img_hjaerta",
+                      "voice":  "wrd_hjaerta",
+                      "level":  "C2"
+                  }
+              ]
+}

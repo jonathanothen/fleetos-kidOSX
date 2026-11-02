@@ -1,7 +1,8 @@
 {
   "levels": [
     {"id": 0, "title": "Räkna", "age": "4-5", "skills": ["count", "dice", "match", "more"]},
-    {"id": 1, "title": "Tal och tiorutor", "age": "5-6", "skills": ["numline", "tenframe", "add_res", "sub_res", "add_gap"]}
+    {"id": 1, "title": "Tal och tiorutor", "age": "5-6", "skills": ["numline", "tenframe", "add_res", "sub_res", "add_gap"]},
+    {"id": 2, "title": "Plus och minus", "age": "6-7", "skills": ["friends10", "doubles", "add20", "sub20", "plus10", "add_gap20", "sub_gap20"]}
   ],
   "round_size": 10,
   "mastery": {"window": 10, "needed": 8}

@@ -7,8 +7,10 @@
       <Filename>kids-draw.desktop</Filename>
       <Filename>kids-code.desktop</Filename>
       <Filename>kids-games.desktop</Filename>
-      <Filename>kids-math.desktop</Filename>
-      <Filename>kids-type.desktop</Filename>
+      <Filename>kids-mattelek.desktop</Filename>
+      <Filename>kids-skrivlabbet.desktop</Filename>
+    <Filename>kids-parihop.desktop</Filename>
+      <Filename>kids-parihop.desktop</Filename>
       <Filename>kids-web.desktop</Filename>
       <Filename>kids-media.desktop</Filename>
       <Filename>kids-files.desktop</Filename>
@@ -19,8 +21,9 @@
     <Filename>kids-draw.desktop</Filename>
     <Filename>kids-code.desktop</Filename>
     <Filename>kids-games.desktop</Filename>
-    <Filename>kids-math.desktop</Filename>
-    <Filename>kids-type.desktop</Filename>
+    <Filename>kids-mattelek.desktop</Filename>
+    <Filename>kids-skrivlabbet.desktop</Filename>
+    <Filename>kids-parihop.desktop</Filename>
     <Filename>kids-web.desktop</Filename>
     <Filename>kids-media.desktop</Filename>
     <Filename>kids-files.desktop</Filename>

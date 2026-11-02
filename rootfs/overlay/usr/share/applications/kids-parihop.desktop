@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Para ihop
+Name[en]=Match words and pictures
+Exec=/usr/local/bin/kids-match
+Icon=kidsos-match
+Terminal=false
+Categories=Game;Education;
+StartupNotify=false
+X-KidsOS=true

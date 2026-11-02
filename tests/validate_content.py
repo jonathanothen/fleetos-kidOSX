@@ -22,6 +22,8 @@ used |= {"num_%03d" % i for i in range(0, 21)}
 for s in G.SKILLS:
     for _ in range(300):
         used |= set(G.make_task(s, rng)["say"])
+from kidsgames.skrivlabbet import content as SC
+used |= SC.clip_ids_used()
 for u in sorted(used - voices): errors.append("voice used by Mattelek but missing: " + u)
 for fn in os.listdir(os.path.join(GAMES, "assets", "voices", "sv")):
     if os.path.getsize(os.path.join(GAMES, "assets", "voices", "sv", fn)) < 1000: errors.append("suspiciously small: " + fn)

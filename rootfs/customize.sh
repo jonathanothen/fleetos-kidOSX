@@ -48,15 +48,16 @@ gtk-update-icon-cache -f /usr/share/icons/hicolor || true
 
 # --- Child-safe desktop ---
 # The start screen (big tiles) replaces desktop icons; it is a GTK3 python program
-chmod +x /usr/local/bin/kidsos-home /usr/local/bin/fleet-volume /usr/local/bin/fleet-osd /usr/local/bin/kids-math
+chmod +x /usr/local/bin/kidsos-home /usr/local/bin/fleet-volume /usr/local/bin/fleet-osd /usr/local/bin/kids-math /usr/local/bin/kids-write /usr/local/bin/kids-match
 # Our own games: pygame must import, and the game content must be there
 python3 -c "import pygame" || { echo "ERROR: python3-pygame missing"; exit 1; }
+[ -f /usr/share/kidsos/games/kidsgames/skrivlabbet/content.json ] || { echo "ERROR: Skrivlabbet content missing"; exit 1; }
 [ -d /usr/share/kidsos/games/assets/voices/sv ] || { echo "ERROR: game voices missing"; exit 1; }
 ls /usr/lib/*/gdk-pixbuf-2.0/2.10.0/loaders/ | grep -q svg || { echo "ERROR: SVG pixbuf loader missing (librsvg2-common): every icon would be blank"; exit 1; }
 python3 -c "import gi; gi.require_version(\"Gtk\",\"3.0\"); from gi.repository import Gtk" || { echo "ERROR: python3-gi / GTK3 bindings missing"; exit 1; }
 # The programs the launchers start must exist at these paths (a typo here would give the child dead icons)
 for b in /usr/bin/tuxpaint /usr/bin/firefox-esr /usr/games/gcompris-qt /usr/bin/parole /usr/bin/thunar \
-         /usr/games/tuxmath /usr/games/tuxtype /usr/bin/thonny; do
+         /usr/bin/thonny; do
   [ -x "$b" ] || { echo "ERROR: $b is missing (wrong path or package?)"; exit 1; }
 done
 # No terminal for the child: only members of the sudo group (the parent) may start it

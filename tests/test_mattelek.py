@@ -14,6 +14,21 @@ def check_task(t):
         s = " ".join(toks).replace("_", str(t["answer"])).replace("=", "==")
         assert eval(s), (toks, t["answer"])
         assert 0 <= t["answer"] <= 20
+    for grp in v.get("groups", []):
+        assert 0 <= grp.get("ghost_n", 0) <= grp["n"]
+    if t["skill"] in ("add_gap", "add_gap20", "friends10"):
+        assert sum(g.get("ghost_n", 0) for g in v["groups"]) == t["answer"], t     # the dashed objects ARE the answer
+    if t["skill"] == "sub_gap20":
+        grp = v["groups"][0]
+        total = grp["n"]
+        assert grp.get("ghost_n", 0) == t["answer"] or total == t["answer"], t   # dashed ones, or count them all
+    if t["skill"] == "friends10":
+        s = " ".join(t["tokens"]).replace("_", str(t["answer"]))
+        assert "10" in t["tokens"] or sum(int(x) for x in t["tokens"] if x.isdigit()) >= 10
+    if t["skill"] == "doubles":
+        assert t["answer"] == 2 * int(t["tokens"][0]) and t["tokens"][0] == t["tokens"][2]
+    if t["skill"] == "plus10":
+        assert "10" in t["tokens"]
     if t["kind"] == "pick":
         sizes = [g["n"] for g in v["groups"]]
         assert 0 <= t["answer"] < len(sizes) and len(set(sizes)) == len(sizes), sizes
