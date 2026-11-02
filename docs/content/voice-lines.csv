@@ -1,0 +1,258 @@
+id,type,text,context,notes
+num_000,number,noll,counting and answers,Say it as when counting aloud (ett not en)
+num_001,number,ett,counting and answers,Say it as when counting aloud (ett not en)
+num_002,number,två,counting and answers,Say it as when counting aloud (ett not en)
+num_003,number,tre,counting and answers,Say it as when counting aloud (ett not en)
+num_004,number,fyra,counting and answers,Say it as when counting aloud (ett not en)
+num_005,number,fem,counting and answers,Say it as when counting aloud (ett not en)
+num_006,number,sex,counting and answers,Say it as when counting aloud (ett not en)
+num_007,number,sju,counting and answers,Say it as when counting aloud (ett not en)
+num_008,number,åtta,counting and answers,Say it as when counting aloud (ett not en)
+num_009,number,nio,counting and answers,Say it as when counting aloud (ett not en)
+num_010,number,tio,counting and answers,Say it as when counting aloud (ett not en)
+num_011,number,elva,counting and answers,Say it as when counting aloud (ett not en)
+num_012,number,tolv,counting and answers,Say it as when counting aloud (ett not en)
+num_013,number,tretton,counting and answers,Say it as when counting aloud (ett not en)
+num_014,number,fjorton,counting and answers,Say it as when counting aloud (ett not en)
+num_015,number,femton,counting and answers,Say it as when counting aloud (ett not en)
+num_016,number,sexton,counting and answers,Say it as when counting aloud (ett not en)
+num_017,number,sjutton,counting and answers,Say it as when counting aloud (ett not en)
+num_018,number,arton,counting and answers,Say it as when counting aloud (ett not en)
+num_019,number,nitton,counting and answers,Say it as when counting aloud (ett not en)
+num_020,number,tjugo,counting and answers,Say it as when counting aloud (ett not en)
+num_021,number,tjugoett,counting and answers,Say it as when counting aloud (ett not en)
+num_022,number,tjugotvå,counting and answers,Say it as when counting aloud (ett not en)
+num_023,number,tjugotre,counting and answers,Say it as when counting aloud (ett not en)
+num_024,number,tjugofyra,counting and answers,Say it as when counting aloud (ett not en)
+num_025,number,tjugofem,counting and answers,Say it as when counting aloud (ett not en)
+num_026,number,tjugosex,counting and answers,Say it as when counting aloud (ett not en)
+num_027,number,tjugosju,counting and answers,Say it as when counting aloud (ett not en)
+num_028,number,tjugoåtta,counting and answers,Say it as when counting aloud (ett not en)
+num_029,number,tjugonio,counting and answers,Say it as when counting aloud (ett not en)
+num_030,number,,counting and answers,Say it as when counting aloud (ett not en)
+num_031,number,ett,counting and answers,Say it as when counting aloud (ett not en)
+num_032,number,två,counting and answers,Say it as when counting aloud (ett not en)
+num_033,number,tre,counting and answers,Say it as when counting aloud (ett not en)
+num_034,number,fyra,counting and answers,Say it as when counting aloud (ett not en)
+num_035,number,fem,counting and answers,Say it as when counting aloud (ett not en)
+num_036,number,sex,counting and answers,Say it as when counting aloud (ett not en)
+num_037,number,sju,counting and answers,Say it as when counting aloud (ett not en)
+num_038,number,åtta,counting and answers,Say it as when counting aloud (ett not en)
+num_039,number,nio,counting and answers,Say it as when counting aloud (ett not en)
+num_040,number,,counting and answers,Say it as when counting aloud (ett not en)
+num_041,number,ett,counting and answers,Say it as when counting aloud (ett not en)
+num_042,number,två,counting and answers,Say it as when counting aloud (ett not en)
+num_043,number,tre,counting and answers,Say it as when counting aloud (ett not en)
+num_044,number,fyra,counting and answers,Say it as when counting aloud (ett not en)
+num_045,number,fem,counting and answers,Say it as when counting aloud (ett not en)
+num_046,number,sex,counting and answers,Say it as when counting aloud (ett not en)
+num_047,number,sju,counting and answers,Say it as when counting aloud (ett not en)
+num_048,number,åtta,counting and answers,Say it as when counting aloud (ett not en)
+num_049,number,nio,counting and answers,Say it as when counting aloud (ett not en)
+num_050,number,,counting and answers,Say it as when counting aloud (ett not en)
+num_051,number,ett,counting and answers,Say it as when counting aloud (ett not en)
+num_052,number,två,counting and answers,Say it as when counting aloud (ett not en)
+num_053,number,tre,counting and answers,Say it as when counting aloud (ett not en)
+num_054,number,fyra,counting and answers,Say it as when counting aloud (ett not en)
+num_055,number,fem,counting and answers,Say it as when counting aloud (ett not en)
+num_056,number,sex,counting and answers,Say it as when counting aloud (ett not en)
+num_057,number,sju,counting and answers,Say it as when counting aloud (ett not en)
+num_058,number,åtta,counting and answers,Say it as when counting aloud (ett not en)
+num_059,number,nio,counting and answers,Say it as when counting aloud (ett not en)
+num_060,number,,counting and answers,Say it as when counting aloud (ett not en)
+num_061,number,ett,counting and answers,Say it as when counting aloud (ett not en)
+num_062,number,två,counting and answers,Say it as when counting aloud (ett not en)
+num_063,number,tre,counting and answers,Say it as when counting aloud (ett not en)
+num_064,number,fyra,counting and answers,Say it as when counting aloud (ett not en)
+num_065,number,fem,counting and answers,Say it as when counting aloud (ett not en)
+num_066,number,sex,counting and answers,Say it as when counting aloud (ett not en)
+num_067,number,sju,counting and answers,Say it as when counting aloud (ett not en)
+num_068,number,åtta,counting and answers,Say it as when counting aloud (ett not en)
+num_069,number,nio,counting and answers,Say it as when counting aloud (ett not en)
+num_070,number,,counting and answers,Say it as when counting aloud (ett not en)
+num_071,number,ett,counting and answers,Say it as when counting aloud (ett not en)
+num_072,number,två,counting and answers,Say it as when counting aloud (ett not en)
+num_073,number,tre,counting and answers,Say it as when counting aloud (ett not en)
+num_074,number,fyra,counting and answers,Say it as when counting aloud (ett not en)
+num_075,number,fem,counting and answers,Say it as when counting aloud (ett not en)
+num_076,number,sex,counting and answers,Say it as when counting aloud (ett not en)
+num_077,number,sju,counting and answers,Say it as when counting aloud (ett not en)
+num_078,number,åtta,counting and answers,Say it as when counting aloud (ett not en)
+num_079,number,nio,counting and answers,Say it as when counting aloud (ett not en)
+num_080,number,,counting and answers,Say it as when counting aloud (ett not en)
+num_081,number,ett,counting and answers,Say it as when counting aloud (ett not en)
+num_082,number,två,counting and answers,Say it as when counting aloud (ett not en)
+num_083,number,tre,counting and answers,Say it as when counting aloud (ett not en)
+num_084,number,fyra,counting and answers,Say it as when counting aloud (ett not en)
+num_085,number,fem,counting and answers,Say it as when counting aloud (ett not en)
+num_086,number,sex,counting and answers,Say it as when counting aloud (ett not en)
+num_087,number,sju,counting and answers,Say it as when counting aloud (ett not en)
+num_088,number,åtta,counting and answers,Say it as when counting aloud (ett not en)
+num_089,number,nio,counting and answers,Say it as when counting aloud (ett not en)
+num_090,number,,counting and answers,Say it as when counting aloud (ett not en)
+num_091,number,ett,counting and answers,Say it as when counting aloud (ett not en)
+num_092,number,två,counting and answers,Say it as when counting aloud (ett not en)
+num_093,number,tre,counting and answers,Say it as when counting aloud (ett not en)
+num_094,number,fyra,counting and answers,Say it as when counting aloud (ett not en)
+num_095,number,fem,counting and answers,Say it as when counting aloud (ett not en)
+num_096,number,sex,counting and answers,Say it as when counting aloud (ett not en)
+num_097,number,sju,counting and answers,Say it as when counting aloud (ett not en)
+num_098,number,åtta,counting and answers,Say it as when counting aloud (ett not en)
+num_099,number,nio,counting and answers,Say it as when counting aloud (ett not en)
+num_100,number,hundra,counting and answers,Say it as when counting aloud (ett not en)
+let_a,letter_name,a,letter name as in the alphabet song,
+snd_a,letter_sound,apa,the SOUND of the letter (A as in apa) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_b,letter_name,be,letter name as in the alphabet song,
+snd_b,letter_sound,boll,the SOUND of the letter (B as in boll) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_c,letter_name,se,letter name as in the alphabet song,
+snd_c,letter_sound,cykel,the SOUND of the letter (C as in cykel) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_d,letter_name,de,letter name as in the alphabet song,
+snd_d,letter_sound,dag,the SOUND of the letter (D as in dag) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_e,letter_name,e,letter name as in the alphabet song,
+snd_e,letter_sound,elefant,the SOUND of the letter (E as in elefant) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_f,letter_name,eff,letter name as in the alphabet song,
+snd_f,letter_sound,fisk,the SOUND of the letter (F as in fisk) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_g,letter_name,ge,letter name as in the alphabet song,
+snd_g,letter_sound,get,the SOUND of the letter (G as in get) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_h,letter_name,hå,letter name as in the alphabet song,
+snd_h,letter_sound,hus,the SOUND of the letter (H as in hus) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_i,letter_name,i,letter name as in the alphabet song,
+snd_i,letter_sound,is,the SOUND of the letter (I as in is) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_j,letter_name,ji,letter name as in the alphabet song,
+snd_j,letter_sound,jul,the SOUND of the letter (J as in jul) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_k,letter_name,kå,letter name as in the alphabet song,
+snd_k,letter_sound,katt,the SOUND of the letter (K as in katt) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_l,letter_name,ell,letter name as in the alphabet song,
+snd_l,letter_sound,lampa,the SOUND of the letter (L as in lampa) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_m,letter_name,em,letter name as in the alphabet song,
+snd_m,letter_sound,mus,the SOUND of the letter (M as in mus) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_n,letter_name,en,letter name as in the alphabet song,
+snd_n,letter_sound,näsa,the SOUND of the letter (N as in näsa) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_o,letter_name,o,letter name as in the alphabet song,
+snd_o,letter_sound,orm,the SOUND of the letter (O as in orm) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_p,letter_name,pe,letter name as in the alphabet song,
+snd_p,letter_sound,pappa,the SOUND of the letter (P as in pappa) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_q,letter_name,kvå,letter name as in the alphabet song,
+let_r,letter_name,är,letter name as in the alphabet song,
+snd_r,letter_sound,ros,the SOUND of the letter (R as in ros) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_s,letter_name,ess,letter name as in the alphabet song,
+snd_s,letter_sound,sol,the SOUND of the letter (S as in sol) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_t,letter_name,te,letter name as in the alphabet song,
+snd_t,letter_sound,tåg,the SOUND of the letter (T as in tåg) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_u,letter_name,u,letter name as in the alphabet song,
+snd_u,letter_sound,ugn,the SOUND of the letter (U as in ugn) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_v,letter_name,ve,letter name as in the alphabet song,
+snd_v,letter_sound,val,the SOUND of the letter (V as in val) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_w,letter_name,dubbelve,letter name as in the alphabet song,
+let_x,letter_name,ex,letter name as in the alphabet song,
+snd_x,letter_sound,xylofon,the SOUND of the letter (X as in xylofon) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_y,letter_name,y,letter name as in the alphabet song,
+snd_y,letter_sound,yxa,the SOUND of the letter (Y as in yxa) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_z,letter_name,säta,letter name as in the alphabet song,
+snd_z,letter_sound,zebra,the SOUND of the letter (Z as in zebra) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_aa,letter_name,å,letter name as in the alphabet song,
+snd_aa,letter_sound,ål,the SOUND of the letter (Å as in ål) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_ae,letter_name,ä,letter name as in the alphabet song,
+snd_ae,letter_sound,äpple,the SOUND of the letter (Ä as in äpple) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+let_oe,letter_name,ö,letter name as in the alphabet song,
+snd_oe,letter_sound,öga,the SOUND of the letter (Ö as in öga) then the word,RISK: say the sound not the name; no extra e-vowel; check by ear; fallback = human recording
+say_hello,phrase,Hej!,instruction or feedback,Warm; calm; child-friendly
+say_choose_game,phrase,Välj ett spel,instruction or feedback,Warm; calm; child-friendly
+say_fill_missing,phrase,Fyll i det som saknas,instruction or feedback,Warm; calm; child-friendly
+say_how_many,phrase,Hur många är det?,instruction or feedback,Warm; calm; child-friendly
+say_count_with_me,phrase,Räkna med mig,instruction or feedback,Warm; calm; child-friendly
+say_look_here,phrase,Titta här,instruction or feedback,Warm; calm; child-friendly
+say_correct_1,phrase,Rätt!,instruction or feedback,Warm; calm; child-friendly
+say_correct_2,phrase,Bra jobbat!,instruction or feedback,Warm; calm; child-friendly
+say_correct_3,phrase,Superbra!,instruction or feedback,Warm; calm; child-friendly
+say_correct_4,phrase,Just det!,instruction or feedback,Warm; calm; child-friendly
+say_retry_1,phrase,Nästan! Prova igen,instruction or feedback,Warm; calm; child-friendly
+say_retry_2,phrase,Försök en gång till,instruction or feedback,Warm; calm; child-friendly
+say_hint_objects,phrase,Vi räknar tillsammans,instruction or feedback,Warm; calm; child-friendly
+say_find_letter,phrase,Hitta bokstaven,instruction or feedback,Warm; calm; child-friendly
+say_press_letter,phrase,Tryck på bokstaven,instruction or feedback,Warm; calm; child-friendly
+say_type_word,phrase,Skriv ordet,instruction or feedback,Warm; calm; child-friendly
+say_type_name,phrase,Skriv ditt namn,instruction or feedback,Warm; calm; child-friendly
+say_type_copy,phrase,Skriv av ordet,instruction or feedback,Warm; calm; child-friendly
+say_letter_next,phrase,Nästa bokstav,instruction or feedback,Warm; calm; child-friendly
+say_sticker,phrase,Du fick ett klistermärke!,instruction or feedback,Warm; calm; child-friendly
+say_break,phrase,Dags för en paus,instruction or feedback,Warm; calm; child-friendly
+say_continue_q,phrase,Vill du fortsätta?,instruction or feedback,Warm; calm; child-friendly
+say_bye,phrase,Hej då!,instruction or feedback,Warm; calm; child-friendly
+say_well_done_round,phrase,Du klarade hela rundan!,instruction or feedback,Warm; calm; child-friendly
+say_op_plus,phrase,plus,instruction or feedback,Warm; calm; child-friendly
+say_op_minus,phrase,minus,instruction or feedback,Warm; calm; child-friendly
+say_op_equals,phrase,är lika med,instruction or feedback,Warm; calm; child-friendly
+say_op_times,phrase,gånger,instruction or feedback,Warm; calm; child-friendly
+say_op_double,phrase,dubbelt så många,instruction or feedback,Warm; calm; child-friendly
+say_op_half,phrase,hälften,instruction or feedback,Warm; calm; child-friendly
+say_more,phrase,fler,instruction or feedback,Warm; calm; child-friendly
+say_fewer,phrase,färre,instruction or feedback,Warm; calm; child-friendly
+say_same,phrase,lika många,instruction or feedback,Warm; calm; child-friendly
+say_biggest,phrase,störst,instruction or feedback,Warm; calm; child-friendly
+say_smallest,phrase,minst,instruction or feedback,Warm; calm; child-friendly
+say_missing,phrase,Vad saknas?,instruction or feedback,Warm; calm; child-friendly
+say_ten_frame,phrase,Hur många fattas till tio?,instruction or feedback,Warm; calm; child-friendly
+say_parent_hold,phrase,Håll in Esc för att avsluta (föräldrar),instruction or feedback,Warm; calm; child-friendly
+wrd_sol,word,sol,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_hus,word,hus,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_bil,word,bil,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_katt,word,katt,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_hund,word,hund,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_mus,word,mus,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_ko,word,ko,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_bok,word,bok,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_boll,word,boll,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_mat,word,mat,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_aegg,word,ägg,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_aepple,word,äpple,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_paeron,word,päron,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_banan,word,banan,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_fisk,word,fisk,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_faagel,word,fågel,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_taag,word,tåg,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_baat,word,båt,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_bro,word,bro,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_sko,word,sko,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_strumpa,word,strumpa,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_moessa,word,mössa,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_hatt,word,hatt,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_nyckel,word,nyckel,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_bord,word,bord,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_stol,word,stol,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_saeng,word,säng,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_lampa,word,lampa,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_doerr,word,dörr,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_foenster,word,fönster,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_traed,word,träd,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_blomma,word,blomma,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_graes,word,gräs,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_sten,word,sten,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_sand,word,sand,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_hav,word,hav,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_sjoe,word,sjö,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_regn,word,regn,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_snoe,word,snö,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_maane,word,måne,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_stjaerna,word,stjärna,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_moln,word,moln,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_ben,word,ben,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_hand,word,hand,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_oega,word,öga,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_oera,word,öra,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_naesa,word,näsa,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_mun,word,mun,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_mamma,word,mamma,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_pappa,word,pappa,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_bebis,word,bebis,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_oe,word,ö,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_ur,word,ur,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_tak,word,tak,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_hjul,word,hjul,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_ballong,word,ballong,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_glass,word,glass,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_taarta,word,tårta,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_ljus,word,ljus,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_vante,word,vante,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_cykel,word,cykel,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence
+wrd_hjaerta,word,hjärta,word read aloud in Skrivlabbet level C,Say the word once; clearly; no sentence

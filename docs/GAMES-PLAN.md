@@ -5,21 +5,29 @@ Status: plan, inget är byggt. Skriven 2026-11-02.
 ## 0. Utgångspunkter och antaganden
 
 - **Målgrupp:** barn 4–8 år, Samsung XE303C12/XE503C12 (2 GB, två A15-kärnor, ingen användbar GPU-acceleration i
-  webbläsaren). Spelen måste därför vara *lätta*: inga ramverk, ingen WebGL, få animationer.
+  webbläsaren). Spelen måste därför vara *lätta*: 2D, förberäknade bilder, få animationer.
 - **"Lära sig skriva spel"** tolkar jag som ett spel där barnen lär sig **skriva**: bokstäver, det egna namnet, ord
-  (på tangentbordet, med följ-bokstaven som komplement). Menade du i stället att barnen ska lära sig att *göra egna
-  spel* – det täcks redan av Koda (Snap!) och kan bli en tredje punkt med uppdragskort (se avsnitt 6).
-- **Teknik (rekommendation):** två fristående webbappar i ren HTML/CSS/JS, öppnade offline i Firefox precis som
-  Snap! (`file:///usr/share/kidsos/games/...`). Skäl: samma teknik som redan finns i bilden, ingen byggkedja, går
-  att utveckla och testa direkt i Chrome/Edge på Windows, små filer, lätta att ändra. Alternativ: Python + pygame
-  (tyngre, svårare att testa på Windows) eller C/SDL (för mycket arbete). Webbfilterpolicyn släpper redan igenom
-  `file:///usr/share/kidsos/*`.
-- **Spara framsteg:** `localStorage` i barnets Firefox-profil (en profil per barnkonto). Inget lämnar datorn.
+  (på tangentbordet, med följ-bokstaven som komplement). Bekräftat: tangentbord och bokstäver. Att lära sig *göra egna spel* täcks av Koda (Snap!), se avsnitt 6.
+- **Beslutat: egna spel på svenska, tangentbord, Lgr22, egen app (inte Firefox).** Se avsnitt 7.
+- **Teknik – egen app i Python + pygame (rekommendation, ersätter förslaget "webbapp i Firefox").**
+  Firefox var mitt första förslag för att det redan finns i bilden (Snap!) och går att testa i en webbläsare. Men
+  för de här spelen är en egen app bättre: (1) fullskärm utan adressfält, flikar och Firefox-genvägar; (2) appen kan
+  ta hela tangentbordet (`SDL_HINT_GRAB_KEYBOARD`, X11-grab) så att Alt+Tab, Super och liknande inte når
+  skrivbordet; (3) mindre RAM och snabbare start än en hel webbläsare på 2 GB; (4) full kontroll över ljud,
+  tangentbord och ritning. pygame (SDL2) finns som `python3-pygame` 2.6.1 för armhf i Debian 13 och kör även på
+  Windows, så du och jag kan utveckla och testa utan Chromebook. Nackdelar: lite mer kod för gränssnitt och text
+  än i HTML, och Python behöver finnas i bilden (det gör det redan via Thonny). Alternativ jag valt bort:
+  WebKitGTK-wrapper (bra isolering men ~100 MB extra och samma renderingskostnad som Firefox) och C/SDL
+  (för mycket arbete). Snap! (Koda) får vara kvar i Firefox.
+  **Genvägar som ändå finns kvar** (fönsterhanteraren, Ctrl+Alt+F1–F7, strömknapp) stängs för barnkontot i
+  `xfce4-keyboard-shortcuts.xml` i skel och i X-inställningar (`DontVTSwitch`); detta verifieras i E1.
+  Appen avslutas bara med en dold föräldrakombination (t.ex. håll Esc 3 s + svara på en räknefråga).
+- **Spara framsteg:** JSON-fil i barnets hemkatalog (`~/.local/share/kidsos/progress.json`), en per barnkonto. Inget lämnar datorn.
 - **Hitta först det som redan finns:** bilden innehåller GCompris, TuxMath och Tux Typing. Innan vi bygger: låt ett
   barn prova dem i 1–2 veckor och skriv ner vad som saknas (svensk läroplan, "fyll i räkneexempel", barnets eget
   namn, ingen tidspress). Det som saknas är motiveringen för egna spel.
 
-## 1. Gemensam kärna (`kids-core.js`, görs först)
+## 1. Gemensam kärna (Python-paketet `kidsgames/core`, görs först)
 
 | Del | Innehåll |
 |---|---|
@@ -79,8 +87,8 @@ espeak-ng) låter robotlikt och måste provas på riktigt. Beslut behövs (se av
   [Frontiers in Psychology 2021](https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2021.726454/pdf)),
   men en tysk studie fann ingen fördel för handskrift ([sammanfattning](https://boldscience.org/handwriting-versus-typing-for-childrens-literacy/)).
   Studierna är små och gäller korta försök, inte tangentbordsundervisning. **Slutsats för designen:** tangentbordet
-  är ett *stöd*, inte en ersättning: spelet innehåller ett läge "Följ bokstaven" (spåra med pekplattan/musen) och
-  uppmuntrar förälder/lärare att även låta barnet skriva på papper. Fingerrätt tioformsskrivning är inget mål före
+  är ett *stöd*, inte en ersättning. Beslut: spelet är tangentbordsbaserat (pennskrift/spårning med pekplatta är för
+  svårt för barnen och därför bara en möjlig senare utökning) och det uppmuntrar förälder/lärare att även låta barnet skriva på papper. Fingerrätt tioformsskrivning är inget mål före
   ~8 år.
 - **Personligt:** barnets eget förnamn är första ordet (motiverar mer än "a s d f"). Namnet hämtas från kontot.
 - **Ljud–bokstav:** varje bokstav presenteras med ljud + bild + ord ("S som sol"). Ordningen på bokstäverna bör
@@ -93,7 +101,7 @@ espeak-ng) låter robotlikt och måste provas på riktigt. Beslut behövs (se av
 | Nivå | Ålder | Innehåll |
 |---|---|---|
 | A | 4–5 | bokstavsjakt: ljud + bild, hitta tangenten (tangentbordet på skärmen lyser), stora/små bokstäver |
-| B | 5–6 | skriv mitt namn (spökbokstäver visar vägen), följ-bokstaven-spårning |
+| B | 5–6 | skriv mitt namn (spökbokstäver visar vägen), bokstäver i ordning |
 | C | 6–7 | korta ord med bild (sol, hus, katt …), skriv av → skriv efter ljud |
 | D | 7–8 | längre ord, ordbilder (vanliga ord), första meningen, versal/punkt, skriv ett eget "brev" med fri text (ingen rättning, bara spara/skriva ut) |
 
@@ -107,23 +115,26 @@ espeak-ng) låter robotlikt och måste provas på riktigt. Beslut behövs (se av
 
 ```
 rootfs/overlay/usr/share/kidsos/games/
-  core/kids-core.js, kids-core.css, sounds/, voices/
-  mattelek/index.html, game.js, generators.js, levels.json
-  skrivlabbet/index.html, game.js, words.json, letters.json
-  parent.html
-rootfs/overlay/usr/share/applications/kids-math.desktop, kids-write.desktop   (ersätter TuxMath/Tux Typing i menyn om våra är bättre)
-tests/  (kör i Node eller webbläsare: generatorer, nivåflöde)
+  kidsgames/core/        gemensam kod: fönster, tangentbord, ljud, lagring, belöning, UI-kit
+  kidsgames/mattelek/    main.py, generators.py, levels.json
+  kidsgames/skrivlabbet/ main.py, words.json
+  assets/voices/sv/      <id>.ogg    (se CONTENT-ORDER.md)
+  assets/images/         <id>.svg eller .png
+  assets/sfx/            <id>.ogg
+rootfs/overlay/usr/local/bin/kids-math, kids-write           startar python3 -m kidsgames.mattelek / .skrivlabbet
+rootfs/overlay/usr/share/applications/kids-math.desktop, kids-write.desktop
+tests/                   generatorer, nivåflöde, content-validator (körs på Windows och i bygget)
 ```
-Startas med `firefox-esr --new-window file:///usr/share/kidsos/games/mattelek/index.html` (samma mönster som Koda).
-
+Beroenden i bilden: `python3-pygame` (och `python3` finns redan). Innehållet levereras enligt
+[CONTENT-ORDER.md](CONTENT-ORDER.md).
 ## 5. Etapper
 
 | Etapp | Innehåll | Klart när |
 |---|---|---|
 | E0 | Beslut (avsnitt 7), prova GCompris/TuxMath/Tux Typing med barn, lista brister | beslut och kravlista |
-| E1 | `kids-core` + Mattelek nivå 0–1 + skiss av röst/ljud | körs offline på Chromebooken utan hack, <100 MB RAM |
+| E1 | `kidsgames/core` + Mattelek nivå 0–1, tangentbordsgrab och stängda genvägar, platshållarljud | startar på Chromebooken, fullskärm, <100 MB RAM, barnet kommer inte ut av misstag |
 | E2 | Mattelek nivå 2–3, hjälpsteg, lagring, klistermärken | ett barn klarar en 10-minuterspass utan vuxenhjälp |
-| E3 | Skrivlabbet A–C (bokstäver, eget namn, ord) + följ-bokstaven | barnets namn kan skrivas, rätt tangent lyser |
+| E3 | Skrivlabbet A–C (bokstäver, eget namn, ord) | barnets namn kan skrivas, rätt tangent lyser |
 | E4 | Skrivlabbet D, föräldravy, pausregel, stresstest av fel tangenter | föräldravyn visar framsteg |
 | E5 | Provspelning med 3–5 barn och en lärare, justera nivåer och ljud | ändringslista genomförd |
 | E6 | Bygg in i KidsOS (paketera, `.desktop`, README, bygg-test) | bygget går igenom, ikoner i menyn |
@@ -132,16 +143,26 @@ Startas med `firefox-esr --new-window file:///usr/share/kidsos/games/mattelek/in
 Uppdragskort i Koda (Snap!): färdiga startprojekt ("få katten att hoppa", "gör ett gissa-talet-spel") i
 `snap/Examples`-stil, 5–10 stycken stegvisa, för 7–8-åringar. Billigt att göra när E1 är klar.
 
-## 7. Beslut och frågor till dig
-1. **Tolkning av "skriva":** tangentbord + bokstäver (som här) eller handskrivning/spårning som huvudsak?
-2. **Röst:** vem kan spela in svenska röstklipp (~150 korta klipp), eller ska vi prova offline-TTS först?
-3. **Språk:** bara svenska från start (rekommenderas) eller fler språk?
-4. **Egna spel kontra befintliga:** går vi vidare efter E0 om GCompris/TuxMath räcker för vissa nivåer?
-5. **Testbarn/lärare:** finns några 4–8-åringar och en lärare som kan prova i E5?
-6. **Läroplan:** ska vi följa Lgr22 åk 1–3 som angivet, och vem bekräftar bokstavsordningen?
+## 7. Beslut (bekräftade av dig 2026-11-02)
+
+1. **Skriva = tangentbord och bokstäver.** Pennskrift/spårning är för svårt; tas bort ur nivåerna.
+2. **Röst:** produceras med ElevenLabs (eller liknande) från en beställningslista, se CONTENT-ORDER.md.
+   *Öppen risk:* bokstavs*ljud* (S som i "sol", inte "ess") är svåra för TTS; testa ett par bokstäver innan hela
+   listan beställs, annars måste de spelas in av en människa.
+3. **Språk:** svenska först.
+4. **Egna spel** byggs oavsett vad GCompris/TuxMath klarar. E0 används ändå för att se vad barnen gillar.
+5. **Testbarn och lärare** finns. Behöver bara bokas till E5 (samtycke från föräldrar, inga personuppgifter sparas).
+6. **Läroplan:** Lgr22 åk 1–3. *Kvar att göra:* kontrollera exakt ordalydelse mot Skolverkets kursplan och låt
+   läraren godkänna bokstavsordningen och ordlistan före E3.
 
 ## 8. Risker
-- Prestanda i Firefox på den här hårdvaran (mäts i E1; håll DOM/CSS enkelt, inga stora bilder).
-- Innehåll (röst, bilder, ord) är mer arbete än koden.
-- Pedagogiken är underbyggd men inte bevisad för just dessa spel; utvärdera med riktiga barn innan fler funktioner läggs till.
-- Fel tangenter/systemgenvägar i skrivspelet kan få barnet ut ur spelet.
+
+- **Prestanda:** pygame på 2 GB/A15 är sannolikt lätt, men mäts i E1 (bildhastighet, RAM, starttid).
+- **Innehåll** (röst, bilder, ord) är mer arbete än koden. Plan: en annan AI/leverantör bygger det efter
+  CONTENT-ORDER.md, och en validator (`tests/validate_content.py`) avvisar leveranser som inte följer formatet.
+- **Pedagogiken** är underbyggd men inte bevisad för just dessa spel; utvärdera med riktiga barn (E5) innan fler
+  funktioner läggs till.
+- **Fel tangenter och systemgenvägar** kan få barnet ut ur spelet: egen fullskärmsapp med tangentbordsgrab,
+  få kortkommandon (se avsnitt 0), VT-växling avstängd för barnkontot; allt detta måste provas på riktig hårdvara i E1.
+- **Python-appar måste skyddas mot krasch:** en `try/except` runt huvudloopen som visar en vänlig skärm och startar om
+  spelet, annars hamnar barnet på skrivbordet utan förklaring.
