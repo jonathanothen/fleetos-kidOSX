@@ -17,3 +17,11 @@ Så gjordes de (för att kunna göras om): modell `eleven_turbo_v2_5`, `language
 - Ljudnivå och format: normalisera till −18 LUFS och ev. konvertera till Ogg när `ffmpeg` finns.
 - Licens: kontrollera att rösten får användas kommersiellt i den planerade produkten.
 - Byt ElevenLabs-API-nyckeln (den har klistrats in i en chatt).
+## Bilder (utkast v0.1)
+
+De 62 bilderna i `rootfs/overlay/usr/share/kidsos/games/assets/images/` (`img_<ord>.svg`) kom som en zip från användaren och är
+en första version: platt stil, mjuk kontur, 6–8 färger, 256 × 256, 30 KB totalt. Kontrollerat: alla 62 id:n finns och inga
+är extra, giltig XML, inga gradienter, filter, text eller skript. De ska göras fantasifullare senare.
+
+Kända svagheter att åtgärda: `ko` ser ut som en katt, `hund` och `mus` liknar varandra, `banan` är bara en halvmåne,
+`bro`, `mat` och `sjö` är abstrakta, `tak` är svårt att känna igen. Bilderna är ritade på transparent bakgrund.
