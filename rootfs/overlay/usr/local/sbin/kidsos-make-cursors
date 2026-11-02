@@ -1,0 +1,71 @@
+#!/usr/bin/python3
+"""Builds the KidsOS mouse pointer theme: a big white hand (open; closed while a button is held).
+Usage: kidsos-make-cursors <svg dir> <theme dir>        (needs python3-pygame; no extra packages)
+Writes <theme>/cursors/<name> in the Xcursor format directly, so no xcursorgen is needed."""
+import os
+import struct
+import sys
+
+os.environ.setdefault("SDL_VIDEODRIVER", "dummy")
+os.environ.setdefault("PYGAME_HIDE_SUPPORT_PROMPT", "1")
+import pygame
+
+SIZES = [32, 48, 64, 96, 128]
+HOTSPOT = {"open": (43, 18), "closed": (43, 48), "ibeam": (64, 64)}         # in the 128 x 128 drawing
+# cursor name -> drawing. Names not listed fall back to the Adwaita theme (Inherits).
+NAMES = {
+    "open": ["left_ptr", "default", "arrow", "top_left_arrow", "left_arrow", "hand1", "hand2", "pointer", "pointing_hand",
+             "grab", "openhand", "all-scroll", "move", "fleur", "context-menu", "help", "question_arrow"],
+    "closed": ["grabbing", "closedhand", "dnd-none", "dnd-move", "dnd-copy", "dnd-link", "copy", "alias", "pointer-closed"],
+    "ibeam": ["xterm", "text", "ibeam"],
+}
+
+
+def image_chunk(surf, size, hot):
+    w, h = surf.get_size()
+    raw = pygame.image.tostring(surf, "RGBA")
+    px = bytearray()
+    for i in range(0, len(raw), 4):                  # Xcursor wants premultiplied ARGB, little endian
+        r, g, b, a = raw[i:i + 4]
+        px += struct.pack("<I", (a << 24) | ((r * a // 255) << 16) | ((g * a // 255) << 8) | (b * a // 255))
+    head = struct.pack("<9I", 36, 0xFFFD0002, size, 1, w, h, round(hot[0] * w / 128), round(hot[1] * h / 128), 0)
+    return head + bytes(px)
+
+
+def write_cursor(path, svg):
+    pygame.display.init(); pygame.display.set_mode((1, 1))
+    base = pygame.image.load(svg).convert_alpha()
+    base = pygame.transform.smoothscale(base, (128, 128)) if base.get_size() != (128, 128) else base
+    hot = HOTSPOT[os.path.basename(svg)[:-4]]
+    chunks = [image_chunk(pygame.transform.smoothscale(base, (s, s)) if s != 128 else base, s, hot) for s in SIZES]
+    toc_start = 16
+    offset = toc_start + 12 * len(chunks)
+    out = struct.pack("<4s3I", b"Xcur", 16, 0x10000, len(chunks))
+    toc = b""
+    for s, c in zip(SIZES, chunks):
+        toc += struct.pack("<3I", 0xFFFD0002, s, offset)
+        offset += len(c)
+    with open(path, "wb") as f:
+        f.write(out + toc + b"".join(chunks))
+
+
+def main(svg_dir, theme_dir):
+    cdir = os.path.join(theme_dir, "cursors")
+    os.makedirs(cdir, exist_ok=True)
+    for drawing, names in NAMES.items():
+        first = os.path.join(cdir, names[0])
+        write_cursor(first, os.path.join(svg_dir, drawing + ".svg"))
+        for alias in names[1:]:
+            p = os.path.join(cdir, alias)
+            if os.path.lexists(p):
+                os.remove(p)
+            os.symlink(names[0], p)
+    with open(os.path.join(theme_dir, "index.theme"), "w") as f:
+        f.write("[Icon Theme]\nName=KidsOS-Cursor\nComment=Big white hand that closes when you click\nInherits=Adwaita\n")
+    print("cursor theme written to", theme_dir)
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 3:
+        sys.exit(__doc__)
+    main(sys.argv[1], sys.argv[2])

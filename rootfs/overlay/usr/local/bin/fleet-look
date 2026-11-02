@@ -1,14 +1,15 @@
 #!/bin/bash
 # Applies the KidsOS look the first time a user logs in. Change colours later with: fleet-theme
 # Bump LOOK_VER to re-apply on existing installs after the look changes.
-LOOK_VER=4
+LOOK_VER=5
 M="$HOME/.config/kidsos-look-v$LOOK_VER"
 [ -e "$M" ] && exit 0
 sleep 2
 
 xfconf-query -c xsettings -p /Net/IconThemeName   -n -t string -s "Adwaita"
 xfconf-query -c xsettings -p /Gtk/FontName        -n -t string -s "Comic Neue 14"
-xfconf-query -c xsettings -p /Gtk/CursorThemeSize -n -t int    -s 32
+xfconf-query -c xsettings -p /Gtk/CursorThemeName -n -t string -s "KidsOS-Cursor"
+xfconf-query -c xsettings -p /Gtk/CursorThemeSize -n -t int    -s 64
 xfconf-query -c xsettings -p /Xft/Antialias       -n -t int    -s 1
 xfconf-query -c xsettings -p /Xft/HintStyle       -n -t string -s "hintslight"
 # Windows-style window buttons on the right: hide, maximise, close. Big title bar text.

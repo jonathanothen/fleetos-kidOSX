@@ -1,0 +1,50 @@
+#!/usr/bin/python3
+"""While a mouse button is held down the pointer hand closes into a fist (and opens again on release).
+X11 does not change the pointer by itself on a click, so this watches the button state a few times a second and swaps the
+pointer image by name for every program (XFixesChangeCursorByName). Needs the KidsOS-Cursor theme."""
+import ctypes
+import sys
+import time
+
+NAMES = ["left_ptr", "default", "arrow", "top_left_arrow", "left_arrow", "hand1", "hand2", "pointer", "pointing_hand"]
+BUTTONS = 0x100 | 0x200 | 0x400          # Button1Mask | Button2Mask | Button3Mask
+
+
+def main():
+    x11 = ctypes.CDLL("libX11.so.6")
+    xfixes = ctypes.CDLL("libXfixes.so.3")
+    xcursor = ctypes.CDLL("libXcursor.so.1")
+    x11.XOpenDisplay.restype = ctypes.c_void_p
+    x11.XDefaultRootWindow.restype = ctypes.c_ulong
+    x11.XDefaultRootWindow.argtypes = [ctypes.c_void_p]
+    xcursor.XcursorLibraryLoadCursor.restype = ctypes.c_ulong
+    xcursor.XcursorLibraryLoadCursor.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
+    xfixes.XFixesChangeCursorByName.argtypes = [ctypes.c_void_p, ctypes.c_ulong, ctypes.c_char_p]
+    x11.XQueryPointer.argtypes = [ctypes.c_void_p, ctypes.c_ulong] + [ctypes.c_void_p] * 7
+    dpy = x11.XOpenDisplay(None)
+    if not dpy:
+        sys.exit("no display")
+    root = x11.XDefaultRootWindow(dpy)
+    opened = xcursor.XcursorLibraryLoadCursor(dpy, b"left_ptr")
+    closed = xcursor.XcursorLibraryLoadCursor(dpy, b"grabbing")
+
+    def swap(cursor):
+        for name in NAMES:
+            xfixes.XFixesChangeCursorByName(dpy, cursor, name.encode())
+        x11.XFlush(ctypes.c_void_p(dpy))
+
+    r, c = ctypes.c_ulong(), ctypes.c_ulong()
+    ints = [ctypes.c_int() for _ in range(4)]
+    mask = ctypes.c_uint()
+    down = False
+    while True:
+        x11.XQueryPointer(dpy, root, ctypes.byref(r), ctypes.byref(c), *[ctypes.byref(i) for i in ints], ctypes.byref(mask))
+        now = bool(mask.value & BUTTONS)
+        if now != down:
+            down = now
+            swap(closed if down else opened)
+        time.sleep(0.03 if down else 0.05)
+
+
+if __name__ == "__main__":
+    main()

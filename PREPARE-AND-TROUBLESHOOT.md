@@ -56,11 +56,36 @@ Use a **plain USB stick**, ideally an old small USB 2.0 one (8 GB or larger).
   SD-card readers did not boot. The image is only ~2.1 GB, so a small stick is enough
   (it must not be smaller than the image; the internal eMMC of these machines is ~16 GB, which is plenty).
 
+## 3b. Turn USB boot on again from KidsOS / FleetOS itself (no ChromeOS needed)
+
+The installer wipes the internal disk, so ChromeOS is gone and `sudo enable_dev_usb_boot` is no longer available. If the
+flag is off (Ctrl+U gives a short beep, or the screen complains about the flag), set it from the installed system:
+
+```
+sudo fleet-usb-boot status      # shows dev_boot_usb=0 or 1
+sudo fleet-usb-boot on          # turns it on (the parent account has sudo)
+```
+
+On the Samsung **XE503C12 (Peach Pit)** the firmware keeps the flag in the EC, and Debian's `crossystem` cannot reach it
+(`crossystem` prints `(error)` for every `dev_boot_*` value and "Failed to set parameter"). `fleet-usb-boot` then falls
+back to `fleet-ec-nvram`, which talks to the EC over `/dev/cros_ec`:
+
+```
+sudo fleet-ec-nvram                # shows the 16-byte flag block, its checksum and dev_boot_usb / dev_boot_signed_only
+sudo fleet-ec-nvram --set-usb      # asks first; turns USB boot on and allows kernels not signed by Google
+sudo fleet-ec-nvram --clear-usb    # turns it off
+```
+
+It refuses to write unless the checksum of the block matches, and reads the block back to check that the change stuck.
+Verified on an XE503C12 (flag was off, `--set-usb`, then a stick booted with Ctrl+U). Restart afterwards and press
+**Ctrl+U** on the "OS verification is OFF" screen. With `echo yes | sudo tee /etc/fleet-usb-boot` the flag is also
+restored at every boot if the firmware loses it (`fleet-usb-boot.service`).
+
 ## 4. What the beeps mean (Ctrl+U)
 
 | Sound | Meaning |
 |---|---|
-| Short beep, nothing happens | USB boot is disabled. Run `sudo enable_dev_usb_boot` (section 2). |
+| Short beep, nothing happens | USB boot is disabled. Run `sudo enable_dev_usb_boot` (section 2) or, on an installed machine, `sudo fleet-usb-boot on` (section 3b). |
 | Screen flashes once, then a deep beep | USB boot is on, but the firmware finds no bootable kernel on the stick. Change stick and port. |
 
 ## 5. Verify the kernel partition on the stick (from ChromeOS)

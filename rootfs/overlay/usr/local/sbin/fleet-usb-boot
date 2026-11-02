@@ -1,12 +1,21 @@
 #!/bin/bash
 # Manage the firmware flag that allows booting from USB (Ctrl+U in developer mode).
 # Without it a machine cannot be reinstalled from a stick. Usage: fleet-usb-boot on|off|status|ensure
+#
+# crossystem is tried first. On some models (XE503C12 / Peach Pit) the firmware keeps the flag in the EC ("mkbp")
+# and crossystem cannot read or write it (every dev_boot_* value is "(error)"); then fleet-ec-nvram does it directly.
+cs() { crossystem "$@" 2>/dev/null; }
+readable() { local v; v=$(cs dev_boot_usb); [ -n "$v" ] && [ "$v" != "(error)" ]; }
+EC=/usr/local/sbin/fleet-ec-nvram
 case "${1:-status}" in
-  on)     enable_dev_usb_boot 2>/dev/null || crossystem dev_boot_usb=1 dev_boot_signed_only=0 ;;
-  off)    crossystem dev_boot_usb=0 ;;
-  status) echo "dev_boot_usb=$(crossystem dev_boot_usb 2>&1) dev_boot_signed_only=$(crossystem dev_boot_signed_only 2>&1)" ;;
+  on)     if readable; then enable_dev_usb_boot 2>/dev/null || { cs dev_boot_usb=1 && cs dev_boot_signed_only=0; }
+          else "$EC" --set-usb --yes; fi ;;
+  off)    if readable; then cs dev_boot_usb=0; else "$EC" --clear-usb --yes; fi ;;
+  status) if readable; then echo "dev_boot_usb=$(cs dev_boot_usb) dev_boot_signed_only=$(cs dev_boot_signed_only)"
+          else "$EC" 2>&1 | tail -2; fi ;;
   ensure) # used at boot: only write when the flag was lost
           [ "$(cat /etc/fleet-usb-boot 2>/dev/null)" = yes ] || exit 0
-          [ "$(crossystem dev_boot_usb 2>/dev/null)" = 1 ] || "$0" on ;;
+          if readable; then [ "$(cs dev_boot_usb)" = 1 ] || "$0" on
+          else "$EC" 2>/dev/null | grep -q 'dev_boot_usb=1' || "$EC" --set-usb --yes >/dev/null 2>&1 || true; fi ;;
   *) echo "usage: $0 on|off|status|ensure"; exit 2 ;;
 esac

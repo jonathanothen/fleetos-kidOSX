@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=KidsOS pointer: the hand closes when you click
+Exec=/usr/local/bin/kidsos-cursor-click
+OnlyShowIn=XFCE;
+X-GNOME-Autostart-Delay=2

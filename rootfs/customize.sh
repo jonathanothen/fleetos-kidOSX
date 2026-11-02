@@ -48,6 +48,12 @@ gtk-update-icon-cache -f /usr/share/icons/hicolor || true
 
 # --- Child-safe desktop ---
 # The start screen (big tiles) replaces desktop icons; it is a GTK3 python program
+chmod +x /usr/local/sbin/fleet-ec-nvram /usr/local/sbin/fleet-usb-boot
+python3 -c "import ast; ast.parse(open(\"/usr/local/sbin/fleet-ec-nvram\").read())" || { echo "ERROR: fleet-ec-nvram has a syntax error"; exit 1; }
+chmod +x /usr/local/sbin/kidsos-make-cursors /usr/local/bin/kidsos-cursor-click
+# The big white hand pointer: drawn from SVG at build time (pygame, no extra packages)
+/usr/local/sbin/kidsos-make-cursors /usr/share/kidsos/cursor /usr/share/icons/KidsOS-Cursor || { echo "ERROR: cursor theme was not built"; exit 1; }
+[ -f /usr/share/icons/KidsOS-Cursor/cursors/left_ptr ] && [ -f /usr/share/icons/KidsOS-Cursor/cursors/grabbing ] || { echo "ERROR: cursor files missing"; exit 1; }
 chmod +x /usr/local/bin/kidsos-home /usr/local/bin/fleet-volume /usr/local/bin/fleet-osd /usr/local/bin/kids-math /usr/local/bin/kids-write /usr/local/bin/kids-match /usr/local/bin/kidsos-power /usr/local/bin/kids-minne /usr/local/bin/kids-klockan /usr/local/bin/kids-lyssna /usr/local/bin/kids-monster /usr/local/bin/kids-rita
 # Our own games: pygame must import, and the game content must be there
 python3 -c "import pygame" || { echo "ERROR: python3-pygame missing"; exit 1; }

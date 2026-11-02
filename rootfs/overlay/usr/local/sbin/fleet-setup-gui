@@ -100,8 +100,86 @@ while true; do
     LOC=$(clean "$LOC")
   fi
   grep -qE "^${LOC//./\\.} " /usr/share/i18n/SUPPORTED && break
-  Y --error --text="Unknown locale: $LOC" --button="OK:0"
+  Y --error --text="Unknown locale / Okänt språk: $LOC" --button="OK:0"
 done
+
+# --- Texts: the pages after the language choice speak the chosen language (Swedish is translated, every other language
+# gets English). Placeholders @1@ @2@ are filled in by t().
+LANGC=${LOC%%_*}
+declare -A EN SV
+EN[next]="Next";                SV[next]="Nästa"
+EN[ok]="OK";                    SV[ok]="OK"
+EN[back]="Back";                SV[back]="Tillbaka"
+EN[skip]="Skip";                SV[skip]="Hoppa över"
+EN[continue]="Continue";        SV[continue]="Fortsätt"
+EN[change]="Change it";         SV[change]="Ändra"
+EN[use]="Use @1@";              SV[use]="Använd @1@"
+EN[kbd_head]="<big><b>Keyboard</b></big>\n\nChoose a keyboard layout. Type to search."
+SV[kbd_head]="<big><b>Tangentbord</b></big>\n\nVälj tangentbordslayout. Skriv för att söka."
+EN[col_layout]="Keyboard layout";    SV[col_layout]="Tangentbordslayout"
+EN[kbd_var_head]="<big><b>Keyboard variant</b></big>"
+SV[kbd_var_head]="<big><b>Tangentbordsvariant</b></big>"
+EN[col_variant]="Variant";           SV[col_variant]="Variant"
+EN[std]="(Standard)";                SV[std]="(Standard)"
+EN[add_more]="Add another keyboard layout to switch between with <b>Alt+Shift</b>?"
+SV[add_more]="Lägga till ännu en tangentbordslayout att växla till med <b>Alt+Skift</b>?"
+EN[no_cont]="No, continue";          SV[no_cont]="Nej, fortsätt"
+EN[add_another]="Add another";       SV[add_another]="Lägg till"
+EN[parent1]="<big><b>Parent account</b></big>\n\nWhat is your name? You are the administrator: only you can install programs and change settings."
+SV[parent1]="<big><b>Föräldrakonto</b></big>\n\nVad heter du? Du är administratör: bara du kan installera program och ändra inställningar."
+EN[f_full]="Full name";              SV[f_full]="Fullständigt namn"
+EN[parent2]="<big><b>Parent account</b></big>\n\nChoose a username (lowercase a-z, digits, - and _ only) and a password."
+SV[parent2]="<big><b>Föräldrakonto</b></big>\n\nVälj ett användarnamn (bara små bokstäver a-z, siffror, - och _) och ett lösenord."
+EN[f_user]="Username";               SV[f_user]="Användarnamn"
+EN[f_pw]="Password";                 SV[f_pw]="Lösenord"
+EN[f_pw2]="Repeat password";         SV[f_pw2]="Upprepa lösenordet"
+EN[f_host]="Computer name (lowercase a-z, digits and -)"
+SV[f_host]="Datorns namn (små bokstäver a-z, siffror och -)"
+EN[f_usb]="Allow booting from USB (needed to reinstall this computer)"
+SV[f_usb]="Tillåt start från USB (behövs för att installera om datorn)"
+EN[err_user_empty]="The username is empty or has no usable characters."
+SV[err_user_empty]="Användarnamnet är tomt eller har inga tillåtna tecken."
+EN[q_user]="Usernames may only use lowercase a-z, digits, - and _ (no capitals, å, ä, ö or spaces).\n\nUse <b>@1@</b> instead?"
+SV[q_user]="Användarnamn får bara ha små bokstäver a-z, siffror, - och _ (inga versaler, å, ä, ö eller mellanslag).\n\nAnvända <b>@1@</b> i stället?"
+EN[err_exists]="That username already exists.";   SV[err_exists]="Det användarnamnet finns redan."
+EN[err_pw_match]="The passwords do not match.";   SV[err_pw_match]="Lösenorden är inte likadana."
+EN[err_pw_short]="The password is too short (at least 4 characters)."
+SV[err_pw_short]="Lösenordet är för kort (minst 4 tecken)."
+EN[err_host_empty]="The computer name is empty or has no usable characters."
+SV[err_host_empty]="Datorns namn är tomt eller har inga tillåtna tecken."
+EN[q_host]="Computer names may only use lowercase a-z, digits and - (no capitals, å, ä, ö, spaces or _).\n\nUse <b>@1@</b> instead?"
+SV[q_host]="Datornamn får bara ha små bokstäver a-z, siffror och - (inga versaler, å, ä, ö, mellanslag eller _).\n\nAnvända <b>@1@</b> i stället?"
+EN[child_head]="<big><b>Your child</b></big>\n\nWhat is the child's name?\nThe child's account has no password and cannot install anything; it opens by itself when the computer starts."
+SV[child_head]="<big><b>Ditt barn</b></big>\n\nVad heter barnet?\nBarnets konto har inget lösenord och kan inte installera något. Det öppnas av sig självt när datorn startar."
+EN[f_child]="Child's name";          SV[f_child]="Barnets namn"
+EN[wifi_none]="<big><b>Wi-Fi</b></big>\n\nNo Wi-Fi adapter was found, so this step is skipped.\nYou can use a network cable, or set up Wi-Fi later."
+SV[wifi_none]="<big><b>Wi-Fi</b></big>\n\nInget Wi-Fi-kort hittades, så det här steget hoppas över.\nDu kan använda nätverkskabel eller ställa in Wi-Fi senare."
+EN[col_signal]="Signal %";           SV[col_signal]="Signal %"
+EN[col_sec]="Security";              SV[col_sec]="Säkerhet"
+EN[col_net]="Network";               SV[col_net]="Nätverk"
+EN[open]="Open";                     SV[open]="Öppet"
+EN[other_net]="Other / hidden network...";  SV[other_net]="Annat / dolt nätverk..."
+EN[wifi_pick]="<big><b>Wi-Fi</b></big>\n\nChoose your network. Type to search."
+SV[wifi_pick]="<big><b>Wi-Fi</b></big>\n\nVälj ditt nätverk. Skriv för att söka."
+EN[rescan]="Rescan";                 SV[rescan]="Sök igen"
+EN[connect]="Connect";               SV[connect]="Anslut"
+EN[ssid]="Network name (SSID)";      SV[ssid]="Nätverkets namn (SSID)"
+EN[pw_for]="Password for <b>@1@</b>\n(leave empty for an open network)"
+SV[pw_for]="Lösenord för <b>@1@</b>\n(lämna tomt för ett öppet nätverk)"
+EN[connected]="Connected to <b>@1@</b>.";   SV[connected]="Ansluten till <b>@1@</b>."
+EN[conn_fail]="Could not connect to <b>@1@</b>. Try again?"
+SV[conn_fail]="Det gick inte att ansluta till <b>@1@</b>. Försöka igen?"
+EN[try_again]="Try again";           SV[try_again]="Försök igen"
+EN[setting_up]="# Setting up your computer...";   SV[setting_up]="# Ställer in din dator..."
+EN[wait]="Please wait...";           SV[wait]="Vänta..."
+EN[all_set]="<big><b>All set</b></big>\n\nThe parent account <b>@1@</b> and the account for <b>@2@</b> are ready.\nThe computer restarts now and opens the desktop of <b>@2@</b>."
+SV[all_set]="<big><b>Klart</b></big>\n\nFöräldrakontot <b>@1@</b> och kontot för <b>@2@</b> är klara.\nDatorn startar om nu och öppnar barnets skrivbord."
+t() {                                    # t key [arg1 arg2]: the text in the chosen language, placeholders filled in
+  local k=$1 s a i=1; shift
+  if [ "$LANGC" = sv ] && [ -n "${SV[$k]:-}" ]; then s=${SV[$k]}; else s=${EN[$k]}; fi
+  for a in "$@"; do a=${a//&/\\&}; s=${s//@$i@/$a}; i=$((i+1)); done
+  printf '%s' "$s"
+}
 
 # --- 2. Keyboard layouts (any layout, up to 3, switch with Alt+Shift) --------------------------------------
 CC=${LOC#*_}; CC=${CC%%.*}; GUESS=$(echo "$CC" | tr 'A-Z' 'a-z'); [ "$GUESS" = gb ] || true
@@ -119,17 +197,17 @@ pick_layout() {
   local lay var vrows
   while true; do
     lay=$(layout_rows | Y --list --width=560 --height=560 --search-column=2 \
-      --column="Code:HD" --column="Keyboard layout" --print-column=1 \
-      --text="<big><b>Keyboard</b></big>\n\nChoose a keyboard layout. Type to search." \
-      --button="Next:0") || exit 1
+      --column="Code:HD" --column="$(t col_layout)" --print-column=1 \
+      --text="$(t kbd_head)" \
+      --button="$(t next):0") || exit 1
     lay=$(clean "$lay"); [ -n "$lay" ] && break
   done
   vrows=$(variant_rows "$lay")
   var=""
   if [ -n "$vrows" ]; then
-    var=$( { echo ""; echo "(Standard)"; echo "$vrows"; } | Y --list --width=560 --height=480 --search-column=2 \
-      --column="Code:HD" --column="Variant" --print-column=1 \
-      --text="<big><b>Keyboard variant</b></big>" --button="Next:0") || var=""
+    var=$( { echo ""; echo "$(t std)"; echo "$vrows"; } | Y --list --width=560 --height=480 --search-column=2 \
+      --column="Code:HD" --column="$(t col_variant)" --print-column=1 \
+      --text="$(t kbd_var_head)" --button="$(t next):0") || var=""
     var=$(clean "$var")
   fi
   # yad prints the literal text "(null)" for an empty value; that must never reach /etc/default/keyboard
@@ -138,8 +216,8 @@ pick_layout() {
 }
 pick_layout
 while [ ${#LAYS[@]} -lt 3 ]; do
-  Y --question --text="Add another keyboard layout to switch between with <b>Alt+Shift</b>?" \
-    --button="No, continue:1" --button="Add another:0" || break
+  Y --question --text="$(t add_more)" \
+    --button="$(t no_cont):1" --button="$(t add_another):0" || break
   pick_layout
 done
 XL=$(IFS=,; echo "${LAYS[*]}"); XV=$(IFS=,; echo "${VARS[*]}")
@@ -148,8 +226,8 @@ XL=${XL//(null)/}; XV=${XV//(null)/}   # belt and braces
 setxkbmap -layout "$XL" -variant "$XV" 2>/dev/null || true
 
 # --- 3. Account ----------------------------------------------------------------------------------------
-FULL=$(Y --form --width=520 --text="<big><b>Parent account</b></big>\n\nWhat is your name? You are the administrator: only you can install programs and change settings." \
-         --field="Full name" "" --button="Next:0") || exit 1
+FULL=$(Y --form --width=520 --text="$(t parent1)" \
+         --field="$(t f_full)" "" --button="$(t next):0") || exit 1
 FULL=$(clean "$FULL"); FULL=${FULL//[:,]/}
 SUGGEST=$(norm_user "$FULL")
 # Suggested computer name: "<first-name>-chromebook" (falls back to the current fleet-xxxxxx name)
@@ -158,41 +236,41 @@ if [ -n "$FIRST" ]; then HOSTSUG="$FIRST-chromebook"; else HOSTSUG=$(cat /etc/ho
 
 while true; do
   res=$(Y --form --width=520 \
-    --text="<big><b>Parent account</b></big>\n\nChoose a username (lowercase a-z, digits, - and _ only) and a password." \
-    --field="Username" "$SUGGEST" \
-    --field="Password:H" "" \
-    --field="Repeat password:H" "" \
-    --field="Computer name (lowercase a-z, digits and -)" "$HOSTSUG" \
-    --field="Allow booting from USB (needed to reinstall this computer):CHK" TRUE \
-    --button="Next:0") || exit 1
+    --text="$(t parent2)" \
+    --field="$(t f_user)" "$SUGGEST" \
+    --field="$(t f_pw):H" "" \
+    --field="$(t f_pw2):H" "" \
+    --field="$(t f_host)" "$HOSTSUG" \
+    --field="$(t f_usb):CHK" TRUE \
+    --button="$(t next):0") || exit 1
   IFS="$SEP" read -r USERN PW1 PW2 HOST USBSEL _ <<<"$res"
   FIXED=$(norm_user "$USERN")
   err=""
-  [ -n "$FIXED" ] || err="The username is empty or has no usable characters."
+  [ -n "$FIXED" ] || err="$(t err_user_empty)"
   if [ -z "$err" ] && [ "$FIXED" != "$USERN" ]; then
-    if Y --question --text="Usernames may only use lowercase a-z, digits, - and _ (no capitals, å, ä, ö or spaces).\n\nUse <b>$FIXED</b> instead?" \
-         --button="Change it:1" --button="Use $FIXED:0"; then USERN=$FIXED; else continue; fi
+    if Y --question --text="$(t q_user "$FIXED")" \
+         --button="$(t change):1" --button="$(t use "$FIXED"):0"; then USERN=$FIXED; else continue; fi
   fi
-  [ -n "$err" ] || { id "$USERN" >/dev/null 2>&1 && err="That username already exists."; }
-  [ -n "$err" ] || [ "$PW1" = "$PW2" ] || err="The passwords do not match."
-  [ -n "$err" ] || [ ${#PW1} -ge 4 ] || err="The password is too short (at least 4 characters)."
+  [ -n "$err" ] || { id "$USERN" >/dev/null 2>&1 && err="$(t err_exists)"; }
+  [ -n "$err" ] || [ "$PW1" = "$PW2" ] || err="$(t err_pw_match)"
+  [ -n "$err" ] || [ ${#PW1} -ge 4 ] || err="$(t err_pw_short)"
   if [ -z "$err" ]; then
     FIXEDH=$(norm_host "$HOST")
-    if [ -z "$FIXEDH" ]; then err="The computer name is empty or has no usable characters."
+    if [ -z "$FIXEDH" ]; then err="$(t err_host_empty)"
     elif [ "$FIXEDH" != "$HOST" ]; then
-      if Y --question --text="Computer names may only use lowercase a-z, digits and - (no capitals, å, ä, ö, spaces or _).\n\nUse <b>$FIXEDH</b> instead?" \
-           --button="Change it:1" --button="Use $FIXEDH:0"; then HOST=$FIXEDH; else continue; fi
+      if Y --question --text="$(t q_host "$FIXEDH")" \
+           --button="$(t change):1" --button="$(t use "$FIXEDH"):0"; then HOST=$FIXEDH; else continue; fi
     fi
   fi
-  if [ -n "$err" ]; then Y --error --text="$err" --button="OK:0"; continue; fi
+  if [ -n "$err" ]; then Y --error --text="$err" --button="$(t ok):0"; continue; fi
   break
 done
 [ -n "$FULL" ] || FULL=$USERN
 
 # --- 3b. The child ---------------------------------------------------------------------------------------
 while true; do
-  CHILD=$(Y --form --width=520 --text="<big><b>Your child</b></big>\n\nWhat is the child's name?\nThe child's account has no password and cannot install anything; it opens by itself when the computer starts." \
-            --field="Child's name" "" --button="Next:0") || exit 1
+  CHILD=$(Y --form --width=520 --text="$(t child_head)" \
+            --field="$(t f_child)" "" --button="$(t next):0") || exit 1
   CHILD=$(clean "$CHILD"); CHILD=${CHILD//[:,]/}
   [ -n "$CHILD" ] && break
 done
@@ -201,45 +279,46 @@ CUSER=$(norm_user "$CHILD"); [ -n "$CUSER" ] || CUSER=barn
 while id "$CUSER" >/dev/null 2>&1; do CUSER="${CUSER}1"; done
 
 # --- 4. Wi-Fi (optional) -------------------------------------------------------------------------------
+OTHERNET=$(t other_net)
 if ! command -v nmcli >/dev/null || ! nmcli -t -f TYPE device | grep -q '^wifi'; then
-  Y --info --width=520 --text="<big><b>Wi-Fi</b></big>\n\nNo Wi-Fi adapter was found, so this step is skipped.\nYou can use a network cable, or set up Wi-Fi later." --button="Continue:0"
+  Y --info --width=520 --text="$(t wifi_none)" --button="$(t continue):0"
 else
   nmcli radio wifi on >/dev/null 2>&1
   while true; do
     for _ in 1 2; do nmcli device wifi rescan >/dev/null 2>&1; sleep 2; done
-    rows=$(nmcli -t -f SIGNAL,SECURITY,SSID device wifi list 2>/dev/null | sort -t: -k1,1nr | awk -F: '
+    rows=$(nmcli -t -f SIGNAL,SECURITY,SSID device wifi list 2>/dev/null | sort -t: -k1,1nr | awk -F: -v open="$(t open)" '
         { sig=$1; sec=$2; ssid=$0; sub(/^[^:]*:[^:]*:/,"",ssid); gsub(/\\:/,":",ssid);
-          if (ssid!="" && !(ssid in seen)) { seen[ssid]=1; print sig; print (sec==""?"Open":sec); print ssid } }')
-    sel=$( { echo ""; echo ""; echo "Other / hidden network..."; [ -n "$rows" ] && echo "$rows"; } | \
+          if (ssid!="" && !(ssid in seen)) { seen[ssid]=1; print sig; print (sec==""?open:sec); print ssid } }')
+    sel=$( { echo ""; echo ""; echo "$OTHERNET"; [ -n "$rows" ] && echo "$rows"; } | \
         Y --list --width=640 --height=480 --search-column=3 \
-          --column="Signal %" --column="Security" --column="Network" --print-column=3 \
-          --text="<big><b>Wi-Fi</b></big>\n\nChoose your network. Type to search." \
-          --button="Skip:1" --button="Rescan:2" --button="Connect:0")
+          --column="$(t col_signal)" --column="$(t col_sec)" --column="$(t col_net)" --print-column=3 \
+          --text="$(t wifi_pick)" \
+          --button="$(t skip):1" --button="$(t rescan):2" --button="$(t connect):0")
     rc=$?
     [ $rc -eq 2 ] && continue
     [ $rc -eq 0 ] || break
     SSID=$(clean "$sel"); [ -n "$SSID" ] || continue
     args=()
-    if [ "$SSID" = "Other / hidden network..." ]; then
-      SSID=$(Y --entry --width=480 --text="Network name (SSID)" --button="Back:1" --button="Next:0") || continue
+    if [ "$SSID" = "$OTHERNET" ]; then
+      SSID=$(Y --entry --width=480 --text="$(t ssid)" --button="$(t back):1" --button="$(t next):0") || continue
       SSID=$(clean "$SSID"); [ -n "$SSID" ] || continue
       args+=(hidden yes)
     fi
     ESC=$(printf '%s' "$SSID" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')
-    WPW=$(Y --entry --hide-text --width=480 --text="Password for <b>$ESC</b>\n(leave empty for an open network)" \
-          --button="Back:1" --button="Connect:0") || continue
+    WPW=$(Y --entry --hide-text --width=480 --text="$(t pw_for "$ESC")" \
+          --button="$(t back):1" --button="$(t connect):0") || continue
     WPW=$(clean "$WPW")
     [ -n "$WPW" ] && args+=(password "$WPW")
     if nmcli device wifi connect "$SSID" "${args[@]}" >/dev/null 2>&1; then
-      Y --info --text="Connected to <b>$ESC</b>." --button="OK:0"; break
+      Y --info --text="$(t connected "$ESC")" --button="$(t ok):0"; break
     fi
-    Y --question --text="Could not connect to <b>$ESC</b>. Try again?" --button="Skip:1" --button="Try again:0" || break
+    Y --question --text="$(t conn_fail "$ESC")" --button="$(t skip):1" --button="$(t try_again):0" || break
   done
 fi
 
 # --- Apply ---------------------------------------------------------------------------------------------
 (
-  echo "# Setting up your computer..."
+  echo "$(t setting_up)"
   if grep -q "^# *${LOC//./\\.} UTF-8" /etc/locale.gen; then
     sed -i "s/^# *${LOC//./\\.} UTF-8/$LOC UTF-8/" /etc/locale.gen
   else
@@ -289,8 +368,8 @@ EOF
   fi
   rm -f /etc/fleet-needs-setup
   sync
-) | Y --progress --pulsate --auto-close --no-buttons --width=420 --text="Please wait..."
+) | Y --progress --pulsate --auto-close --no-buttons --width=420 --text="$(t wait)"
 
-Y --info --width=420 --text="<big><b>All set</b></big>\n\nThe parent account <b>$USERN</b> and the account for <b>$CHILD</b> are ready.\nThe computer restarts now and opens the desktop of <b>$CHILD</b>." --button="OK:0"
+Y --info --width=420 --text="$(t all_set "$USERN" "$CHILD")" --button="$(t ok):0"
 systemctl --no-block reboot
 exit 0

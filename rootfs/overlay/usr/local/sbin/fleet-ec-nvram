@@ -1,0 +1,107 @@
+#!/usr/bin/python3
+"""Read or change the Chromebook's firmware flags (USB boot) straight from Linux, over /dev/cros_ec.
+
+Why this exists: on the Samsung XE503C12 (Peach Pit) the firmware keeps its flags in the EC ("mkbp" storage). Debian's
+crossystem cannot reach them there (every dev_boot_* value reads "(error)"), and after the internal disk is wiped there is
+no ChromeOS left to set dev_boot_usb from. This tool talks to the EC the way crossystem does.
+Verified on an XE503C12 running KidsOS: reading, setting dev_boot_usb and booting a stick with Ctrl+U afterwards.
+
+  sudo fleet-ec-nvram                  show the flags (changes nothing)
+  sudo fleet-ec-nvram --set-usb        turn "boot from USB" on and allow kernels that are not signed by Google
+  sudo fleet-ec-nvram --clear-usb      turn "boot from USB" off
+  add --yes to skip the question (used by fleet-usb-boot)
+
+The block is 16 bytes (vboot nvdata v1): byte 0 header, byte 4 developer flags (0x01 = USB boot, 0x02 = signed kernels
+only), byte 15 = CRC-8 of bytes 0..14. The tool refuses to write unless the checksum of what the EC returns matches,
+and it reads the block back afterwards to check that the change stuck.
+"""
+import fcntl
+import os
+import struct
+import sys
+
+DEV = "/dev/cros_ec"
+IOCXCMD = 0xC014EC00               # _IOWR(0xEC, 0, struct cros_ec_command) with the 20-byte header
+EC_CMD_HELLO = 0x0001
+EC_CMD_VBNV_CONTEXT = 0x0017
+OP_READ, OP_WRITE = 0, 1
+FLAG_USB, FLAG_SIGNED_ONLY = 0x01, 0x02
+
+
+def crc8(data):
+    crc = 0
+    for byte in data:
+        crc ^= byte << 8
+        for _ in range(8):
+            if crc & 0x8000:
+                crc ^= 0x1070 << 3
+            crc <<= 1
+    return (crc >> 8) & 0xFF
+
+
+def with_usb(block, on):
+    """The block with USB boot switched on (also allowing unsigned-by-Google kernels) or off, checksum fixed."""
+    new = bytearray(block)
+    new[4] = ((new[4] | FLAG_USB) & ~FLAG_SIGNED_ONLY) & 0xFF if on else new[4] & ~FLAG_USB & 0xFF
+    new[15] = crc8(bytes(new[:15]))
+    return bytes(new)
+
+
+def ec_command(fd, command, out=b"", insize=0, version=0):
+    buf = bytearray(struct.pack("<5I", version, command, len(out), insize, 0) + out + bytes(max(0, insize - len(out))))
+    fcntl.ioctl(fd, IOCXCMD, buf, True)
+    result = struct.unpack_from("<I", buf, 16)[0]
+    return result, bytes(buf[20:20 + insize])
+
+
+def read_block(fd):
+    result, data = ec_command(fd, EC_CMD_VBNV_CONTEXT, struct.pack("<I", OP_READ) + bytes(16), insize=16)
+    if result != 0:
+        raise RuntimeError("EC refused the read (result %d)" % result)
+    return data
+
+
+def describe(block):
+    ok = crc8(block[:15]) == block[15]
+    print("block: " + " ".join("%02x" % b for b in block))
+    print("checksum: %s" % ("OK" if ok else "DOES NOT MATCH (computed %02x, stored %02x)" % (crc8(block[:15]), block[15])))
+    print("dev_boot_usb=%d dev_boot_signed_only=%d" % (1 if block[4] & FLAG_USB else 0, 1 if block[4] & FLAG_SIGNED_ONLY else 0))
+    return ok
+
+
+def main(argv):
+    if os.geteuid() != 0:
+        sys.exit("Run with sudo.")
+    try:
+        fd = os.open(DEV, os.O_RDWR)
+    except OSError as e:
+        sys.exit("Cannot open %s (%s): not a Chromebook with an EC, or the kernel lacks CROS_EC_CHARDEV." % (DEV, e.strerror))
+    result, data = ec_command(fd, EC_CMD_HELLO, struct.pack("<I", 0xA0B0C0D0), insize=4)
+    if result != 0 or struct.unpack("<I", data)[0] != 0xA1B2C3D4:
+        sys.exit("The EC did not answer the hello test correctly (result %d)." % result)
+    block = read_block(fd)
+    ok = describe(block)
+    want = True if "--set-usb" in argv else False if "--clear-usb" in argv else None
+    if want is None:
+        return
+    if not ok:
+        sys.exit("Refusing to write: the checksum of the block does not match, so the format is not what this tool expects.")
+    new = with_usb(block, want)
+    if new == block:
+        print("Nothing to change.")
+        return
+    if "--yes" not in argv and input("Turn USB boot %s? type yes: " % ("ON" if want else "OFF")).strip() != "yes":
+        sys.exit("Cancelled.")
+    result, _ = ec_command(fd, EC_CMD_VBNV_CONTEXT, struct.pack("<I", OP_WRITE) + new, insize=0)
+    if result != 0:
+        sys.exit("The EC refused the write (result %d)." % result)
+    again = read_block(fd)
+    print("Read back:")
+    if describe(again) and bool(again[4] & FLAG_USB) == want:
+        print("Done. Restart; to boot a stick press Ctrl+U on the 'OS verification is OFF' screen." if want else "Done.")
+    else:
+        sys.exit("The change did not stick. Tell the person who maintains the image what is printed above.")
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])

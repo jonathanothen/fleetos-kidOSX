@@ -118,7 +118,8 @@ Unchanged from FleetOS and still valid:
   volume in software, so the volume keys (0-100 %) are the only thing that changes loudness. This matters more for
   children's ears: the maximum is deliberately limited.
 - **Wi-Fi (Marvell 88W8797):** `firmware-libertas` plus a small driver patch in `kernel/build-kernel.sh`.
-- **USB boot flag:** `sudo fleet-usb-boot on|off|status`.
+- **USB boot flag:** `sudo fleet-usb-boot on|off|status`. On the XE503C12 `crossystem` cannot reach the flag (it lives in
+  the EC), so `fleet-usb-boot` uses `fleet-ec-nvram` instead; see [PREPARE-AND-TROUBLESHOOT.md](PREPARE-AND-TROUBLESHOOT.md) section 3b.
 - **Speed:** apt timers run 20-30 min after boot, `e2scrub`, `man-db` and `NetworkManager-wait-online` are not
   started at boot, the journal lives in RAM, zram swap, `noatime`; Firefox has two content processes, an in-RAM cache
   and no animations (`/usr/lib/firefox-esr/defaults/pref/fleet.js`). Removed compared with FleetOS: Plank dock,
