@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Färger
+Name[en]=Colours
+Exec=/usr/local/bin/fleet-theme gui
+Icon=kidsos-colors
+Terminal=false
+Categories=Settings;
+StartupNotify=true
+X-KidsOS=true

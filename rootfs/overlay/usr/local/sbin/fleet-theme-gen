@@ -1,0 +1,50 @@
+#!/bin/bash
+# Build-time: turns /usr/share/fleet-themes/*.conf + *.in templates into real themes.
+#   GTK theme   -> /usr/share/themes/<GTKNAME>/{index.theme,gtk-3.0/gtk.css}
+#   Wallpaper   -> /usr/share/backgrounds/kidsos/kidsos-<id>.svg
+# Only text files are produced (~10 KB per theme); nothing is loaded at runtime beyond the active one.
+set -euo pipefail
+SRC=${1:-/usr/share/fleet-themes}
+OUT=${2:-}          # optional staging root (for testing); empty = real /usr
+
+for conf in "$SRC"/*.conf; do
+  sedf=$(mktemp)
+  while IFS== read -r k v || [ -n "$k" ]; do
+    [ -z "$k" ] && continue
+    printf 's|@@%s@@|%s|g\n' "$k" "$(printf '%s' "$v" | sed 's/[|&\\]/\\&/g')" >> "$sedf"
+    case $k in ID) ID=$v;; GTKNAME) GTKNAME=$v;; BASE) BASE=$v;; DARK) DARK=$v;; esac
+  done < "$conf"
+
+  # Dark base theme missing (WhiteSur build failed or only Light installed)? fall back to Light.
+  if [ -z "$OUT" ] && [ ! -d "/usr/share/fleet-base/themes/$BASE" ]; then
+    echo "WARN: /usr/share/fleet-base/themes/$BASE missing, using WhiteSur-Light for $ID" >&2
+    BASE=WhiteSur-Light
+    # Rewrite the existing BASE rule (appending a second one would never match: the first rule already ran)
+    sed -i 's#^s|@@BASE@@|.*#s|@@BASE@@|WhiteSur-Light|g#' "$sedf"
+  fi
+
+  T="$OUT/usr/share/themes/$GTKNAME"
+  mkdir -p "$T/gtk-3.0" "$OUT/usr/share/backgrounds/kidsos"
+  # The window frame (xfwm4) comes from the base theme, so the frame list also shows only KidsOS themes
+  ln -sfn "/usr/share/fleet-base/themes/$BASE/xfwm4" "$T/xfwm4"
+  sed -f "$sedf" "$SRC/gtk.css.in"       > "$T/gtk-3.0/gtk.css"
+    sed -f "$sedf" "$SRC/wallpaper.svg.in" > "$OUT/usr/share/backgrounds/kidsos/kidsos-$ID.svg"
+  cat > "$T/index.theme" <<EOF
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=$GTKNAME
+Comment=KidsOS flat rounded theme
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=$GTKNAME
+IconTheme=Adwaita
+EOF
+  rm -f "$sedf"
+
+  # Anything left unreplaced is a typo in a template or palette
+  if grep -l '@@' "$T/gtk-3.0/gtk.css" "$OUT/usr/share/backgrounds/kidsos/kidsos-$ID.svg" 2>/dev/null; then
+    echo "ERROR: unreplaced placeholders in theme $ID" >&2; exit 1
+  fi
+  echo "generated $ID ($GTKNAME)"
+done

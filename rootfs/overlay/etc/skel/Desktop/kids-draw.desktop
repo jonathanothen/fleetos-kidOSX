@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Rita
+Name[en]=Draw
+Exec=/usr/bin/tuxpaint
+Icon=kidsos-draw
+Terminal=false
+Categories=Graphics;Education;
+StartupNotify=true
+X-KidsOS=true

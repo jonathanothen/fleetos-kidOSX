@@ -1,0 +1,57 @@
+#!/bin/bash
+# Builds the Firefox policy file from /etc/kidsos/web-allow.list. Run after changing the list (as root).
+# Everything not on the list is blocked, except the local start page and the local block-coding app.
+set -euo pipefail
+LIST=/etc/kidsos/web-allow.list
+OUT=/usr/lib/firefox-esr/distribution/policies.json
+mkdir -p "$(dirname "$OUT")"
+{
+  cat <<'EOF'
+{
+  "policies": {
+    "DisableTelemetry": true,
+    "DisablePocket": true,
+    "DisableFirefoxStudies": true,
+    "DisableAppUpdate": true,
+    "DisableDeveloperTools": true,
+    "DisablePrivateBrowsing": true,
+    "DisableSafeMode": true,
+    "DisableProfileImport": true,
+    "DisableFirefoxAccounts": true,
+    "DisableFormHistory": true,
+    "DisableMasterPasswordCreation": true,
+    "DontCheckDefaultBrowser": true,
+    "NoDefaultBookmarks": true,
+    "PasswordManagerEnabled": false,
+    "OfferToSaveLogins": false,
+    "BlockAboutConfig": true,
+    "BlockAboutAddons": true,
+    "BlockAboutProfiles": true,
+    "BlockAboutSupport": true,
+    "OverrideFirstRunPage": "",
+    "OverridePostUpdatePage": "",
+    "NewTabPage": false,
+    "Homepage": { "URL": "file:///usr/share/kidsos/start.html", "Locked": true, "StartPage": "homepage" },
+    "WebsiteFilter": {
+      "Block": ["<all_urls>"],
+      "Exceptions": [
+        "file:///usr/share/kidsos/*",
+EOF
+  grep -v -E '^[[:space:]]*(#|$)' "$LIST" | sed 's/[\\"]//g' | sed 's/^/        "/; s/$/",/'
+  cat <<'EOF'
+        "about:blank"
+      ]
+    },
+    "ExtensionSettings": {
+      "uBlock0@raymondhill.net": {
+        "installation_mode": "normal_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"
+      }
+    }
+  }
+}
+EOF
+} > "$OUT"
+# Refuse to leave a broken file behind (Firefox would then ignore every policy)
+if command -v python3 >/dev/null; then python3 -c 'import json,sys; json.load(open(sys.argv[1]))' "$OUT"; fi
+echo "wrote $OUT"

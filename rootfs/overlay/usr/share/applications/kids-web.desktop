@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Webben
+Name[en]=Safe web
+Exec=/usr/bin/firefox-esr file:///usr/share/kidsos/start.html
+Icon=kidsos-web
+Terminal=false
+Categories=Network;
+StartupNotify=true
+X-KidsOS=true

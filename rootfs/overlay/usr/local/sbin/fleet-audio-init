@@ -1,0 +1,47 @@
+#!/bin/bash
+# Audio setup for the Chromebook's MAX98095/MAX98090 codec, run at EVERY boot (fleet-audio-init.service).
+# The mixers start muted and unrouted. This sets the hardware to a fixed, known state:
+#   - route DAC1 straight to the speaker and headphone amplifiers, everything else off
+#     (an earlier version "unmuted everything": that enabled the uninitialised equaliser/biquad filters and fed the
+#      inputs into the outputs, which produced screeching)
+#   - speaker amplifier LOCKED at +5 dB (step 26). Measured on an XE303C12: clean at +4.8 dB, cracks at +11 dB.
+#     PipeWire keeps its own volume in software (51-fleet-alsa.conf) and never touches this control, so the volume
+#     keys (0-100 %) are the only thing that changes the loudness, and the maximum is always +5 dB.
+# Running it every boot (not only once) means a stray mixer change cannot stick across a reboot.
+
+# Wait for the sound card (the driver is loaded by udev a few seconds after boot)
+for _ in $(seq 1 30); do grep -q '[0-9]' /proc/asound/cards 2>/dev/null && break; sleep 1; done
+grep -q '[0-9]' /proc/asound/cards 2>/dev/null || exit 0
+
+# Raw amplifier step for the speaker. The scale is NOT linear (measured with amixer sget on an XE303C12):
+#   step 24 = +3.0 dB, 25 = +4.0, 26 = +5.0, 27 = +6.0, 28 = +6.5, 29 = +7.0, 30 = +7.5, 31 = +8.0, 32 = +8.5 ...
+#   (39 = +12 dB). So +5 dB = step 26.
+SPEAKER_STEP=26
+
+for card in $(sed -n 's/^ *\([0-9]\+\) \[.*/\1/p' /proc/asound/cards); do
+  have() { amixer -c "$card" scontrols 2>/dev/null | grep -qF "'$1',"; }
+  set()  { have "$1" && amixer -c "$card" -q sset "$1" "${@:2}" 2>/dev/null || true; }
+
+  # 1. Everything that could colour or feed back into the output: OFF
+  amixer -c "$card" scontrols 2>/dev/null | sed -n "s/^Simple mixer control '\(.*\)',[0-9]\+$/\1/p" | while IFS= read -r ctl; do
+    case "$ctl" in
+      *ADC*) ;;   # recording side (microphone): leave alone
+      EQ1|EQ2|Biquad1|Biquad2) amixer -c "$card" -q sset "$ctl" off 2>/dev/null ;;
+      *Mixer\ IN1|*Mixer\ IN2|*Mixer\ MIC1|*Mixer\ MIC2|*Mixer\ Mono\ DAC2|*Mixer\ Mono\ DAC3) amixer -c "$card" -q sset "$ctl" off 2>/dev/null ;;
+      Left\ *Mixer\ Right\ DAC1|Right\ *Mixer\ Left\ DAC1) amixer -c "$card" -q sset "$ctl" off 2>/dev/null ;;   # no channel crossing
+      Receiver\ Mixer\ *|Lineout\ Mixer\ *|*Lineout\ Mixer\ *) amixer -c "$card" -q sset "$ctl" off 2>/dev/null ;;
+    esac
+  done
+  set Receiver mute
+  set Lineout mute
+
+  # 2. Straight routing: left DAC -> left amp, right DAC -> right amp (speaker and headphones)
+  set "Left Speaker Mixer Left DAC1"       on
+  set "Right Speaker Mixer Right DAC1"     on
+  set "Left Headphone Mixer Left DAC1"     on
+  set "Right Headphone Mixer Right DAC1"   on
+
+  # 3. Amplifiers: unmuted at fixed levels (a plain number is the raw step, not a percentage)
+  set Speaker   unmute "$SPEAKER_STEP"
+  set Headphone unmute 65%
+done

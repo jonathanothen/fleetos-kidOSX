@@ -1,0 +1,110 @@
+#!/bin/bash
+# Installs the running system (from USB) onto the internal eMMC.
+# WIPES THE WHOLE eMMC. No dual boot, no ChromeOS left behind.
+set -uo pipefail
+
+fail() { echo; echo "ERROR: $*"; echo "Install aborted. Switch to tty2 (Ctrl+Alt+F2) to debug."; sleep infinity; }
+set -e
+trap 'fail "command on line $LINENO failed"' ERR
+
+clear
+echo "=============================================="
+echo "  KidsOS installer"
+echo "=============================================="
+
+# --- find the eMMC (it always has a boot0 partition) ---
+TARGET=""
+for b in /sys/block/mmcblk*; do
+  n=$(basename "$b")
+  [[ $n =~ ^mmcblk[0-9]+$ ]] || continue
+  [ -e "/dev/${n}boot0" ] && { TARGET="/dev/$n"; break; }
+done
+[ -n "$TARGET" ] || fail "no internal eMMC found"
+ROOTSRC=$(findmnt -no SOURCE /)
+case $ROOTSRC in "$TARGET"*) fail "booted from the target disk ($TARGET)";; esac
+
+SIZE_GB=$(( $(blockdev --getsize64 "$TARGET") / 1000000000 ))
+echo "Target: $TARGET (${SIZE_GB} GB) -- EVERYTHING ON IT WILL BE ERASED."
+echo "Press any key within 15 seconds to ABORT."
+for i in $(seq 15 -1 1); do
+  printf "\r  Starting in %2d s ... " "$i"
+  if read -r -t 1 -n 1 _; then echo; echo "Aborted. Remove the stick and reboot."; sleep infinity; fi
+done
+echo
+
+KVER=$(ls /boot | sed -n 's/^vmlinuz-//p' | sort -V | tail -1)
+[ -n "$KVER" ] || fail "no kernel in /boot"
+
+echo "[1/5] Partitioning $TARGET and writing the kernel"
+fleet-usb-boot on >/dev/null 2>&1 || true   # make sure the USB boot flag is on before we touch the disk
+swapoff -a || true
+for p in "${TARGET}"p*; do umount "$p" 2>/dev/null || true; done
+blkdiscard -f "$TARGET" 2>/dev/null || true
+wipefs -a "$TARGET" >/dev/null
+# The disk is blank here, so cgpt prints harmless "GPT header is invalid" warnings: hide them.
+cgpt create -z "$TARGET" >/dev/null 2>&1
+cgpt create "$TARGET" >/dev/null 2>&1
+cgpt boot -p "$TARGET" >/dev/null 2>&1   # protective MBR: Linux ignores GPT disks without it
+cgpt add -i 1 -t kernel -b 8192   -s 32768 -l KERN-A -S 0 -T 0 -P 0 "$TARGET"
+cgpt add -i 2 -t kernel -b 40960  -s 32768 -l KERN-B -S 0 -T 0 -P 0 "$TARGET"
+TOTAL=$(blockdev --getsz "$TARGET")
+cgpt add -i 3 -t data -b 73728 -s $((TOTAL - 73728 - 64)) -l ROOT-A "$TARGET"
+partprobe "$TARGET"; udevadm settle
+sleep 1
+
+# Write the kernel NOW, before the slow copy. The firmware treats a disk without a valid kernel as "no OS"
+# (recovery), so if the install is interrupted the machine must still have a bootable kernel and the
+# developer screen (Ctrl+U) must keep working. It will wait for the root filesystem until the copy is done.
+ROOTUUID=$(cgpt show -i 3 -u "$TARGET" | tr 'A-Z' 'a-z')
+fleet-mkkernel -v "$KVER" -R "$ROOTUUID" -m detect -o /tmp/kern.bin
+dd if=/tmp/kern.bin of="${TARGET}p1" bs=1M conv=fsync status=none
+dd if=/tmp/kern.bin of="${TARGET}p2" bs=1M conv=fsync status=none
+cgpt add -i 1 -P 2 -T 3 -S 0 "$TARGET"
+cgpt add -i 2 -P 1 -T 3 -S 0 "$TARGET"
+
+echo "[2/5] Creating filesystem"
+mkfs.ext4 -q -F -L fleetroot "${TARGET}p3"
+mkdir -p /mnt/target
+mount "${TARGET}p3" /mnt/target
+
+echo "[3/5] Copying the system (a few minutes)"
+rsync -aHAXx / /mnt/target/
+mkdir -p /mnt/target/{proc,sys,dev,run,tmp,mnt,media}
+chmod 1777 /mnt/target/tmp
+
+echo "[4/5] Customising the new machine"
+echo "PARTUUID=$ROOTUUID / ext4 defaults,noatime,commit=60 0 1" > /mnt/target/etc/fstab
+echo "tmpfs /tmp tmpfs defaults,nosuid,nodev 0 0" >> /mnt/target/etc/fstab
+MAC=""
+for d in /sys/class/net/*; do
+  [ "$(basename "$d")" = lo ] && continue
+  MAC=$(tr -d ':' < "$d/address"); [ -n "$MAC" ] && break
+done
+HN="fleet-${MAC: -6}"; [ -n "$MAC" ] || HN="fleet-$(head -c4 /dev/urandom | od -An -tx1 | tr -d ' \n')"
+echo "$HN" > /mnt/target/etc/hostname
+sed -i "s/^127\.0\.1\.1.*/127.0.1.1 $HN/" /mnt/target/etc/hosts
+: > /mnt/target/etc/machine-id
+rm -f /mnt/target/etc/ssh/ssh_host_*
+
+echo "[5/5] Finishing"
+# (the kernel was already written right after partitioning, see above)
+# Keep USB boot enabled so this machine can be reinstalled later (best effort)
+echo yes > /mnt/target/etc/fleet-usb-boot
+fleet-usb-boot on >/dev/null 2>&1 || true
+
+sync
+umount /mnt/target
+echo
+echo "DONE. Machine $HN is installed and powers off now."
+echo "Remove the USB stick AFTER the screen has gone dark (not before)."
+sleep 4
+# Power off WITHOUT touching the disk. We are running from the USB stick: if it is pulled while systemd is
+# shutting down, systemctl can no longer load anything from it and the machine hangs (EXT4-fs errors, read-only).
+# The target disk is already synced and unmounted, so a direct power-off is safe. Marking the stick's own
+# filesystem read-only first keeps it clean for the next machine.
+mount -o remount,ro / 2>/dev/null || true
+sync
+echo 1 > /proc/sys/kernel/sysrq 2>/dev/null || true
+echo o > /proc/sysrq-trigger 2>/dev/null || true       # needs CONFIG_MAGIC_SYSRQ: immediate power off, no disk access
+systemctl poweroff -f -f 2>/dev/null || true           # fallback: forced, does not load any units
+sleep infinity

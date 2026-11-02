@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=KidsOS look
+Exec=/usr/local/bin/fleet-look
+OnlyShowIn=XFCE;
+X-GNOME-Autostart-Phase=Applications
+NoDisplay=true

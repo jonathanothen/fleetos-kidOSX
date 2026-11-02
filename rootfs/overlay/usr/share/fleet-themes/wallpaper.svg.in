@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" preserveAspectRatio="xMidYMid slice">
+  <title>KidsOS @@LABEL@@</title>
+  <!-- Flat sky, sun, clouds and hills. No gradients or filters: renders fast on weak GPUs. -->
+  <rect width="1920" height="1080" fill="@@W_BG@@"/>
+  <circle cx="1560" cy="250" r="330" fill="@@W_B1@@"/>
+  <circle cx="1560" cy="250" r="190" fill="@@W_B2@@"/>
+  <circle cx="1560" cy="250" r="110" fill="@@W_S3@@"/>
+  <g fill="@@W_S1@@">
+    <circle cx="300" cy="220" r="60"/><circle cx="370" cy="190" r="80"/><circle cx="450" cy="225" r="60"/><rect x="250" y="220" width="250" height="65" rx="32"/>
+  </g>
+  <g fill="@@W_S2@@">
+    <circle cx="900" cy="140" r="45"/><circle cx="960" cy="115" r="62"/><circle cx="1030" cy="145" r="45"/><rect x="860" y="140" width="210" height="50" rx="25"/>
+  </g>
+  <path d="M0 760 C 320 620, 640 900, 1000 760 S 1620 620, 1920 800 V1080 H0 Z" fill="@@W_W1@@"/>
+  <path d="M0 880 C 360 780, 700 1010, 1080 890 S 1640 790, 1920 920 V1080 H0 Z" fill="@@W_W2@@"/>
+  <path d="M0 980 C 400 920, 760 1060, 1160 985 S 1700 930, 1920 1010 V1080 H0 Z" fill="@@W_W3@@"/>
+</svg>

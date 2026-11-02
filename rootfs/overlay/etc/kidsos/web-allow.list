@@ -1,0 +1,7 @@
+# Websites the child may open in Firefox (one Mozilla match pattern per line; # starts a comment).
+# Everything else is blocked. After editing, a parent runs:  sudo kidsos-web-apply
+*://*.svt.se/*
+*://*.urplay.se/*
+*://*.ur.se/*
+*://*.sverigesradio.se/*
+*://*.sr.se/*

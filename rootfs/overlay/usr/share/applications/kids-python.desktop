@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Python
+Name[en]=Python (Thonny)
+Exec=/usr/bin/thonny
+Icon=kidsos-python
+Terminal=false
+Categories=Development;Education;
+StartupNotify=true
+X-KidsOS=true

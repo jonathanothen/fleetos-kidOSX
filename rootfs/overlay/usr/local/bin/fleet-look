@@ -1,0 +1,34 @@
+#!/bin/bash
+# Applies the KidsOS look the first time a user logs in. Change colours later with: fleet-theme
+# Bump LOOK_VER to re-apply on existing installs after the look changes.
+LOOK_VER=1
+M="$HOME/.config/kidsos-look-v$LOOK_VER"
+[ -e "$M" ] && exit 0
+sleep 2
+
+xfconf-query -c xsettings -p /Net/IconThemeName   -n -t string -s "Adwaita"
+xfconf-query -c xsettings -p /Gtk/FontName        -n -t string -s "Comic Neue 14"
+xfconf-query -c xsettings -p /Gtk/CursorThemeSize -n -t int    -s 32
+xfconf-query -c xsettings -p /Xft/Antialias       -n -t int    -s 1
+xfconf-query -c xsettings -p /Xft/HintStyle       -n -t string -s "hintslight"
+# Windows-style window buttons on the right: hide, maximise, close. Big title bar text.
+xfconf-query -c xfwm4 -p /general/button_layout   -n -t string -s "|HMC"
+xfconf-query -c xfwm4 -p /general/title_alignment -n -t string -s "left"
+xfconf-query -c xfwm4 -p /general/title_font      -n -t string -s "Comic Neue Bold 14"
+xfconf-query -c xfwm4 -p /general/show_dock_shadow -n -t bool -s false
+# Compositor on: it gives the rounded menus. Turn off on a slow machine: fleet-effects off
+xfconf-query -c xfwm4 -p /general/use_compositing -n -t bool   -s true
+
+# A parent (member of the sudo group) gets the complete start menu instead of the child's short one
+if id -nG | tr ' ' '\n' | grep -qx sudo; then
+  xfconf-query -c xfce4-panel -p /plugins/plugin-1/custom-menu -n -t bool -s false
+  xfconf-query -c xfce4-panel -p /plugins/plugin-1/show-generic-names -n -t bool -s true
+  (sleep 1; xfce4-panel -r >/dev/null 2>&1 &)
+fi
+
+# Keep a colour theme the user already picked; otherwise start on the sunny one
+cur=sol
+[ -f "$HOME/.config/fleet-theme" ] && cur=$(cat "$HOME/.config/fleet-theme")
+/usr/local/bin/fleet-theme set "$cur"
+
+mkdir -p "$(dirname "$M")" && touch "$M"

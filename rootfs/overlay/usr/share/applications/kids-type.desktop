@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Skriva
+Name[en]=Typing game
+Exec=/usr/games/tuxtype
+Icon=kidsos-type
+Terminal=false
+Categories=Game;Education;
+StartupNotify=true
+X-KidsOS=true
