@@ -27,7 +27,9 @@ foreach ($r in $rows) {
                       $L = $key.ToUpper(); if ($key -eq 'aa') { $L = 'Å' } elseif ($key -eq 'ae') { $L = 'Ä' } elseif ($key -eq 'oe') { $L = 'Ö' } elseif ($key -in 'c','z') { $L = 'S' }   # c and z sound like s; the voice cannot say a "z"
                       $text = "$($sound[$key]). <break time=""0.6s""/> $L som i $w."; $speed = 0.85 }
     'word'         { $prev = 'Vi pratar svenska. Ordet är: ' }
-    'letter_name'  { $prev = 'Bokstaven heter ' }
+    'letter_name'  { $key = $r.id.Substring(4); $L = $key.ToUpper(); if ($key -eq 'aa') { $L = 'Å' } elseif ($key -eq 'ae') { $L = 'Ä' } elseif ($key -eq 'oe') { $L = 'Ö' }
+                      $text = if ($key -eq 'k') { 'Kå.' } else { "Bokstaven $L." }   # a bare name came out half a second short; k sounds right as Kå
+                      $speed = 0.8 }
     'phrase'       { $speed = 0.8 }   # whole sentences came out too fast at 1.0; single words were fine
   }
   $file = Join-Path $Out "$($r.id).mp3"

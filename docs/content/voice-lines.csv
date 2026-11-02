@@ -169,8 +169,8 @@ say_correct_4,phrase,Just det!,instruction or feedback,Warm; calm; child-friendl
 say_retry_1,phrase,Nästan! Prova igen,instruction or feedback,Warm; calm; child-friendly
 say_retry_2,phrase,Försök en gång till,instruction or feedback,Warm; calm; child-friendly
 say_hint_objects,phrase,Vi räknar tillsammans,instruction or feedback,Warm; calm; child-friendly
-say_find_letter,phrase,Hitta bokstaven,instruction or feedback,Warm; calm; child-friendly
-say_press_letter,phrase,Tryck på bokstaven,instruction or feedback,Warm; calm; child-friendly
+say_find_letter,phrase,Kan du hitta,instruction or feedback,Warm; calm; child-friendly
+say_press_letter,phrase,Tryck på,instruction or feedback,Warm; calm; child-friendly
 say_type_word,phrase,Skriv ordet,instruction or feedback,Warm; calm; child-friendly
 say_type_name,phrase,Skriv ditt namn,instruction or feedback,Warm; calm; child-friendly
 say_type_copy,phrase,Skriv av ordet,instruction or feedback,Warm; calm; child-friendly
